@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\WEBEditorAPI.Application\WEBEditorAPI.Application.csproj" />
+    <ProjectReference Include="..\WEBEditorAPI.Domain\WEBEditorAPI.Domain.csproj" />
+    <ProjectReference Include="..\WEBEditorAPI.Infrastructure\WEBEditorAPI.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>

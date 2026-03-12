@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="WEBEditorAPI.Api/WEBEditorAPI.Api.csproj" />
+  <Project Path="WEBEditorAPI.Application/WEBEditorAPI.Application.csproj" />
+  <Project Path="WEBEditorAPI.Domain/WEBEditorAPI.Domain.csproj" />
+  <Project Path="WEBEditorAPI.Infrastructure/WEBEditorAPI.Infrastructure.csproj" />
+</Solution>

@@ -52,3 +52,14 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+.env.development
+.env.production
+.vscode/
+.idea/
+
+# User secrets
+secrets.json
+
+# EF migrations snapshots
+Migrations/
