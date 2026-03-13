@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Domain.Entities.System;
-using WEBEditorAPI.Domain.Interfaces.System;
+using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;

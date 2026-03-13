@@ -1,9 +1,9 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WEBEditorAPI.Domain.Interfaces.System;
+using WEBEditorAPI.Domain.Interfaces.Repository.System;
+using WEBEditorAPI.Domain.ValueObjects;
 using WEBEditorAPI.Infrastructure;
-using WEBEditorAPI.Infrastructure.Persistence;
+using WEBEditorAPI.Infrastructure.Provider;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +31,9 @@ var app = builder.Build();
 // map the official endpoint
 app.MapHealthChecks("/health");
 
-app.MapGet("/companies", async ([FromServices] ICompanyRepository repository) =>
+app.MapGet("/users", async ([FromServices] IUserRepository repository) =>
 {
+    var provider = new PBKDF2PasswordProvider();
     return await repository.GetAllAsync();
 });
 

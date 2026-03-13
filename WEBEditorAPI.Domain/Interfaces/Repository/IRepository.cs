@@ -1,5 +1,5 @@
 
-namespace WEBEditorAPI.Domain.Interfaces;
+namespace WEBEditorAPI.Domain.Interfaces.Repository;
 
 public interface IRepository<T> where T : Entity
 {
