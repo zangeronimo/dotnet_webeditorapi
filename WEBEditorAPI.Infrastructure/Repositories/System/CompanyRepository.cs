@@ -16,7 +16,7 @@ public class CompanyRepository : ICompanyRepository
 
     public async Task<IEnumerable<Company>> GetAllAsync()
     {
-        return await _context.Companies.ToListAsync();
+        return await _context.Companies.Include(c => c.Modules).ToListAsync();
     }
 
     public async Task<Company?> GetByIdAsync(Guid id)

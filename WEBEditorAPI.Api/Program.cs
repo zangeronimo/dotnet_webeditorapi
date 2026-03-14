@@ -31,9 +31,8 @@ var app = builder.Build();
 // map the official endpoint
 app.MapHealthChecks("/health");
 
-app.MapGet("/users", async ([FromServices] IUserRepository repository) =>
+app.MapGet("/companies", async ([FromServices] ICompanyRepository repository) =>
 {
-    var provider = new PBKDF2PasswordProvider();
     return await repository.GetAllAsync();
 });
 
