@@ -20,7 +20,7 @@ public class User : Entity
 
     protected User() : base() { }
 
-    public void ChangeName(string newName, Email newEmail, Password newPassword)
+    public void Update(string newName, Email newEmail, Password newPassword)
     {
         Name = newName;
         Email = newEmail;

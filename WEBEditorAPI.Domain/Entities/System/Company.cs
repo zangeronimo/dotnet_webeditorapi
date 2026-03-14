@@ -13,7 +13,7 @@ public class Company : Entity
 
     protected Company() : base() { }
 
-    public void ChangeName(string newName)
+    public void Update(string newName)
     {
         Name = newName;
         Touch();

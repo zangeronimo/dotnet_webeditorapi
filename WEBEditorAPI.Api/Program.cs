@@ -1,9 +1,7 @@
 using DotNetEnv;
 using Microsoft.AspNetCore.Mvc;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
-using WEBEditorAPI.Domain.ValueObjects;
 using WEBEditorAPI.Infrastructure;
-using WEBEditorAPI.Infrastructure.Provider;
 
 var builder = WebApplication.CreateBuilder(args);
 

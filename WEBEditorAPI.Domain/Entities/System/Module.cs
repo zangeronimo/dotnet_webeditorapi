@@ -3,6 +3,7 @@ namespace WEBEditorAPI.Domain.Entities.System;
 public class Module : Entity
 {
     public string Name { get; private set; } = null!;
+    public ICollection<Role> Roles { get; set; } = new List<Role>();
 
     public Module(string name) : base()
     {
@@ -11,7 +12,7 @@ public class Module : Entity
 
     protected Module() : base() { }
 
-    public void ChangeName(string newName)
+    public void Update(string newName)
     {
         Name = newName;
         Touch();
