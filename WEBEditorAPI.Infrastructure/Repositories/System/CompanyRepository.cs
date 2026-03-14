@@ -21,12 +21,14 @@ public class CompanyRepository : ICompanyRepository
 
     public async Task<Company?> GetByIdAsync(Guid id)
     {
-        return await _context.Companies.FindAsync(id);
+        return await _context.Companies
+            .Include(c => c.Modules)
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Company?> GetOneAsync(Func<Company, bool> predicate)
     {
-        return _context.Companies.FirstOrDefault(predicate);
+        return _context.Companies.Include(c => c.Modules).FirstOrDefault(predicate);
     }
 
     public async Task AddAsync(Company entity)

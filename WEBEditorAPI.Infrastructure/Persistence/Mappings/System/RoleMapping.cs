@@ -5,15 +5,17 @@ using WEBEditorAPI.Domain.Entities.System;
 namespace WEBEditorAPI.Infrastructure.Persistence.Mappings.System;
 
 
-public class ModuleMapping : IEntityTypeConfiguration<Module>
+public class RoleMapping : IEntityTypeConfiguration<Role>
 {
-    public void Configure(EntityTypeBuilder<Module> builder)
+    public void Configure(EntityTypeBuilder<Role> builder)
     {
-        builder.ToTable("webeditor_modules");
+        builder.ToTable("webeditor_roles");
 
-        builder.HasKey(c => c.Id);
-        builder.Property(c => c.Id).HasColumnName("id").IsRequired();
-        builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(30).IsRequired();
+        builder.HasKey(u => u.Id);
+        builder.Property(u => u.Id).HasColumnName("id").IsRequired();
+        builder.Property(u => u.Name).HasColumnName("name").HasMaxLength(150).IsRequired();
+        builder.Property(u => u.Label).HasColumnName("label").HasMaxLength(150).IsRequired();
+        builder.Property(c => c.ModuleId).HasColumnName("webeditor_modules_id").IsRequired();
 
         builder.Property(c => c.CreatedAt).HasColumnName("created_at").IsRequired();
         builder.Property(c => c.UpdatedAt).HasColumnName("updated_at").IsRequired();
@@ -21,11 +23,5 @@ public class ModuleMapping : IEntityTypeConfiguration<Module>
 
         // Global filter: get only registers not deleted
         builder.HasQueryFilter(c => EF.Property<DateTime?>(c, "deleted_at") == null);
-
-        // 1:N with Roles relationship
-        builder.HasMany(c => c.Roles)
-               .WithOne()
-               .HasForeignKey(r => r.ModuleId)
-               .OnDelete(DeleteBehavior.Cascade);
     }
 }
