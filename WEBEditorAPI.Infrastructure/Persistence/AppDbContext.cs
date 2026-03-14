@@ -9,6 +9,7 @@ public class AppDbContext : DbContext
 {
     public DbSet<Company> Companies { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Module> Modules { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -16,5 +17,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new CompanyMapping());
         modelBuilder.ApplyConfiguration(new UserMapping());
+        modelBuilder.ApplyConfiguration(new ModuleMapping());
     }
 }
