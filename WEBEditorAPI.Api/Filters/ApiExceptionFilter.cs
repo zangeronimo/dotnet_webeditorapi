@@ -11,20 +11,12 @@ namespace WEBEditorAPI.Api.Filters
         {
             if (context.Exception is ApiException ex)
             {
-                int statusCode = context.Exception switch
-                {
-                    ApiInvalidCredentialsException => 401,
-                    ApiForbiddenException => 403,
-                    ApiNotFoundException => 404,
-                    _ => 400
-                };
-
                 context.Result = new ObjectResult(new
                 {
                     message = ex.Message
                 })
                 {
-                    StatusCode = statusCode
+                    StatusCode = ex.StatusCode
                 };
                 context.ExceptionHandled = true;
             }
