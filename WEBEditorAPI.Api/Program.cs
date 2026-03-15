@@ -1,6 +1,5 @@
 using DotNetEnv;
-using Microsoft.AspNetCore.Mvc;
-using WEBEditorAPI.Domain.Interfaces.Repository.System;
+using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,15 +22,13 @@ builder.Services.AddInfrastructure(connectionString);
 
 // Add health checks support
 builder.Services.AddHealthChecks();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ApiExceptionFilter>();
+});
 
 var app = builder.Build();
-
-// map the official endpoint
 app.MapHealthChecks("/health");
-
-app.MapGet("/companies", async ([FromServices] ICompanyRepository repository) =>
-{
-    return await repository.GetAllAsync();
-});
+app.MapControllers();
 
 app.Run();

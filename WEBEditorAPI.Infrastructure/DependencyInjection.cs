@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using WEBEditorAPI.Application.DTOs.System;
+using WEBEditorAPI.Application.Interfaces;
+using WEBEditorAPI.Application.UseCases.System;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Infrastructure.Persistence;
@@ -17,6 +20,9 @@ public static class DependencyInjection
 
         // Provider
         services.AddSingleton<IPasswordProvider, PBKDF2PasswordProvider>();
+
+        // UseCases
+        services.AddScoped<IUseCase<AuthRequest, AuthResponse>, MakeLoginUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

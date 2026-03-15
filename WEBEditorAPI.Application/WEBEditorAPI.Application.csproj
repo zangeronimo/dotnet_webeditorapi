@@ -4,6 +4,12 @@
     <ProjectReference Include="..\WEBEditorAPI.Domain\WEBEditorAPI.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Exceptions/" />
+    <Folder Include="Interfaces/" />
+    <Folder Include="UseCases/System/" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

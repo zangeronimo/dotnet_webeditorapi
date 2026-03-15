@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Domain.Entities.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
-using WEBEditorAPI.Domain.ValueObjects;
 using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;
@@ -46,5 +45,10 @@ public class UserRepository : IUserRepository
     {
         _context.Users.Remove(entity);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<User?> GetByEmailAsync(string email)
+    {
+        return await _context.Users.FirstOrDefaultAsync(u => u.Email.Value == email);
     }
 }
