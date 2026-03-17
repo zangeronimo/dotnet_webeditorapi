@@ -25,3 +25,9 @@ public class ApiNotFoundException : ApiException
     public ApiNotFoundException(string message = "Recurso não encontrado")
         : base(404, message) { }
 }
+
+public class ApiBadRequestException : ApiException
+{
+    public ApiBadRequestException(string message = "Falha no processamento")
+        : base(400, message) { }
+}

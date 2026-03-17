@@ -1,6 +1,7 @@
 using DotNetEnv;
 using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Infrastructure;
+using WEBEditorAPI.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,16 +10,13 @@ if (builder.Environment.IsDevelopment())
     Env.Load(".env.development");
 else
     Env.Load(".env.production");
+builder.Configuration.AddEnvironmentVariables();
 
-// Create connection string
-var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
-                       $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
-                       $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
-                       $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
-                       $"Password={Environment.GetEnvironmentVariable("DB_PASS")}";
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 
 // Connect to the database
-builder.Services.AddInfrastructure(connectionString);
+builder.Services.AddInfrastructure();
 
 // Add health checks support
 builder.Services.AddHealthChecks();

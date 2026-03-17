@@ -6,26 +6,21 @@ using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Application.UseCases.System;
 
-public class MakeLoginUC : IUseCase<AuthRequest, AuthResponse>
+public class RefreshTokenUC : IUseCase<string, AuthResponse>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordProvider _passwordProvider;
     private readonly ITokenProvider _tokenProvider;
 
-    public MakeLoginUC(IUserRepository userRepository, IPasswordProvider passwordProvider, ITokenProvider tokenProvider)
+    public RefreshTokenUC(IUserRepository userRepository, ITokenProvider tokenProvider)
     {
         _userRepository = userRepository;
-        _passwordProvider = passwordProvider;
         _tokenProvider = tokenProvider;
     }
 
-    public async Task<AuthResponse> ExecuteAsync(AuthRequest request)
+    public async Task<AuthResponse> ExecuteAsync(string refresh)
     {
-        var User = await _userRepository.GetByEmailAsync(request.Username) ?? throw new ApiInvalidCredentialsException();
-        if (_passwordProvider.Validate(request.Password, User.Password.Hash, User.Password.Salt) == false)
-        {
-            throw new ApiInvalidCredentialsException();
-        }
+        var payload = _tokenProvider.ValidateToken(refresh);
+        var User = await _userRepository.GetByIdAsync(payload.UserId) ?? throw new ApiInvalidCredentialsException();
         var token = _tokenProvider.GenerateToken(User.Id, User.Email.Value, User.CompanyId, TokenType.Access);
         if (string.IsNullOrEmpty(token))
         {
