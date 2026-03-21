@@ -1,5 +1,8 @@
+using System.Text;
 using DotNetEnv;
+using Microsoft.IdentityModel.Tokens;
 using WEBEditorAPI.Api.Filters;
+using WEBEditorAPI.Api.Middlewares;
 using WEBEditorAPI.Infrastructure;
 using WEBEditorAPI.Infrastructure.Options;
 
@@ -25,7 +28,26 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ApiExceptionFilter>();
 });
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "WEBEditorAPI",
+            ValidateAudience = true,
+            ValidAudience = "WEBEditor",
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
+            ValidateIssuerSigningKey = true
+        };
+    });
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseMiddleware<UserContextMiddleware>();
 app.MapHealthChecks("/health");
 app.MapControllers();
 
