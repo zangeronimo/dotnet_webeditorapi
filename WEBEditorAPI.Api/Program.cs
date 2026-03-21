@@ -39,7 +39,8 @@ builder.Services.AddAuthentication("Bearer")
             ValidAudience = "WEBEditor",
             ValidateLifetime = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
-            ValidateIssuerSigningKey = true
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero
         };
     });
 builder.Services.AddAuthorization();
