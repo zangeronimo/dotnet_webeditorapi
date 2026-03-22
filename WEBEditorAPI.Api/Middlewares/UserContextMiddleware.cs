@@ -23,7 +23,7 @@ public class UserContextMiddleware
 
             if (Guid.TryParse(uId, out var userId) && Guid.TryParse(cId, out var companyId))
             {
-                User? user = await userRepository.GetByIdAsync(userId);
+                User? user = await userRepository.GetByIdAsync(userId, companyId);
                 if (user != null && user.CompanyId == companyId)
                 {
                     var identity = (ClaimsIdentity)context.User.Identity;
@@ -34,7 +34,6 @@ public class UserContextMiddleware
                             identity.AddClaim(new Claim(ClaimTypes.Role, role.Name));
                         }
                     }
-                    context.Items["UserId"] = userId;
                     context.Items["CompanyId"] = companyId;
                 }
             }

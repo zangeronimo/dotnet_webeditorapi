@@ -20,7 +20,7 @@ public class RefreshTokenUC : IUseCase<string, AuthResponse>
     public async Task<AuthResponse> ExecuteAsync(string refresh)
     {
         var payload = _tokenProvider.ValidateToken(refresh);
-        var User = await _userRepository.GetByIdAsync(payload.UserId) ?? throw new ApiInvalidCredentialsException();
+        var User = await _userRepository.GetByIdAsync(payload.UserId, payload.CompanyId) ?? throw new ApiInvalidCredentialsException();
         var token = _tokenProvider.GenerateToken(User.Id, User.Email.Value, User.CompanyId, TokenType.Access);
         if (string.IsNullOrEmpty(token))
         {

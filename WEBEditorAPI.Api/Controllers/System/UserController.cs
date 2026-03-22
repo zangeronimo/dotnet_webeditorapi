@@ -19,13 +19,8 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var users = await _userRepository.GetAllAsync();
-
-        var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
-
-        Console.WriteLine($"UserId: {userId}");
-        Console.WriteLine($"CompanyId: {companyId}");
+        var users = await _userRepository.GetAllAsync(companyId);
 
         return Ok(users);
     }

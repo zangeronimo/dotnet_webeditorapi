@@ -24,11 +24,6 @@ public class ModuleRepository : IModuleRepository
         return await _context.Modules.FindAsync(id);
     }
 
-    public async Task<Module?> GetOneAsync(Func<Module, bool> predicate)
-    {
-        return _context.Modules.FirstOrDefault(predicate);
-    }
-
     public async Task AddAsync(Module entity)
     {
         await _context.Modules.AddAsync(entity);

@@ -26,11 +26,6 @@ public class CompanyRepository : ICompanyRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<Company?> GetOneAsync(Func<Company, bool> predicate)
-    {
-        return _context.Companies.Include(c => c.Modules).FirstOrDefault(predicate);
-    }
-
     public async Task AddAsync(Company entity)
     {
         await _context.Companies.AddAsync(entity);

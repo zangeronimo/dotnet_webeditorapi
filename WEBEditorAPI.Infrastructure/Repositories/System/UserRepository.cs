@@ -14,19 +14,20 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
+    public async Task<IEnumerable<User>> GetAllAsync(Guid companyId)
     {
-        return await _context.Users.Include(user => user.Roles).ToListAsync();
+        return await _context.Users
+            .AsNoTracking()
+            .Include(user => user.Roles)
+            .Where(user => user.CompanyId == companyId)
+            .ToListAsync();
     }
 
-    public async Task<User?> GetByIdAsync(Guid id)
+    public async Task<User?> GetByIdAsync(Guid id, Guid companyId)
     {
-        return await _context.Users.Include(user => user.Roles).FirstOrDefaultAsync(user => user.Id == id);
-    }
-
-    public async Task<User?> GetOneAsync(Func<User, bool> predicate)
-    {
-        return _context.Users.FirstOrDefault(predicate);
+        return await _context.Users
+            .Include(user => user.Roles)
+            .FirstOrDefaultAsync(user => user.Id == id && user.CompanyId == companyId);
     }
 
     public async Task AddAsync(User entity)
