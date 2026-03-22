@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.System;
+using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Models.System;
+using WEBEditorAPI.Domain.Entities.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Api.Controllers.System;
@@ -10,11 +13,11 @@ namespace WEBEditorAPI.Api.Controllers.System;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>> _getAllUsersUC;
 
-    public UserController(IUserRepository userRepository)
+    public UserController(IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>> getAllUsersUC)
     {
-        _userRepository = userRepository;
+        _getAllUsersUC = getAllUsersUC;
     }
 
     [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
@@ -24,9 +27,9 @@ public class UserController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
-        var users = await _userRepository.GetAllAsync(companyId);
+        filter.CompanyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var result = await _getAllUsersUC.ExecuteAsync(filter);
 
-        return Ok(users);
+        return Ok(result);
     }
 }

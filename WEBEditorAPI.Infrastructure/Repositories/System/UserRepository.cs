@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Domain.Entities.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Infrastructure.Persistence;
@@ -14,13 +15,50 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync(Guid companyId)
+    public async Task<(IEnumerable<User> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, string? email, Guid companyId)
     {
-        return await _context.Users
+        var query = _context.Users
             .AsNoTracking()
-            .Include(user => user.Roles)
-            .Where(user => user.CompanyId == companyId)
+            .Include(u => u.Roles)
+            .Where(u => u.CompanyId == companyId);
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            var pattern = $"%{name}%";
+            query = query.Where(u => EF.Functions.ILike(EF.Functions.Unaccent(u.Name), EF.Functions.Unaccent(pattern)));
+        }
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            var pattern = $"%{email}%";
+            query = query.Where(u => EF.Functions.ILike(EF.Functions.Unaccent(u.Email.Value), EF.Functions.Unaccent(pattern)));
+        }
+
+        // total before pagination
+        var total = await query.CountAsync();
+
+        try
+        {
+            // dynamic ordenation
+            if (!string.IsNullOrEmpty(orderBy))
+            {
+                query = desc
+                    ? query.OrderByDescending(e => EF.Property<object>(e, orderBy))
+                    : query.OrderBy(e => EF.Property<object>(e, orderBy));
+            }
+        }
+        catch
+        {
+            throw new ApiBadRequestException("OrderBy inválido1");
+        }
+
+        // pagination
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (items, total);
     }
 
     public async Task<User?> GetByIdAsync(Guid id, Guid companyId)
