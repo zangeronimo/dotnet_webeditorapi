@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WEBEditorAPI.Application.DTOs.System;
+using WEBEditorAPI.Application.Models.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Api.Controllers.System;
@@ -17,8 +19,11 @@ public class UserController : ControllerBase
 
     [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] GetAllUserFilterModel filter)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var users = await _userRepository.GetAllAsync(companyId);
 
