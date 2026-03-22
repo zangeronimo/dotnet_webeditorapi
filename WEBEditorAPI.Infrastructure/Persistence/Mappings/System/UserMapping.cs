@@ -34,5 +34,23 @@ public class UserMapping : IEntityTypeConfiguration<User>
 
         // Global filter: get only registers not deleted
         builder.HasQueryFilter(c => EF.Property<DateTime?>(c, "deleted_at") == null);
+
+        // Many-to-Many unidirectional relationship
+        builder.HasMany(c => c.Roles)
+            .WithMany()
+            .UsingEntity<Dictionary<string, object>>(
+                "webeditor_users_has_webeditor_roles",
+                j => j.HasOne<Role>()
+                      .WithMany()
+                      .HasForeignKey("webeditor_roles_id")
+                      .HasConstraintName("FK_6861fc587e05e663cba628d4156"),
+                j => j.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey("webeditor_users_id")
+                      .HasConstraintName("FK_a34bc58611284ad084a88dec663"),
+                j =>
+                {
+                    j.HasKey("webeditor_users_id", "webeditor_roles_id");
+                });
     }
 }

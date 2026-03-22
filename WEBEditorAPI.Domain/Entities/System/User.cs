@@ -9,6 +9,7 @@ public class User : Entity
     public Email Email { get; private set; } = null!;
     public Password Password { get; private set; } = null!;
     public Guid CompanyId { get; private set; }
+    public ICollection<Role> Roles { get; set; } = new List<Role>();
 
     public User(string name, Email email, Password password, Guid companyId) : base()
     {

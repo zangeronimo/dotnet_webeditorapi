@@ -16,16 +16,27 @@ public class UserContextMiddleware
 
     public async Task InvokeAsync(HttpContext context, IUserRepository userRepository)
     {
-        var uId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        var cId = context.User.FindFirst("companyId")?.Value;
-
-        if (Guid.TryParse(uId, out var userId) && Guid.TryParse(cId, out var companyId))
+        if (context.User.Identity?.IsAuthenticated == true)
         {
-            User? user = await userRepository.GetByIdAsync(userId);
-            if (user != null && user.CompanyId == companyId)
+            var uId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var cId = context.User.FindFirst("companyId")?.Value;
+
+            if (Guid.TryParse(uId, out var userId) && Guid.TryParse(cId, out var companyId))
             {
-                context.Items["UserId"] = userId;
-                context.Items["CompanyId"] = companyId;
+                User? user = await userRepository.GetByIdAsync(userId);
+                if (user != null && user.CompanyId == companyId)
+                {
+                    var identity = (ClaimsIdentity)context.User.Identity;
+                    foreach (var role in user.Roles)
+                    {
+                        if (!identity.HasClaim(c => c.Type == ClaimTypes.Role && c.Value == role.Name))
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, role.Name));
+                        }
+                    }
+                    context.Items["UserId"] = userId;
+                    context.Items["CompanyId"] = companyId;
+                }
             }
         }
         await _next(context);

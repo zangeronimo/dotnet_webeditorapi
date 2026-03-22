@@ -15,7 +15,7 @@ public class UserController : ControllerBase
         _userRepository = userRepository;
     }
 
-    [Authorize]
+    [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
