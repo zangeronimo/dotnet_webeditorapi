@@ -1,5 +1,3 @@
-using System;
-
 namespace WEBEditorAPI.Application.Interfaces;
 
 public interface IUseCase<TRequest, TResponse>
