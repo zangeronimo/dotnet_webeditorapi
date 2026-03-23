@@ -1,4 +1,3 @@
-using System;
 using WEBEditorAPI.Domain.ValueObjects;
 
 namespace WEBEditorAPI.Domain.Entities.System;

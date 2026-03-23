@@ -8,13 +8,13 @@ using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Application.UseCases.System;
 
-public class GetUserByIdUC(IUserRepository userRepository, IMapper mapper) : IUseCase<GetUserByIdRequest, UserDto>
+public class GetUserByIdUC(IUserRepository userRepository, IMapper mapper) : IUseCase<GetUserByIdModel, UserDto>
 {
     private readonly IUserRepository _userRepository = userRepository;
 
     private readonly IMapper _mapper = mapper;
 
-    public async Task<UserDto> ExecuteAsync(GetUserByIdRequest request)
+    public async Task<UserDto> ExecuteAsync(GetUserByIdModel request)
     {
         User? user = await _userRepository.GetByIdAsync(request.UserId, request.CompanyId);
         if (user == null)

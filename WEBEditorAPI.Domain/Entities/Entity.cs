@@ -1,4 +1,4 @@
-namespace WEBEditorAPI.Domain.Entities{}
+namespace WEBEditorAPI.Domain.Entities { }
 
 public abstract class Entity
 {
@@ -6,8 +6,6 @@ public abstract class Entity
     public DateTime CreatedAt { get; protected set; }
     public DateTime UpdatedAt { get; protected set; }
 
-    protected Entity() {}
-    
     protected Entity(Guid? id = null)
     {
         Id = id ?? Guid.NewGuid();
