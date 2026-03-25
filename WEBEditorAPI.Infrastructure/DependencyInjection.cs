@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>>, GetAllUsersUC>();
         services.AddScoped<IUseCase<GetUserByIdModel, UserDto>, GetUserByIdUC>();
         services.AddScoped<IUseCase<CreateUserModel, UserDto>, CreateUserUC>();
+        services.AddScoped<IUseCase<UpdateUserModel, UserDto>, UpdateUserUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

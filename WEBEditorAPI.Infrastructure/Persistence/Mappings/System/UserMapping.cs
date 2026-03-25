@@ -26,8 +26,14 @@ public class UserMapping : IEntityTypeConfiguration<User>
         });
         builder.Property(c => c.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
 
-        builder.Property(c => c.CreatedAt).HasColumnName("created_at").IsRequired();
-        builder.Property(c => c.UpdatedAt).HasColumnName("updated_at").IsRequired();
+        builder.Property(c => c.CreatedAt)
+            .HasColumnName("created_at").IsRequired()
+            .HasColumnType("timestamp with time zone")
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+        builder.Property(c => c.UpdatedAt)
+            .HasColumnName("updated_at").IsRequired()
+            .HasColumnType("timestamp with time zone")
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         builder.Property<DateTime?>("deleted_at");
 
         builder.HasOne<Company>().WithMany().HasForeignKey(u => u.CompanyId).HasConstraintName("WebeditorCompanies");

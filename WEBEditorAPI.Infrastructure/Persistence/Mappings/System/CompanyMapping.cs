@@ -15,8 +15,14 @@ public class CompanyMapping : IEntityTypeConfiguration<Company>
         builder.Property(c => c.Id).HasColumnName("id").IsRequired();
         builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(150).IsRequired();
 
-        builder.Property(c => c.CreatedAt).HasColumnName("created_at").IsRequired();
-        builder.Property(c => c.UpdatedAt).HasColumnName("updated_at").IsRequired();
+        builder.Property(c => c.CreatedAt)
+            .HasColumnName("created_at").IsRequired()
+            .HasColumnType("timestamp with time zone")
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+        builder.Property(c => c.UpdatedAt)
+            .HasColumnName("updated_at").IsRequired()
+            .HasColumnType("timestamp with time zone")
+            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
         builder.Property<DateTime?>("deleted_at");
 
         // Global filter: get only registers not deleted
