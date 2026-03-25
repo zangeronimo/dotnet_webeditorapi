@@ -5,28 +5,14 @@ using WEBEditorAPI.Domain.Entities.System;
 namespace WEBEditorAPI.Infrastructure.Persistence.Mappings.System;
 
 
-public class ModuleMapping : IEntityTypeConfiguration<Module>
+public class ModuleMapping : EntityMapping<Module>
 {
-    public void Configure(EntityTypeBuilder<Module> builder)
+    public override void Configure(EntityTypeBuilder<Module> builder)
     {
+        base.Configure(builder);
         builder.ToTable("webeditor_modules");
 
-        builder.HasKey(c => c.Id);
-        builder.Property(c => c.Id).HasColumnName("id").IsRequired();
         builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(30).IsRequired();
-
-        builder.Property(c => c.CreatedAt)
-            .HasColumnName("created_at").IsRequired()
-            .HasColumnType("timestamp with time zone")
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
-        builder.Property(c => c.UpdatedAt)
-            .HasColumnName("updated_at").IsRequired()
-            .HasColumnType("timestamp with time zone")
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
-        builder.Property<DateTime?>("deleted_at");
-
-        // Global filter: get only registers not deleted
-        builder.HasQueryFilter(c => EF.Property<DateTime?>(c, "deleted_at") == null);
 
         // 1:N with Roles relationship
         builder.HasMany(c => c.Roles)

@@ -80,12 +80,6 @@ public class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(User entity)
-    {
-        _context.Users.Remove(entity);
-        await _context.SaveChangesAsync();
-    }
-
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email.Value == email);

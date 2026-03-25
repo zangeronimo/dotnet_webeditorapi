@@ -6,7 +6,7 @@ using WEBEditorAPI.Application.Models.System;
 using WEBEditorAPI.Domain.Entities.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
-namespace WEBEditorAPI.Application.UseCases.System;
+namespace WEBEditorAPI.Application.UseCases.System.Users;
 
 public class GetAllUsersUC(IUserRepository userRepository, IMapper mapper) : IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>>
 {

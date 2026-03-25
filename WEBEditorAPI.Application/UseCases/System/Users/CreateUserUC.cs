@@ -8,7 +8,7 @@ using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Domain.ValueObjects;
 
-namespace WEBEditorAPI.Application.UseCases.System;
+namespace WEBEditorAPI.Application.UseCases.System.Users;
 
 public class CreateUserUC(IUserRepository userRepository, IPasswordProvider passwordProvider, IMapper mapper) : IUseCase<CreateUserModel, UserDto>
 {

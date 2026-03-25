@@ -16,17 +16,20 @@ public class UserController : ControllerBase
     private readonly IUseCase<GetUserByIdModel, UserDto> _getUserByIdUC;
     private readonly IUseCase<CreateUserModel, UserDto> _createUserUC;
     private readonly IUseCase<UpdateUserModel, UserDto> _updateUserUC;
+    private readonly IUseCase<DeleteUserModel, UserDto> _deleteUserUC;
 
     public UserController(
         IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>> getAllUsersUC,
         IUseCase<GetUserByIdModel, UserDto> getUserByIdUC,
         IUseCase<CreateUserModel, UserDto> createUserUC,
-        IUseCase<UpdateUserModel, UserDto> updateeUserUC)
+        IUseCase<UpdateUserModel, UserDto> updateUserUC,
+        IUseCase<DeleteUserModel, UserDto> deleteUserUC)
     {
         _getAllUsersUC = getAllUsersUC;
         _getUserByIdUC = getUserByIdUC;
         _createUserUC = createUserUC;
-        _updateUserUC = updateeUserUC;
+        _updateUserUC = updateUserUC;
+        _deleteUserUC = deleteUserUC;
     }
 
     [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
@@ -78,6 +81,17 @@ public class UserController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         request.CompanyId = companyId;
         var user = await _updateUserUC.ExecuteAsync(request);
+
+        return Ok(user);
+    }
+
+    [Authorize(Roles = "WEBEDITOR_USER_DELETE")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var request = new DeleteUserModel(id, companyId);
+        var user = await _deleteUserUC.ExecuteAsync(request);
 
         return Ok(user);
     }

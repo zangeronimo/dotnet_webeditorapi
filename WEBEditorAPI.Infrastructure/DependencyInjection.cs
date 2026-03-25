@@ -6,7 +6,7 @@ using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Models.System;
 using WEBEditorAPI.Application.UseCases.System;
-using WEBEditorAPI.Domain.Entities.System;
+using WEBEditorAPI.Application.UseCases.System.Users;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Infrastructure.Options;
@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddScoped<IUseCase<GetUserByIdModel, UserDto>, GetUserByIdUC>();
         services.AddScoped<IUseCase<CreateUserModel, UserDto>, CreateUserUC>();
         services.AddScoped<IUseCase<UpdateUserModel, UserDto>, UpdateUserUC>();
+        services.AddScoped<IUseCase<DeleteUserModel, UserDto>, DeleteUserUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
