@@ -32,7 +32,7 @@ public class MakeLoginUC : IUseCase<AuthRequest, AuthResponse>
             throw new ApiBadRequestException("Falha ao gerar JWT");
         }
         var refreshToken = _tokenProvider.GenerateToken(User.Id, User.Email.Value, User.CompanyId, TokenType.Refresh);
-        if (string.IsNullOrEmpty(token))
+        if (string.IsNullOrEmpty(refreshToken))
         {
             throw new ApiBadRequestException("Falha ao gerar JWT");
         }
