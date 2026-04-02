@@ -35,6 +35,7 @@ public class UserContextMiddleware
                         }
                     }
                     context.Items["CompanyId"] = companyId;
+                    context.Items["UserId"] = userId;
                 }
             }
         }

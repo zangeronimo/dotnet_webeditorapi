@@ -90,7 +90,8 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
-        var request = new DeleteUserModel(id, companyId);
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var request = new DeleteUserModel(id, userId, companyId);
         var user = await _deleteUserUC.ExecuteAsync(request);
 
         return Ok(user);

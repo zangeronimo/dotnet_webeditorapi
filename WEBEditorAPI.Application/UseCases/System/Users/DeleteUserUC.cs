@@ -19,6 +19,8 @@ public class DeleteUserUC(IUserRepository userRepository, IMapper mapper) : IUse
         User? user = await _userRepository.GetByIdAsync(request.UserId, request.CompanyId);
         if (user == null)
             throw new ApiNotFoundException("Usuário não encontrado");
+        if (user.Id == request.TokenUserId)
+            throw new ApiBadRequestException("Não é permitido deletar a própria conta");
         user.Delete();
         await _userRepository.UpdateAsync(user);
         return _mapper.Map<UserDto>(user);
