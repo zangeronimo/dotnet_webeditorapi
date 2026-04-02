@@ -6,7 +6,7 @@ using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Application.UseCases.System;
 
-public class RefreshTokenUC : IUseCase<string, AuthResponse>
+public class RefreshTokenUC : IRefreshToken
 {
     private readonly IUserRepository _userRepository;
     private readonly ITokenProvider _tokenProvider;

@@ -6,7 +6,7 @@ using WEBEditorAPI.Domain.Interfaces.Repository.System;
 
 namespace WEBEditorAPI.Application.UseCases.System;
 
-public class MakeLoginUC : IUseCase<AuthRequest, AuthResponse>
+public class MakeLoginUC : IMakeLogin
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordProvider _passwordProvider;

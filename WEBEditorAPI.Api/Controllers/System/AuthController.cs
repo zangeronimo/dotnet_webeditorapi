@@ -11,9 +11,9 @@ namespace WEBEditorAPI.Api.Controllers.System;
 [Route("auth")]
 public class AuthController : ControllerBase
 {
-    private readonly IUseCase<AuthRequest, AuthResponse> Login;
-    private readonly IUseCase<string, AuthResponse> Refresh;
-    public AuthController(IUseCase<AuthRequest, AuthResponse> login, IUseCase<string, AuthResponse> refresh)
+    private readonly IMakeLogin Login;
+    private readonly IRefreshToken Refresh;
+    public AuthController(IMakeLogin login, IRefreshToken refresh)
     {
         Login = login;
         Refresh = refresh;

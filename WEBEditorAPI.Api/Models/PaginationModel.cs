@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WEBEditorAPI.Application.DTOs;
+namespace WEBEditorAPI.Api.Models;
 
-public class PaginationRequest
+public class PaginationModel
 {
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Page deve ser maior que 0.")]

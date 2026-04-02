@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Interfaces;
-using WEBEditorAPI.Application.Models.System;
+using WEBEditorAPI.Application.Requests.UseCases.System.Users;
 using WEBEditorAPI.Application.UseCases.System;
 using WEBEditorAPI.Application.UseCases.System.Users;
 using WEBEditorAPI.Domain.Interfaces.Provider;
@@ -32,13 +32,13 @@ public static class DependencyInjection
         services.AddSingleton<ITokenProvider, JwtProvider>();
 
         // UseCases
-        services.AddScoped<IUseCase<AuthRequest, AuthResponse>, MakeLoginUC>();
-        services.AddScoped<IUseCase<string, AuthResponse>, RefreshTokenUC>();
-        services.AddScoped<IUseCase<GetAllUserFilterModel, PaginationResult<UserDto>>, GetAllUsersUC>();
-        services.AddScoped<IUseCase<GetUserByIdModel, UserDto>, GetUserByIdUC>();
-        services.AddScoped<IUseCase<CreateUserModel, UserDto>, CreateUserUC>();
-        services.AddScoped<IUseCase<UpdateUserModel, UserDto>, UpdateUserUC>();
-        services.AddScoped<IUseCase<DeleteUserModel, UserDto>, DeleteUserUC>();
+        services.AddScoped<IMakeLogin, MakeLoginUC>();
+        services.AddScoped<IRefreshToken, RefreshTokenUC>();
+        services.AddScoped<IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>>, GetAllUsersUC>();
+        services.AddScoped<IUseCase<GetUserByIdRequest, UserDto>, GetUserByIdUC>();
+        services.AddScoped<IUseCase<CreateUserRequest, UserDto>, CreateUserUC>();
+        services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
+        services.AddScoped<IUseCase<DeleteUserRequest, UserDto>, DeleteUserUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
