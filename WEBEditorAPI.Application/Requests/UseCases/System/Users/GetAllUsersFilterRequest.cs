@@ -1,5 +1,3 @@
-using WEBEditorAPI.Application.DTOs;
-
 namespace WEBEditorAPI.Application.Requests.UseCases.System.Users;
 
 public sealed record GetAllUsersFilterRequest(

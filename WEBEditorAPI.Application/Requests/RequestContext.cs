@@ -1,4 +1,4 @@
-namespace WEBEditorAPI.Application.DTOs;
+namespace WEBEditorAPI.Application.Requests;
 
 public sealed record RequestContext(
     Guid UserId,

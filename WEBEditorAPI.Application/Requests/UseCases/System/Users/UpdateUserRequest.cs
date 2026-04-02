@@ -1,9 +1,8 @@
-using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Domain.Entities.System;
 
 namespace WEBEditorAPI.Application.Requests.UseCases.System.Users;
 
-public record UpdateUserRequest(
+public sealed record UpdateUserRequest(
     Guid Id,
     string Name,
     string Email,

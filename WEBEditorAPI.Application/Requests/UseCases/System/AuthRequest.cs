@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WEBEditorAPI.Application.DTOs.System;
+namespace WEBEditorAPI.Application.Requests.UseCases.System;
 
 public class AuthRequest
 {
