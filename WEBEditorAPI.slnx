@@ -3,4 +3,5 @@
   <Project Path="WEBEditorAPI.Application/WEBEditorAPI.Application.csproj" />
   <Project Path="WEBEditorAPI.Domain/WEBEditorAPI.Domain.csproj" />
   <Project Path="WEBEditorAPI.Infrastructure/WEBEditorAPI.Infrastructure.csproj" />
+  <Project Path="WEBEditorAPI.Tests/WEBEditorAPI.Tests.csproj" />
 </Solution>
