@@ -1,5 +1,3 @@
-using WEBEditorAPI.Domain.Entities.System;
-
 namespace WEBEditorAPI.Application.Requests.UseCases.System.Users;
 
 public sealed record UpdateUserRequest(
@@ -7,6 +5,6 @@ public sealed record UpdateUserRequest(
     string Name,
     string Email,
     string? Password,
-    List<Role> Roles,
+    List<Guid> RoleIds,
     RequestContext Context
 ) : ApplicationRequest(Context);

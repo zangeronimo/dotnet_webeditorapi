@@ -8,7 +8,8 @@ public class User : Entity
     public Email Email { get; private set; } = null!;
     public Password Password { get; private set; } = null!;
     public Guid CompanyId { get; private set; }
-    public ICollection<Role> Roles { get; set; } = new List<Role>();
+    private readonly List<Role> _roles = [];
+    public IReadOnlyCollection<Role> Roles => _roles;
 
     public User(string name, Email email, Password password, Guid companyId) : base()
     {
@@ -31,5 +32,12 @@ public class User : Entity
     {
         Password = newPassword;
         Touch();
+    }
+
+    public void UpdateRoles(IEnumerable<Role> roles)
+    {
+        _roles.Clear();
+        _roles.AddRange(roles);
+
     }
 }

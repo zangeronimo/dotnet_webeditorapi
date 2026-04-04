@@ -91,7 +91,7 @@ public class UserController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new UpdateUserRequest(model.Id, model.Name, model.Email, model.Password, model.Roles, context);
+        var request = new UpdateUserRequest(model.Id, model.Name, model.Email, model.Password, model.RoleIds, context);
         var user = await _updateUserUC.ExecuteAsync(request);
 
         return Ok(user);

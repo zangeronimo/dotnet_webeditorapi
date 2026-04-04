@@ -10,9 +10,10 @@ using WEBEditorAPI.Domain.ValueObjects;
 
 namespace WEBEditorAPI.Application.UseCases.System.Users;
 
-public class UpdateUserUC(IUserRepository userRepository, IPasswordProvider passwordProvider, IMapper mapper) : IUseCase<UpdateUserRequest, UserDto>
+public class UpdateUserUC(IUserRepository userRepository, IModuleRepository moduleRepository, IPasswordProvider passwordProvider, IMapper mapper) : IUseCase<UpdateUserRequest, UserDto>
 {
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IModuleRepository _moduleRepository = moduleRepository;
     private readonly IPasswordProvider _passwordProvider = passwordProvider;
     private readonly IMapper _mapper = mapper;
     public async Task<UserDto> ExecuteAsync(UpdateUserRequest request)
@@ -26,8 +27,19 @@ public class UpdateUserUC(IUserRepository userRepository, IPasswordProvider pass
         user!.Update(request.Name, Email.Create(request.Email));
         if (!string.IsNullOrEmpty(request.Password))
             user.UpdatePassword(Password.Create(request.Password, _passwordProvider));
+        var roles = await GetRolesByIdsAsync(request.RoleIds, user.CompanyId);
+        user.UpdateRoles(roles);
         await _userRepository.UpdateAsync(user);
         User? updatedUser = await _userRepository.GetByIdAsync(user.Id, user.CompanyId);
         return _mapper.Map<UserDto>(updatedUser);
+    }
+
+    private async Task<List<Role>> GetRolesByIdsAsync(List<Guid> roleIds, Guid companyId)
+    {
+        var distinctIds = roleIds.Distinct().ToList();
+        var roles = await _moduleRepository.GetAllRolesByIdsAsync(distinctIds, companyId);
+        if (roles.Count != distinctIds.Count)
+            throw new ApiBadRequestException("Um ou mais roleIds informados são inválidos.");
+        return roles;
     }
 }

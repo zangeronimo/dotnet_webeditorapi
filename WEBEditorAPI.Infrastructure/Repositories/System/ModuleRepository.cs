@@ -41,4 +41,16 @@ public class ModuleRepository : IModuleRepository
         _context.Modules.Remove(entity);
         await _context.SaveChangesAsync();
     }
+    public Task<List<Role>> GetAllRolesByIdsAsync(List<Guid> roleIds, Guid companyId)
+    {
+        return _context.Roles
+            .Where(r => roleIds.Contains(r.Id))
+            .Where(r =>
+                _context.Companies
+                    .Where(c => c.Id == companyId)
+                    .SelectMany(c => c.Modules)
+                    .Any(m => m.Id == r.ModuleId)
+            )
+            .ToListAsync();
+    }
 }
