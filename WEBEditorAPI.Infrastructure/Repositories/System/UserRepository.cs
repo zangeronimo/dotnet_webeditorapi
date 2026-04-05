@@ -49,7 +49,7 @@ public class UserRepository : IUserRepository
         }
         catch
         {
-            throw new ApiBadRequestException("OrderBy inválido1");
+            throw new ApiBadRequestException("OrderBy inválido.");
         }
 
         // pagination

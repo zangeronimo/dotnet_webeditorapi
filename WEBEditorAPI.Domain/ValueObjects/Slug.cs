@@ -8,9 +8,9 @@ public class Slug
 {
     public string Value { get; private set; }
 
-    private Slug(string slug)
+    private Slug(string value)
     {
-        Value = slug;
+        Value = value;
     }
 
     public static Slug Create(string name)

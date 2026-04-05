@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Entities/Culinary/" />
     <Folder Include="Enums/" />
+    <Folder Include="Interfaces/Repository/Culinary/" />
   </ItemGroup>
 
 </Project>
