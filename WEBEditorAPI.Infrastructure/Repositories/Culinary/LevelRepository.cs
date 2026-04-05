@@ -20,6 +20,7 @@ public class LevelRepository : ILevelRepository
     {
         var query = _context.Levels
             .AsNoTracking()
+            .Include(c => c.Categories)
             .Where(c => c.CompanyId == companyId);
 
         if (!string.IsNullOrEmpty(name))

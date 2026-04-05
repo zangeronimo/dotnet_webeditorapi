@@ -18,5 +18,11 @@ public class LevelMapping : EntityMapping<Level>
         builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(45).IsRequired();
         builder.Property(c => c.Active).HasColumnName("active").HasConversion<int>().IsRequired();
         builder.Property(c => c.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
+
+        // 1:N with Category relationship
+        builder.HasMany(c => c.Categories)
+               .WithOne()
+               .HasForeignKey(r => r.LevelId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

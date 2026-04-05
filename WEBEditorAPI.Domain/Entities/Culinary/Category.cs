@@ -9,12 +9,14 @@ public class Category : Entity
     public string Name { get; private set; } = null!;
     public Guid CompanyId { get; private set; }
     public Status Active { get; private set; }
+    public Guid LevelId { get; private set; }
 
-    public Category(Slug slug, string name, Status active, Guid companyId) : base()
+    public Category(Slug slug, string name, Status active, Guid levelId, Guid companyId) : base()
     {
         Slug = slug;
         Name = name;
         Active = active;
+        LevelId = levelId;
         CompanyId = companyId;
     }
 

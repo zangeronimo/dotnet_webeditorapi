@@ -10,6 +10,8 @@ public class Level : Entity
     public string Name { get; private set; } = null!;
     public Guid CompanyId { get; private set; }
     public Status Active { get; private set; }
+    private readonly List<Category> _categories = [];
+    public IReadOnlyCollection<Category> Categories => _categories;
 
     public Level(Slug slug, string name, Status active, Guid companyId) : base()
     {
@@ -27,5 +29,12 @@ public class Level : Entity
         Name = newName;
         Active = newActive;
         Touch();
+    }
+
+    public void UpdateCategories(IEnumerable<Category> categories)
+    {
+        _categories.Clear();
+        _categories.AddRange(categories);
+
     }
 }

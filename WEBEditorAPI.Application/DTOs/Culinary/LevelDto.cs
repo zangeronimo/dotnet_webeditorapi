@@ -7,4 +7,5 @@ public class LevelDto
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public Status Active { get; set; }
+    public List<CategoryDto> Categories { get; set; } = [];
 }

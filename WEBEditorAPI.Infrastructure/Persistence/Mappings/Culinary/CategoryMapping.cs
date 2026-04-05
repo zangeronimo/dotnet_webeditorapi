@@ -18,6 +18,7 @@ public class CategoryMapping : EntityMapping<Category>
         });
         builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(45).IsRequired();
         builder.Property(c => c.Active).HasColumnName("active").HasConversion<int>().IsRequired();
+        builder.Property(c => c.LevelId).HasColumnName("recipe_levels_id").IsRequired();
         builder.Property(c => c.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
     }
 }
