@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Interfaces;
+using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.System.Users;
 using WEBEditorAPI.Application.UseCases.System;
 using WEBEditorAPI.Application.UseCases.System.Users;
@@ -19,10 +20,10 @@ public static class SystemModuleDI
         services.AddScoped<IRefreshToken, RefreshTokenUC>();
 
         services.AddScoped<IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>>, GetAllUsersUC>();
-        services.AddScoped<IUseCase<GetUserByIdRequest, UserDto>, GetUserByIdUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, UserDto>, GetUserByIdUC>();
         services.AddScoped<IUseCase<CreateUserRequest, UserDto>, CreateUserUC>();
         services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
-        services.AddScoped<IUseCase<DeleteUserRequest, UserDto>, DeleteUserUC>();
+        services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

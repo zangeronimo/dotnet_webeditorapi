@@ -64,6 +64,7 @@ public class LevelRepository : ILevelRepository
     public async Task<Level?> GetByIdAsync(Guid id, Guid companyId)
     {
         return await _context.Levels
+            .Include(c => c.Categories)
             .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
@@ -81,7 +82,9 @@ public class LevelRepository : ILevelRepository
 
     public async Task<Level?> GetBySlugAsync(string slug, Guid companyId)
     {
-        return await _context.Levels.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
+        return await _context.Levels
+            .Include(c => c.Categories)
+            .FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
     }
 }
 

@@ -6,6 +6,7 @@ using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
+using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.System.Users;
 
 namespace WEBEditorAPI.Api.Controllers.System;
@@ -15,17 +16,17 @@ namespace WEBEditorAPI.Api.Controllers.System;
 public class UserController : ControllerBase
 {
     private readonly IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>> _getAllUsersUC;
-    private readonly IUseCase<GetUserByIdRequest, UserDto> _getUserByIdUC;
+    private readonly IUseCase<GetByIdRequest, UserDto> _getUserByIdUC;
     private readonly IUseCase<CreateUserRequest, UserDto> _createUserUC;
     private readonly IUseCase<UpdateUserRequest, UserDto> _updateUserUC;
-    private readonly IUseCase<DeleteUserRequest, UserDto> _deleteUserUC;
+    private readonly IUseCase<DeleteRequest, UserDto> _deleteUserUC;
 
     public UserController(
         IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>> getAllUsersUC,
-        IUseCase<GetUserByIdRequest, UserDto> getUserByIdUC,
+        IUseCase<GetByIdRequest, UserDto> getUserByIdUC,
         IUseCase<CreateUserRequest, UserDto> createUserUC,
         IUseCase<UpdateUserRequest, UserDto> updateUserUC,
-        IUseCase<DeleteUserRequest, UserDto> deleteUserUC)
+        IUseCase<DeleteRequest, UserDto> deleteUserUC)
     {
         _getAllUsersUC = getAllUsersUC;
         _getUserByIdUC = getUserByIdUC;
@@ -57,7 +58,7 @@ public class UserController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new GetUserByIdRequest(id, context);
+        var request = new GetByIdRequest(id, context);
         var user = await _getUserByIdUC.ExecuteAsync(request);
 
         return Ok(user);
@@ -104,7 +105,7 @@ public class UserController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new DeleteUserRequest(id, context);
+        var request = new DeleteRequest(id, context);
         var user = await _deleteUserUC.ExecuteAsync(request);
 
         return Ok(user);
