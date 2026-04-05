@@ -1,4 +1,3 @@
-using System;
 using AutoMapper;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Culinary;

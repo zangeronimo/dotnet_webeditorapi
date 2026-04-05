@@ -9,5 +9,6 @@ public class CulinaryProfile : Profile
     public CulinaryProfile()
     {
         CreateMap<Category, CategoryDto>();
+        CreateMap<Level, LevelDto>();
     }
 }

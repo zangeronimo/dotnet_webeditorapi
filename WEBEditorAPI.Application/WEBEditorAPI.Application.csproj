@@ -9,6 +9,8 @@
     <Folder Include="Exceptions/" />
     <Folder Include="Mapping/" />
     <Folder Include="Requests/UseCases/Culinary/Categories/" />
+    <Folder Include="Requests/UseCases/Culinary/Levels/" />
+    <Folder Include="UseCases/Culinary/Levels/" />
   </ItemGroup>
 
   <ItemGroup>

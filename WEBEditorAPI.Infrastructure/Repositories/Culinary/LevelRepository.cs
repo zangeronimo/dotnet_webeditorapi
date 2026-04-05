@@ -5,20 +5,20 @@ using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.Interfaces.Repository.Culinary;
 using WEBEditorAPI.Infrastructure.Persistence;
 
-namespace WEBEditorAPI.Infrastructure.Repositories.System;
+namespace WEBEditorAPI.Infrastructure.Repositories.Culinary;
 
-public class CategoryRepository : ICategoryRepository
+public class LevelRepository : ILevelRepository
 {
     private readonly CulinaryDbContext _context;
 
-    public CategoryRepository(CulinaryDbContext context)
+    public LevelRepository(CulinaryDbContext context)
     {
         _context = context;
     }
 
-    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
+    public async Task<(IEnumerable<Level> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
     {
-        var query = _context.Categories
+        var query = _context.Levels
             .AsNoTracking()
             .Where(c => c.CompanyId == companyId);
 
@@ -60,26 +60,27 @@ public class CategoryRepository : ICategoryRepository
         return (items, total);
     }
 
-    public async Task<Category?> GetByIdAsync(Guid id, Guid companyId)
+    public async Task<Level?> GetByIdAsync(Guid id, Guid companyId)
     {
-        return await _context.Categories
+        return await _context.Levels
             .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
-    public async Task AddAsync(Category entity)
+    public async Task AddAsync(Level entity)
     {
-        await _context.Categories.AddAsync(entity);
+        await _context.Levels.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Category entity)
+    public async Task UpdateAsync(Level entity)
     {
-        _context.Categories.Update(entity);
+        _context.Levels.Update(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Category?> GetBySlugAsync(string slug, Guid companyId)
+    public async Task<Level?> GetBySlugAsync(string slug, Guid companyId)
     {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
+        return await _context.Levels.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
     }
 }
+

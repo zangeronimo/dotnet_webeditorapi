@@ -13,7 +13,7 @@
   <ItemGroup>
     <Folder Include="Controllers/System/" />
     <Folder Include="Filters/" />
-    <Folder Include="Models/Culinary/Categories/" />
+    <Folder Include="Models/Culinary/Levels/" />
   </ItemGroup>
 
   <PropertyGroup>
