@@ -5,14 +5,9 @@ using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;
 
-public class CompanyRepository : ICompanyRepository
+public class CompanyRepository(AppDbContext context) : ICompanyRepository
 {
-    private readonly AppDbContext _context;
-
-    public CompanyRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task<IEnumerable<Company>> GetAllAsync()
     {

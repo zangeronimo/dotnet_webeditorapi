@@ -6,14 +6,9 @@ using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;
 
-public class UserRepository : IUserRepository
+public class UserRepository(AppDbContext context) : IUserRepository
 {
-    private readonly AppDbContext _context;
-
-    public UserRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task<(IEnumerable<User> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, string? email, Guid companyId)
     {

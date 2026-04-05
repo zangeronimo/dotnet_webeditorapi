@@ -7,14 +7,9 @@ using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.Culinary;
 
-public class LevelRepository : ILevelRepository
+public class LevelRepository(CulinaryDbContext context) : ILevelRepository
 {
-    private readonly CulinaryDbContext _context;
-
-    public LevelRepository(CulinaryDbContext context)
-    {
-        _context = context;
-    }
+    private readonly CulinaryDbContext _context = context;
 
     public async Task<(IEnumerable<Level> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
     {

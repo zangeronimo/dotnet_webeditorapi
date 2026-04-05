@@ -5,14 +5,9 @@ using WEBEditorAPI.Infrastructure.Persistence;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;
 
-public class ModuleRepository : IModuleRepository
+public class ModuleRepository(AppDbContext context) : IModuleRepository
 {
-    private readonly AppDbContext _context;
-
-    public ModuleRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task<IEnumerable<Module>> GetAllAsync()
     {
