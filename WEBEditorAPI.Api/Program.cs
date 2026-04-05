@@ -3,7 +3,7 @@ using DotNetEnv;
 using Microsoft.IdentityModel.Tokens;
 using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Api.Middlewares;
-using WEBEditorAPI.Infrastructure;
+using WEBEditorAPI.Infrastructure.DI;
 using WEBEditorAPI.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
