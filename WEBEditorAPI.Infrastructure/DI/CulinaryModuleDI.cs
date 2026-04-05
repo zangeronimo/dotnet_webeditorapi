@@ -20,6 +20,7 @@ public static class CulinaryModuleDI
         // UseCases
         services.AddScoped<IUseCase<GetAllLevelsFilterRequest, PaginationResult<LevelDto>>, GetAllLevelUC>();
         services.AddScoped<IUseCase<GetByIdRequest, LevelDto>, GetLevelByIdUC>();
+        services.AddScoped<IUseCase<CreateLevelRequest, LevelDto>, CreateLevelUC>();
 
         services.AddScoped<IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>>, GetAllCategoryUC>();
         services.AddScoped<IUseCase<GetByIdRequest, CategoryDto>, GetCategoryByIdUC>();

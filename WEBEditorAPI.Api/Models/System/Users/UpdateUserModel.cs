@@ -6,6 +6,7 @@ public class UpdateUserModel
 {
     [Required(ErrorMessage = "O campo Id é obrigatório.")]
     public Guid Id { get; set; }
+
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     [MaxLength(150, ErrorMessage = "O Nome deve ter no máximo 150 caracteres.")]
     public string Name { get; set; } = string.Empty;

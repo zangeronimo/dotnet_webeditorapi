@@ -17,13 +17,16 @@ public class LevelController : ControllerBase
 {
     private readonly IUseCase<GetAllLevelsFilterRequest, PaginationResult<LevelDto>> _getAllLevelsUC;
     private readonly IUseCase<GetByIdRequest, LevelDto> _getLevelByIdUC;
+    private readonly IUseCase<CreateLevelRequest, LevelDto> _createLevelUC;
 
     public LevelController(
         IUseCase<GetAllLevelsFilterRequest, PaginationResult<LevelDto>> getAllLevelsUC,
-        IUseCase<GetByIdRequest, LevelDto> getLevelByIdUC)
+        IUseCase<GetByIdRequest, LevelDto> getLevelByIdUC,
+        IUseCase<CreateLevelRequest, LevelDto> createLevelUC)
     {
         _getAllLevelsUC = getAllLevelsUC;
         _getLevelByIdUC = getLevelByIdUC;
+        _createLevelUC = createLevelUC;
     }
 
     [Authorize(Roles = "CULINARY_LEVEL_VIEW")]
@@ -51,6 +54,22 @@ public class LevelController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new GetByIdRequest(id, context);
         var level = await _getLevelByIdUC.ExecuteAsync(request);
+
+        return Ok(level);
+    }
+
+    [Authorize(Roles = "CULINARY_LEVEL_UPDATE")]
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateLevelModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new CreateLevelRequest(model.Name, model.Active, context);
+        var level = await _createLevelUC.ExecuteAsync(request);
 
         return Ok(level);
     }
