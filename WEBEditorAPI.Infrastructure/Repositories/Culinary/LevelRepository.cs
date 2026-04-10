@@ -71,7 +71,6 @@ public class LevelRepository(CulinaryDbContext context) : ILevelRepository
 
     public async Task UpdateAsync(Level entity)
     {
-        _context.Levels.Update(entity);
         await _context.SaveChangesAsync();
     }
 
@@ -80,6 +79,11 @@ public class LevelRepository(CulinaryDbContext context) : ILevelRepository
         return await _context.Levels
             .Include(c => c.Categories)
             .FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
+    }
+
+    public async Task<Category?> GetCategoryBySlugAsync(string slug, Guid companyId)
+    {
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
     }
 }
 

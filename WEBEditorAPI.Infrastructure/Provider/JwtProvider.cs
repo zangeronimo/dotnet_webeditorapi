@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WEBEditorAPI.Domain.DTOs.System;
+using WEBEditorAPI.Domain.Security.System;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Infrastructure.Options;
 

@@ -1,4 +1,4 @@
-using System;
+using WEBEditorAPI.Domain.Commands.Culinary;
 using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.ValueObjects;
 
@@ -31,10 +31,35 @@ public class Level : Entity
         Touch();
     }
 
-    public void UpdateCategories(IEnumerable<Category> categories)
+    public void UpdateCategories(IEnumerable<UpdateCategoryCommand> commands)
     {
-        _categories.Clear();
-        _categories.AddRange(categories);
+        var commandIds = commands
+            .Where(c => c.Id != Guid.Empty)
+            .Select(c => c.Id)
+            .ToHashSet();
 
+        // Soft delete
+        foreach (var category in Categories)
+        {
+            if (!commandIds.Contains(category.Id))
+            {
+                category.Delete();
+            }
+        }
+
+        // Add / Update
+        foreach (var cmd in commands)
+        {
+            var existing = Categories.FirstOrDefault(c => c.Id == cmd.Id && c.DeletedAt == null);
+            if (existing != null)
+            {
+                existing.Update(cmd.Slug, cmd.Name, cmd.Active);
+            }
+            else
+            {
+                var category = new Category(cmd.Slug, cmd.Name, cmd.Active, Id, CompanyId);
+                _categories.Add(category);
+            }
+        }
     }
 }

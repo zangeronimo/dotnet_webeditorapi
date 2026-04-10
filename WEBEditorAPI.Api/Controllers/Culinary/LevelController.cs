@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WEBEditorAPI.Api.Models.Culinary.Levels;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Culinary;
+using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
 using WEBEditorAPI.Application.Requests.UseCases;
@@ -18,15 +19,18 @@ public class LevelController : ControllerBase
     private readonly IUseCase<GetAllLevelsFilterRequest, PaginationResult<LevelDto>> _getAllLevelsUC;
     private readonly IUseCase<GetByIdRequest, LevelDto> _getLevelByIdUC;
     private readonly IUseCase<CreateLevelRequest, LevelDto> _createLevelUC;
+    private readonly IUseCase<UpdateLevelRequest, LevelDto> _updateLevelUC;
 
     public LevelController(
         IUseCase<GetAllLevelsFilterRequest, PaginationResult<LevelDto>> getAllLevelsUC,
         IUseCase<GetByIdRequest, LevelDto> getLevelByIdUC,
-        IUseCase<CreateLevelRequest, LevelDto> createLevelUC)
+        IUseCase<CreateLevelRequest, LevelDto> createLevelUC,
+        IUseCase<UpdateLevelRequest, LevelDto> updateLevelUC)
     {
         _getAllLevelsUC = getAllLevelsUC;
         _getLevelByIdUC = getLevelByIdUC;
         _createLevelUC = createLevelUC;
+        _updateLevelUC = updateLevelUC;
     }
 
     [Authorize(Roles = "CULINARY_LEVEL_VIEW")]
@@ -70,6 +74,24 @@ public class LevelController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new CreateLevelRequest(model.Name, model.Active, context);
         var level = await _createLevelUC.ExecuteAsync(request);
+
+        return Ok(level);
+    }
+
+    [Authorize(Roles = "CULINARY_LEVEL_UPDATE")]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateLevelModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        if (id != model.Id)
+            throw new ApiBadRequestException("Id da rota diferente do Id do corpo da request");
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new UpdateLevelRequest(model.Id, model.Slug, model.Name, model.Active, model.Categories, context);
+        var level = await _updateLevelUC.ExecuteAsync(request);
 
         return Ok(level);
     }

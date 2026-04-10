@@ -1,4 +1,4 @@
-namespace WEBEditorAPI.Domain.DTOs.System;
+namespace WEBEditorAPI.Domain.Security.System;
 
 public class TokenPayload
 {

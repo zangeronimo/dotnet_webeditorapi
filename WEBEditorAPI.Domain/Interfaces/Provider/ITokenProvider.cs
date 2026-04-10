@@ -1,4 +1,4 @@
-using WEBEditorAPI.Domain.DTOs.System;
+using WEBEditorAPI.Domain.Security.System;
 
 namespace WEBEditorAPI.Domain.Interfaces.Provider;
 

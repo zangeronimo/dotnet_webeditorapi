@@ -10,7 +10,7 @@ public abstract class EntityMapping<TEntity> : IEntityTypeConfiguration<TEntity>
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id).HasColumnName("id").IsRequired();
+        builder.Property(e => e.Id).HasColumnName("id").IsRequired().ValueGeneratedNever();
 
         builder.Property(e => e.CreatedAt)
             .HasColumnName("created_at").IsRequired()
