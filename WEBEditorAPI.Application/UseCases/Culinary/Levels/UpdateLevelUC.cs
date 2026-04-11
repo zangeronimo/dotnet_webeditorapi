@@ -27,7 +27,7 @@ public class UpdateLevelUC(ILevelRepository levelRepository, IMapper mapper) : I
         var commands = CreateCategoryCommand(request.CategoriesDtos);
         updateLevel.UpdateCategories(commands);
         await _levelRepository.UpdateAsync(updateLevel);
-        Level? updatedLevel = await _levelRepository.GetByIdAsync(updateLevel.Id, updateLevel.CompanyId);
+        Level? updatedLevel = await _levelRepository.GetByIdReadOnlyAsync(updateLevel.Id, updateLevel.CompanyId);
         return _mapper.Map<LevelDto>(updatedLevel);
     }
 

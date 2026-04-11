@@ -56,11 +56,24 @@ public class LevelRepository(CulinaryDbContext context) : ILevelRepository
         return (items, total);
     }
 
-    public async Task<Level?> GetByIdAsync(Guid id, Guid companyId)
+    private async Task<Level?> GetByIdInternalAsync(Guid id, Guid companyId, bool asNoTracking = false)
     {
-        return await _context.Levels
+        IQueryable<Level> query = _context.Levels;
+        if (asNoTracking)
+            query = query.AsNoTracking();
+        return await query
             .Include(c => c.Categories)
             .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
+    }
+
+    public async Task<Level?> GetByIdAsync(Guid id, Guid companyId)
+    {
+        return await GetByIdInternalAsync(id, companyId, false);
+    }
+
+    public async Task<Level?> GetByIdReadOnlyAsync(Guid id, Guid companyId)
+    {
+        return await GetByIdInternalAsync(id, companyId, true);
     }
 
     public async Task AddAsync(Level entity)

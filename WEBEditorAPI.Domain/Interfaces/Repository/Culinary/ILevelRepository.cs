@@ -15,4 +15,5 @@ public interface ILevelRepository : IRepository<Level>
         Guid companyId);
     Task<Level?> GetBySlugAsync(string slug, Guid companyId);
     Task<Category?> GetCategoryBySlugAsync(string slug, Guid companyId);
+    Task<Level?> GetByIdReadOnlyAsync(Guid id, Guid companyId);
 }
