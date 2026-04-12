@@ -5,6 +5,7 @@ using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases.Culinary.Levels;
 using WEBEditorAPI.Domain.Commands.Culinary;
 using WEBEditorAPI.Domain.Entities.Culinary;
+using WEBEditorAPI.Domain.Exceptions;
 using WEBEditorAPI.Domain.Interfaces.Repository.Culinary;
 using WEBEditorAPI.Domain.ValueObjects;
 
@@ -25,8 +26,15 @@ public class UpdateLevelUC(ILevelRepository levelRepository, IMapper mapper) : I
             throw new ApiBadRequestException("Level não encontrado.");
         updateLevel.Update(slug, request.Name, request.Active);
         var commands = CreateCategoryCommand(request.CategoriesDtos);
-        updateLevel.UpdateCategories(commands);
-        await _levelRepository.UpdateAsync(updateLevel);
+        try
+        {
+            updateLevel.UpdateCategories(commands);
+            await _levelRepository.UpdateAsync(updateLevel);
+        }
+        catch (DomainException ex)
+        {
+            throw new ApiBadRequestException(ex.Message);
+        }
         Level? updatedLevel = await _levelRepository.GetByIdReadOnlyAsync(updateLevel.Id, updateLevel.CompanyId);
         return _mapper.Map<LevelDto>(updatedLevel);
     }

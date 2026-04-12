@@ -1,33 +1,17 @@
 namespace WEBEditorAPI.Application.Exceptions;
 
-public abstract class ApiException : Exception
+public abstract class ApiException(int statusCode, string message) : Exception(message)
 {
-    public int StatusCode { get; }
-    public ApiException(int statusCode, string message) : base(message)
-    {
-        StatusCode = statusCode;
-    }
+    public int StatusCode { get; } = statusCode;
 }
-public class ApiInvalidCredentialsException : ApiException
-{
-    public ApiInvalidCredentialsException(string message = "Usuário ou Senha inválido")
-        : base(401, message) { }
-}
+public class ApiInvalidCredentialsException(string message = "Usuário ou Senha inválido") : ApiException(401, message)
+{ }
 
-public class ApiForbiddenException : ApiException
-{
-    public ApiForbiddenException(string message = "Acesso negado")
-        : base(403, message) { }
-}
+public class ApiForbiddenException(string message = "Acesso negado") : ApiException(403, message)
+{ }
 
-public class ApiNotFoundException : ApiException
-{
-    public ApiNotFoundException(string message = "Recurso não encontrado")
-        : base(404, message) { }
-}
+public class ApiNotFoundException(string message = "Recurso não encontrado") : ApiException(404, message)
+{ }
 
-public class ApiBadRequestException : ApiException
-{
-    public ApiBadRequestException(string message = "Falha no processamento")
-        : base(400, message) { }
-}
+public class ApiBadRequestException(string message = "Falha no processamento") : ApiException(400, message)
+{ }

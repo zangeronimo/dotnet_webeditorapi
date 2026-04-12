@@ -1,5 +1,6 @@
 using WEBEditorAPI.Domain.Commands.Culinary;
 using WEBEditorAPI.Domain.Enums;
+using WEBEditorAPI.Domain.Exceptions;
 using WEBEditorAPI.Domain.ValueObjects;
 
 namespace WEBEditorAPI.Domain.Entities.Culinary;
@@ -50,16 +51,19 @@ public class Level : Entity
         // Add / Update
         foreach (var cmd in commands)
         {
-            var existing = Categories.FirstOrDefault(c => c.Id == cmd.Id && c.DeletedAt == null);
-            if (existing != null)
+            if (cmd.Id != Guid.Empty)
             {
+                var existing = Categories.FirstOrDefault(c => c.Id == cmd.Id);
+                if (existing == null)
+                {
+                    throw new DomainException($"Category {cmd.Name} não pertence ao Level {Name}");
+                }
                 existing.Update(cmd.Slug, cmd.Name, cmd.Active);
+                continue;
             }
-            else
-            {
-                var category = new Category(cmd.Slug, cmd.Name, cmd.Active, Id, CompanyId);
-                _categories.Add(category);
-            }
+
+            var category = new Category(cmd.Slug, cmd.Name, cmd.Active, Id, CompanyId);
+            _categories.Add(category);
         }
     }
 }
