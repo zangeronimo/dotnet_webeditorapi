@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Application.Exceptions;
@@ -9,15 +10,14 @@ using WEBEditorAPI.Infrastructure.Persistence.Query;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.Culinary;
 
-public class LevelRepository(CulinaryDbContext context) : ILevelRepository
+public class RecipeRepository(CulinaryDbContext context) : IRecipeRepository
 {
     private readonly CulinaryDbContext _context = context;
 
-    public async Task<(IEnumerable<Level> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
+    public async Task<(IEnumerable<Recipe> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
     {
-        var query = _context.Levels
+        var query = _context.Recipes
             .AsNoTracking()
-            .Include(c => c.Categories)
             .Where(c => c.CompanyId == companyId);
 
         if (!string.IsNullOrEmpty(name))
@@ -38,14 +38,18 @@ public class LevelRepository(CulinaryDbContext context) : ILevelRepository
             query,
             orderBy,
             desc,
-            customMap: new Dictionary<string, Expression<Func<Level, object?>>>
+            customMap: new Dictionary<string, Expression<Func<Recipe, object?>>>
             {
                 ["Slug"] = x => x.Slug.Value,
+                ["Image"] = x => x.Media.ImageUrl,
+                ["Views"] = x => x.Engagement.Views
             },
             allowedFields:
             [
                 "Name",
                 "Slug",
+                "Image",
+                "Views",
                 "Active"
             ]
         );
@@ -59,47 +63,25 @@ public class LevelRepository(CulinaryDbContext context) : ILevelRepository
         return (items, total);
     }
 
-    private async Task<Level?> GetByIdInternalAsync(Guid id, Guid companyId, bool asNoTracking = false)
+    public async Task<Recipe?> GetByIdAsync(Guid id, Guid companyId)
     {
-        IQueryable<Level> query = _context.Levels;
-        if (asNoTracking)
-            query = query.AsNoTracking();
-        return await query
-            .Include(c => c.Categories)
-            .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
+        return await _context.Recipes.FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
-    public async Task<Level?> GetByIdAsync(Guid id, Guid companyId)
+    public async Task AddAsync(Recipe entity)
     {
-        return await GetByIdInternalAsync(id, companyId, false);
-    }
-
-    public async Task<Level?> GetByIdReadOnlyAsync(Guid id, Guid companyId)
-    {
-        return await GetByIdInternalAsync(id, companyId, true);
-    }
-
-    public async Task AddAsync(Level entity)
-    {
-        await _context.Levels.AddAsync(entity);
+        await _context.Recipes.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Level entity)
+    public async Task UpdateAsync(Recipe entity)
     {
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Level?> GetBySlugAsync(string slug, Guid companyId)
+    public async Task<Recipe?> GetBySlugAsync(string slug, Guid companyId)
     {
-        return await _context.Levels
-            .Include(c => c.Categories)
+        return await _context.Recipes
             .FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
     }
-
-    public async Task<Category?> GetCategoryBySlugAsync(string slug, Guid companyId)
-    {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
-    }
 }
-

@@ -10,7 +10,9 @@
     <Folder Include="Mapping/" />
     <Folder Include="Requests/UseCases/Culinary/Categories/" />
     <Folder Include="Requests/UseCases/Culinary/Levels/" />
+    <Folder Include="Requests/UseCases/Culinary/Recipes/" />
     <Folder Include="UseCases/Culinary/Levels/" />
+    <Folder Include="UseCases/Culinary/Recipes/" />
   </ItemGroup>
 
   <ItemGroup>

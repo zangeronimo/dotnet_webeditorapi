@@ -1,8 +1,10 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Domain.Entities.System;
 using WEBEditorAPI.Domain.Interfaces.Repository.System;
 using WEBEditorAPI.Infrastructure.Persistence;
+using WEBEditorAPI.Infrastructure.Persistence.Query;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.System;
 
@@ -32,20 +34,21 @@ public class UserRepository(AppDbContext context) : IUserRepository
         // total before pagination
         var total = await query.CountAsync();
 
-        try
-        {
-            // dynamic ordenation
-            if (!string.IsNullOrEmpty(orderBy))
+        query = OrderByHelper.ApplyOrdering(
+            query,
+            orderBy,
+            desc,
+            customMap: new Dictionary<string, Expression<Func<User, object?>>>
             {
-                query = desc
-                    ? query.OrderByDescending(e => EF.Property<object>(e, orderBy))
-                    : query.OrderBy(e => EF.Property<object>(e, orderBy));
-            }
-        }
-        catch
-        {
-            throw new ApiBadRequestException("OrderBy inválido.");
-        }
+                ["Email"] = x => x.Email.Value,
+            },
+            allowedFields:
+            [
+                "Name",
+                "Email"
+            ]
+        );
+
 
         // pagination
         var items = await query

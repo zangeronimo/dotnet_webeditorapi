@@ -9,6 +9,7 @@ public class CulinaryDbContext : DbContext
 {
     public DbSet<Category> Categories { get; set; }
     public DbSet<Level> Levels { get; set; }
+    public DbSet<Recipe> Recipes { get; set; }
 
     public CulinaryDbContext(DbContextOptions<CulinaryDbContext> options) : base(options) { }
 
@@ -16,5 +17,6 @@ public class CulinaryDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new CategoryMapping());
         modelBuilder.ApplyConfiguration(new LevelMapping());
+        modelBuilder.ApplyConfiguration(new RecipeMapping());
     }
 }
