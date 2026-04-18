@@ -23,6 +23,7 @@ public static class CulinaryModuleDI
         services.AddScoped<IUseCase<UpdateLevelRequest, LevelDto>, UpdateLevelUC>();
 
         services.AddScoped<IUseCase<GetAllRecipesFilterRequest, PaginationResult<RecipeDto>>, GetAllRecipeUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, RecipeDto>, GetRecipeByIdUC>();
 
         // Repositories
         services.AddScoped<ILevelRepository, LevelRepository>();

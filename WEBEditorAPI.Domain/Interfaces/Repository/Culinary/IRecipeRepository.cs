@@ -3,7 +3,7 @@ using WEBEditorAPI.Domain.Enums;
 
 namespace WEBEditorAPI.Domain.Interfaces.Repository.Culinary;
 
-public interface IRecipeRepository
+public interface IRecipeRepository : IRepository<Recipe>
 {
     Task<(IEnumerable<Recipe> Items, int Total)> GetAllAsync(
         int page,
