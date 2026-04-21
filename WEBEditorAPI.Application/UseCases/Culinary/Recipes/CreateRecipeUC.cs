@@ -30,7 +30,7 @@ public class CreateRecipeUC(IRecipeRepository recipeRepository, IMapper mapper) 
             request.Attributes,
             new RecipeMedia(""),
             request.Seo,
-            request.Engagement,
+            new RecipeEngagement(0, 0),
             Status.Inactive,
             request.LevelId,
             request.Context.CompanyId);

@@ -1,8 +1,11 @@
+using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.ValueObjects.Culinary;
 
 namespace WEBEditorAPI.Application.Requests.UseCases.Culinary.Recipes;
 
-public sealed record CreateRecipeRequest(
+public sealed record UpdateRecipeRequest(
+    Guid Id,
+    string Slug,
     string Name,
     RecipeContent Content,
     RecipeTiming Timing,
@@ -10,5 +13,7 @@ public sealed record CreateRecipeRequest(
     RecipeAttributes Attributes,
     RecipeSeo Seo,
     Guid LevelId,
+    Status Active,
     RequestContext Context
 ) : ApplicationRequest(Context);
+

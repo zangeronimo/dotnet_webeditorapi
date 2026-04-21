@@ -1,4 +1,4 @@
-namespace WEBEditorAPI.Domain.ValueObjects;
+namespace WEBEditorAPI.Domain.ValueObjects.Culinary;
 
 public class RecipeYield(string yieldTotal)
 {

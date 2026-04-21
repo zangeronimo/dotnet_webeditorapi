@@ -60,8 +60,8 @@ public class Recipe : Entity
         RecipeAttributes newAttributes,
         RecipeMedia newMedia,
         RecipeSeo newSeo,
-        RecipeEngagement newEngagement,
-        Status newActive)
+        Status newActive,
+        Guid newLevelId)
     {
         Slug = newSlug;
         Name = newName;
@@ -71,8 +71,8 @@ public class Recipe : Entity
         Attributes = newAttributes;
         Media = newMedia;
         Seo = newSeo;
-        Engagement = newEngagement;
         Active = newActive;
+        LevelId = newLevelId;
         Touch();
     }
 }
