@@ -14,7 +14,7 @@ public class Recipe : Entity
     public RecipeAttributes Attributes { get; private set; }
     public RecipeMedia Media { get; private set; }
     public RecipeSeo Seo { get; private set; }
-    public string SchemaJsonLd { get; private set; } = string.Empty;
+    public string? SchemaJsonLd { get; private set; } = null;
     public RecipeEngagement Engagement { get; private set; }
     public Status Active { get; private set; }
     public DateTime? PublishedAt { get; private set; }

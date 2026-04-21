@@ -1,4 +1,3 @@
-
 using WEBEditorAPI.Domain.Enums;
 
 namespace WEBEditorAPI.Application.Requests.UseCases.Culinary.Levels;
