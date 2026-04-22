@@ -110,6 +110,7 @@ public class RecipeController : ControllerBase
             new RecipeSeo(model.MetaTitle, model.MetaDescription, model.Keywords.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).ToList()),
             model.LevelId,
             model.Active,
+            model.Image,
             context);
         var recipe = await _updateRecipeUC.ExecuteAsync(request);
 

@@ -72,4 +72,6 @@ public class UpdateRecipeModel
 
     [Required(ErrorMessage = "O campo Ativo é obrigatório.")]
     public Status Active { get; set; }
+
+    public string? Image { get; set; }
 }

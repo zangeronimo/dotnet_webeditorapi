@@ -1,5 +1,6 @@
 using System.Text;
 using DotNetEnv;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Api.Middlewares;
@@ -14,6 +15,28 @@ if (builder.Environment.IsDevelopment())
 else
     Env.Load(".env.production");
 builder.Configuration.AddEnvironmentVariables();
+
+// --------------------
+// CORS
+// --------------------
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+
+    options.AddPolicy("ProdCors", policy =>
+    {
+        policy.WithOrigins(
+                "https://webeditor2.tudolinux.com.br"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
@@ -47,6 +70,32 @@ builder.Services.AddAuthorization();
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
+var env = app.Environment;
+if (env.IsProduction())
+{
+    app.UseCors("ProdCors");
+}
+else
+{
+    app.UseCors("DevCors");
+}
+
+// --------------------
+// Static Files (/files)
+// --------------------
+if (!env.IsProduction())
+{
+    var uploadPath = Path.Combine(env.ContentRootPath, "upload");
+
+    // garante que a pasta existe
+    Directory.CreateDirectory(uploadPath);
+
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(uploadPath),
+        RequestPath = "/files"
+    });
+}
 app.UseAuthentication();
 app.UseMiddleware<UserContextMiddleware>();
 app.UseAuthorization();

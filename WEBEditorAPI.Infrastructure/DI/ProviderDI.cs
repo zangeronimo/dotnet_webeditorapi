@@ -10,6 +10,7 @@ public static class ProviderDI
     {
         services.AddSingleton<IPasswordProvider, PBKDF2PasswordProvider>();
         services.AddSingleton<ITokenProvider, JwtProvider>();
+        services.AddSingleton<IStorageProvider, DiskStorageProvider>();
 
         return services;
     }

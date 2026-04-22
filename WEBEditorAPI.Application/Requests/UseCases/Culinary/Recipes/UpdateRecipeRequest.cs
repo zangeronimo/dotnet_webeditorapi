@@ -14,6 +14,7 @@ public sealed record UpdateRecipeRequest(
     RecipeSeo Seo,
     Guid LevelId,
     Status Active,
+    string? Image,
     RequestContext Context
 ) : ApplicationRequest(Context);
 

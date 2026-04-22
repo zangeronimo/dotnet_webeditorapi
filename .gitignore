@@ -63,3 +63,6 @@ secrets.json
 
 # EF migrations snapshots
 Migrations/
+
+# Upload folder
+upload
