@@ -1,7 +1,6 @@
-using System;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Hosting;
-using WEBEditorAPI.Domain.Interfaces.Provider;
+using WEBEditorAPI.Application.Interfaces;
 
 namespace WEBEditorAPI.Infrastructure.Provider;
 

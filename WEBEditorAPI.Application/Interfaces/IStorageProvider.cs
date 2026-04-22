@@ -1,4 +1,4 @@
-namespace WEBEditorAPI.Domain.Interfaces.Provider;
+namespace WEBEditorAPI.Application.Interfaces;
 
 public interface IStorageProvider
 {

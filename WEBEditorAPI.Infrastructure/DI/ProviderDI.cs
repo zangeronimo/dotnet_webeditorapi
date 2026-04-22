@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Infrastructure.Provider;
 
