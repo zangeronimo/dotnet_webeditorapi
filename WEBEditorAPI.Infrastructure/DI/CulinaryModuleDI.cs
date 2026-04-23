@@ -30,6 +30,7 @@ public static class CulinaryModuleDI
         // Repositories
         services.AddScoped<ILevelRepository, LevelRepository>();
         services.AddScoped<IRecipeRepository, RecipeRepository>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
 
         return services;
     }
