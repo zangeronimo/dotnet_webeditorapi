@@ -4,8 +4,10 @@ using WEBEditorAPI.Application.DTOs.Culinary;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Culinary.Levels;
+using WEBEditorAPI.Application.Requests.UseCases.Culinary.Ratings;
 using WEBEditorAPI.Application.Requests.UseCases.Culinary.Recipes;
 using WEBEditorAPI.Application.UseCases.Culinary.Levels;
+using WEBEditorAPI.Application.UseCases.Culinary.Ratings;
 using WEBEditorAPI.Application.UseCases.Culinary.Recipes;
 using WEBEditorAPI.Domain.Interfaces.Repository.Culinary;
 using WEBEditorAPI.Infrastructure.Repositories.Culinary;
@@ -26,6 +28,8 @@ public static class CulinaryModuleDI
         services.AddScoped<IUseCase<GetByIdRequest, RecipeDto>, GetRecipeByIdUC>();
         services.AddScoped<IUseCase<CreateRecipeRequest, RecipeDto>, CreateRecipeUC>();
         services.AddScoped<IUseCase<UpdateRecipeRequest, RecipeDto>, UpdateRecipeUC>();
+
+        services.AddScoped<IUseCase<GetAllRatingsFilterRequest, PaginationResult<RatingDto>>, GetAllRatingUC>();
 
         // Repositories
         services.AddScoped<ILevelRepository, LevelRepository>();

@@ -41,6 +41,7 @@ public class RatingRepository(CulinaryDbContext context) : IRatingRepository
             allowedFields:
             [
                 "Name",
+                "Rate",
                 "Active"
             ]
         );

@@ -15,6 +15,8 @@ public class CulinaryProfile : Profile
         CreateMap<Category, CategoryDto>()
             .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value));
 
+        CreateMap<Rating, RatingDto>();
+
         CreateMap<Recipe, RecipeDto>()
             .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value))
             .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.Content.ShortDescription))
@@ -34,9 +36,6 @@ public class CulinaryProfile : Profile
             .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
             .ForMember(dest => dest.Keywords, opt => opt.MapFrom(src => string.Join(", ", src.Seo.Keywords)))
             .ForMember(dest => dest.Views, opt => opt.MapFrom(src => src.Engagement.Views))
-            .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Engagement.Likes))
-            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
-            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
-            .ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt));
+            .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Engagement.Likes));
     }
 }
