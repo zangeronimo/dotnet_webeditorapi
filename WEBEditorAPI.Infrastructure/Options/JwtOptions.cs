@@ -1,5 +1,3 @@
-using System;
-
 namespace WEBEditorAPI.Infrastructure.Options;
 
 public class JwtOptions

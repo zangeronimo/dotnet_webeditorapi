@@ -38,6 +38,7 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 

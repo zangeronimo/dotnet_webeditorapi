@@ -75,4 +75,9 @@ public class Recipe : Entity
         LevelId = newLevelId;
         Touch();
     }
+
+    public void SetSchemaJsonLd(string JsonLd)
+    {
+        SchemaJsonLd = JsonLd;
+    }
 }
