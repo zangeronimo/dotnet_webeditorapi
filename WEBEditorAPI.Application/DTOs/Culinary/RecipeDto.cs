@@ -26,4 +26,7 @@ public class RecipeDto
     public int Views { get; set; }
     public int Likes { get; set; }
     public Status Active { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public DateTime? PublishedAt { get; set; }
 }

@@ -34,6 +34,9 @@ public class CulinaryProfile : Profile
             .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
             .ForMember(dest => dest.Keywords, opt => opt.MapFrom(src => string.Join(", ", src.Seo.Keywords)))
             .ForMember(dest => dest.Views, opt => opt.MapFrom(src => src.Engagement.Views))
-            .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Engagement.Likes));
+            .ForMember(dest => dest.Likes, opt => opt.MapFrom(src => src.Engagement.Likes))
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => src.CreatedAt))
+            .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => src.UpdatedAt))
+            .ForMember(dest => dest.PublishedAt, opt => opt.MapFrom(src => src.PublishedAt));
     }
 }

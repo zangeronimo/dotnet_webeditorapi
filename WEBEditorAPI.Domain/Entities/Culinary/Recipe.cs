@@ -73,6 +73,12 @@ public class Recipe : Entity
         Seo = newSeo;
         Active = newActive;
         LevelId = newLevelId;
+
+        if (PublishedAt == null && Active == Status.Active)
+        {
+            PublishedAt = DateTime.UtcNow;
+        }
+
         Touch();
     }
 
