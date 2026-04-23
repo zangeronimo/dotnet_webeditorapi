@@ -30,6 +30,7 @@ public static class CulinaryModuleDI
         services.AddScoped<IUseCase<UpdateRecipeRequest, RecipeDto>, UpdateRecipeUC>();
 
         services.AddScoped<IUseCase<GetAllRatingsFilterRequest, PaginationResult<RatingDto>>, GetAllRatingUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, RatingDto>, GetRatingByIdUC>();
 
         // Repositories
         services.AddScoped<ILevelRepository, LevelRepository>();
