@@ -17,10 +17,7 @@ public abstract class EntityMapping<TEntity> : IEntityTypeConfiguration<TEntity>
             .HasColumnType("timestamp with time zone")
             .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
 
-        builder.Property(e => e.UpdatedAt)
-            .HasColumnName("updated_at").IsRequired()
-            .HasColumnType("timestamp with time zone")
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+        builder.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 
         builder.Property(e => e.DeletedAt).HasColumnName("deleted_at");
 

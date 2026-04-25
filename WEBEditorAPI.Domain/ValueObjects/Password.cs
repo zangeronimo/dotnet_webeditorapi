@@ -5,31 +5,29 @@ namespace WEBEditorAPI.Domain.ValueObjects;
 public class Password
 {
     public string Hash { get; private set; }
-    public string Salt { get; private set; }
-    private Password(string hash, string salt)
+    private Password(string hash)
     {
         Hash = hash;
-        Salt = salt;
     }
 
     public static Password Create(string password, IPasswordProvider provider)
     {
-        var (hash, salt) = provider.Generate(password);
+        var hash = provider.Generate(password);
 
-        if (string.IsNullOrEmpty(hash) || string.IsNullOrEmpty(salt))
+        if (string.IsNullOrEmpty(hash))
         {
-            throw new ArgumentException("Fail on create a new password.");
+            throw new ArgumentException("Falha ao criar o Password");
         }
-        return new Password(hash, salt);
+        return new Password(hash);
     }
 
-    public static Password Restore(string hash, string salt)
+    public static Password Restore(string hash)
     {
-        return new Password(hash, salt);
+        return new Password(hash);
     }
 
     public Boolean Validate(string password, IPasswordProvider provider)
     {
-        return provider.Validate(password, Hash, Salt);
+        return provider.Validate(password, Hash);
     }
 }

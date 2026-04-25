@@ -23,7 +23,7 @@ public class MakeLoginUC : IMakeLogin
     public async Task<AuthResponse> ExecuteAsync(AuthRequest request)
     {
         var User = await _userRepository.GetByEmailAsync(request.Username) ?? throw new ApiInvalidCredentialsException();
-        if (_passwordProvider.Validate(request.Password, User.Password.Hash, User.Password.Salt) == false)
+        if (_passwordProvider.Validate(request.Password, User.Password.Hash) == false)
         {
             throw new ApiInvalidCredentialsException();
         }

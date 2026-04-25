@@ -6,9 +6,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Isopoh.Cryptography.Argon2" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -16,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Persistence/Mappings/Core/" />
     <Folder Include="Persistence/Mappings/Culinary/" />
     <Folder Include="Persistence/Query/" />
     <Folder Include="Provider/JsonLd/" />

@@ -21,7 +21,6 @@ public class UserMapping : EntityMapping<User>
         builder.OwnsOne(u => u.Password, password =>
         {
             password.Property(p => p.Hash).HasColumnName("password").HasMaxLength(200).IsRequired();
-            password.Property(p => p.Salt).HasColumnName("salt").HasMaxLength(50).IsRequired();
         });
         builder.Property(c => c.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
 

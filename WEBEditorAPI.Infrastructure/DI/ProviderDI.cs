@@ -12,7 +12,7 @@ public static class ProviderDI
 {
     public static IServiceCollection AddProviders(this IServiceCollection services)
     {
-        services.AddSingleton<IPasswordProvider, PBKDF2PasswordProvider>();
+        services.AddSingleton<IPasswordProvider, Argon2PasswordProvider>();
         services.AddSingleton<ITokenProvider, JwtProvider>();
         services.AddSingleton<IStorageProvider, DiskStorageProvider>();
         services.AddSingleton<IJsonLdProvider<RecipeJsonLdRequest, RecipeJsonLd>, RecipeJsonLdProvider>();

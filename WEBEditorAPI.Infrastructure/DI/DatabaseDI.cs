@@ -10,6 +10,12 @@ public static class DatabaseDI
 {
     public static IServiceCollection AddDatabase(this IServiceCollection services)
     {
+        services.AddDbContext<PlatformDbContext>((sp, options) =>
+        {
+            var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
+            options.UseNpgsql(dbOptions.ConnectionString);
+        });
+
         services.AddDbContext<AppDbContext>((sp, options) =>
         {
             var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
