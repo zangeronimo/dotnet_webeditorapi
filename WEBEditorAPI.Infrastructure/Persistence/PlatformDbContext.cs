@@ -22,5 +22,6 @@ public class PlatformDbContext : DbContext
         modelBuilder.ApplyConfiguration(new ModuleMapping());
         modelBuilder.ApplyConfiguration(new PermissionMapping());
         modelBuilder.ApplyConfiguration(new RoleMapping());
+        modelBuilder.ApplyConfiguration(new UserCompanyModuleRoleMapping());
     }
 }

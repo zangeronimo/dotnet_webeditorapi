@@ -18,6 +18,8 @@ public class UserCompany : Entity
     public DateTimeOffset? LastAccessedAt { get; private set; }
 
     public Status Status { get; private set; }
+    private readonly List<UserCompanyModuleRole> _moduleRoles = new();
+    public IReadOnlyCollection<UserCompanyModuleRole> ModuleRoles => _moduleRoles;
 
     protected UserCompany() : base() { }
 
@@ -45,5 +47,17 @@ public class UserCompany : Entity
     public void SetJoined()
     {
         JoinedAt = DateTimeOffset.Now;
+    }
+
+    public void SetModuleRoles(IEnumerable<(Guid moduleId, Guid roleId)> roles)
+    {
+        _moduleRoles.Clear();
+
+        foreach (var (moduleId, roleId) in roles)
+        {
+            _moduleRoles.Add(new UserCompanyModuleRole(Id, moduleId, roleId));
+        }
+
+        Touch();
     }
 }

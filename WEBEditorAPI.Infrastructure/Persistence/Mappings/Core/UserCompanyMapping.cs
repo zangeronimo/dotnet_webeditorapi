@@ -22,6 +22,12 @@ public class UserCompanyMapping : EntityMapping<UserCompany>
         builder.HasOne(x => x.User).WithMany(u => u.Companies).HasForeignKey(x => x.UserId);
         builder.HasOne(x => x.Company).WithMany(c => c.Users).HasForeignKey(x => x.CompanyId);
 
+        builder.HasMany(uc => uc.ModuleRoles)
+            .WithOne()
+            .HasForeignKey(x => x.UserCompanyId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(x => new { x.UserId, x.CompanyId }).IsUnique();
+
     }
 }
