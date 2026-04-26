@@ -10,6 +10,7 @@ public class PlatformDbContext : DbContext
     public DbSet<Company> Companies { get; set; }
     public DbSet<UserCompany> UserCompanies { get; set; }
     public DbSet<Module> Modules { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
     public PlatformDbContext(DbContextOptions<PlatformDbContext> options) : base(options) { }
 
@@ -19,5 +20,7 @@ public class PlatformDbContext : DbContext
         modelBuilder.ApplyConfiguration(new CompanyMapping());
         modelBuilder.ApplyConfiguration(new UserCompanyMapping());
         modelBuilder.ApplyConfiguration(new ModuleMapping());
+        modelBuilder.ApplyConfiguration(new PermissionMapping());
+        modelBuilder.ApplyConfiguration(new RoleMapping());
     }
 }

@@ -12,8 +12,8 @@ using WEBEditorAPI.Infrastructure.Persistence;
 namespace WEBEditorAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(PlatformDbContext))]
-    [Migration("20260426175521_CreatePermissions")]
-    partial class CreatePermissions
+    [Migration("20260426195901_CreatePermissionAndRolesAndRolePermissions")]
+    partial class CreatePermissionAndRolesAndRolePermissions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,90 @@ namespace WEBEditorAPI.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("core_modules", (string)null);
+                });
+
+            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Permission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("code");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("label");
+
+                    b.Property<Guid>("ModuleId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("module_id");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModuleId");
+
+                    b.ToTable("core_permissions", (string)null);
+                });
+
+            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("company_id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTimeOffset?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("name");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("smallint")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("core_roles", (string)null);
                 });
 
             modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.User", b =>
@@ -200,56 +284,38 @@ namespace WEBEditorAPI.Infrastructure.Migrations
                     b.ToTable("core_company_modules", (string)null);
                 });
 
-            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Module", b =>
+            modelBuilder.Entity("core_role_permissions", b =>
                 {
-                    b.OwnsMany("WEBEditorAPI.Domain.Entities.Core.Permission", "Permissions", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uuid")
-                                .HasColumnName("id");
+                    b.Property<Guid>("role_id")
+                        .HasColumnType("uuid");
 
-                            b1.Property<string>("Code")
-                                .IsRequired()
-                                .HasMaxLength(50)
-                                .HasColumnType("character varying(50)")
-                                .HasColumnName("code");
+                    b.Property<Guid>("permission_id")
+                        .HasColumnType("uuid");
 
-                            b1.Property<DateTimeOffset>("CreatedAt")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("created_at");
+                    b.HasKey("role_id", "permission_id");
 
-                            b1.Property<DateTimeOffset?>("DeletedAt")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("deleted_at");
+                    b.HasIndex("permission_id");
 
-                            b1.Property<string>("Label")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("character varying(100)")
-                                .HasColumnName("label");
+                    b.ToTable("core_role_permissions", (string)null);
+                });
 
-                            b1.Property<byte>("Status")
-                                .HasColumnType("smallint")
-                                .HasColumnName("status");
+            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Permission", b =>
+                {
+                    b.HasOne("WEBEditorAPI.Domain.Entities.Core.Module", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                            b1.Property<DateTimeOffset?>("UpdatedAt")
-                                .HasColumnType("timestamp with time zone")
-                                .HasColumnName("updated_at");
-
-                            b1.Property<Guid>("module_id")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("module_id");
-
-                            b1.ToTable("core_permissions", (string)null);
-
-                            b1.WithOwner()
-                                .HasForeignKey("module_id");
-                        });
-
-                    b.Navigation("Permissions");
+            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Role", b =>
+                {
+                    b.HasOne("WEBEditorAPI.Domain.Entities.Core.Company", null)
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_core_roles_company_id");
                 });
 
             modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.User", b =>
@@ -336,9 +402,29 @@ namespace WEBEditorAPI.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("core_role_permissions", b =>
+                {
+                    b.HasOne("WEBEditorAPI.Domain.Entities.Core.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("permission_id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WEBEditorAPI.Domain.Entities.Core.Role", null)
+                        .WithMany()
+                        .HasForeignKey("role_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Company", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.Module", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("WEBEditorAPI.Domain.Entities.Core.User", b =>
