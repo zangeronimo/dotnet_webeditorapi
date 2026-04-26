@@ -12,10 +12,7 @@ public abstract class EntityMapping<TEntity> : IEntityTypeConfiguration<TEntity>
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Id).HasColumnName("id").IsRequired().ValueGeneratedNever();
 
-        builder.Property(e => e.CreatedAt)
-            .HasColumnName("created_at").IsRequired()
-            .HasColumnType("timestamp with time zone")
-            .HasConversion(v => v, v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+        builder.Property(e => e.CreatedAt).HasColumnName("created_at").IsRequired();
 
         builder.Property(e => e.UpdatedAt).HasColumnName("updated_at");
 

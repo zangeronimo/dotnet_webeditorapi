@@ -9,6 +9,7 @@ public class User : Entity
     public Email Email { get; private set; } = null!;
     public Password PasswordHash { get; private set; } = null!;
     public Status Status { get; private set; }
+    public ICollection<UserCompany> Companies { get; set; } = [];
 
     public User(string name, Email email, Password password, Status status) : base()
     {
