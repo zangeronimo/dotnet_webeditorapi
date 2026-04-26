@@ -19,7 +19,7 @@ public class UserCompany : Entity
 
     public Status Status { get; private set; }
 
-    protected UserCompany() { }
+    protected UserCompany() : base() { }
 
     public UserCompany(Guid userId, Guid companyId, string? nickName, string? avatarUrl, Status status)
     {
