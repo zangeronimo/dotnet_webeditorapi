@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WEBEditorAPI.Domain\WEBEditorAPI.Domain.csproj" />
+    <ProjectReference Include="..\WEBEditorAPI.Infrastructure\WEBEditorAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
