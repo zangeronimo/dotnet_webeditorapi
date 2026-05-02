@@ -21,7 +21,6 @@
     <Folder Include="Persistence/Mappings/Culinary/" />
     <Folder Include="Persistence/Query/" />
     <Folder Include="Provider/JsonLd/" />
-    <Folder Include="Repositories/Culinary/" />
   </ItemGroup>
 
   <PropertyGroup>

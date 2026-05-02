@@ -14,11 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Authorization/" />
     <Folder Include="Controllers/System/" />
     <Folder Include="Filters/" />
-    <Folder Include="Models/Culinary/Levels/" />
-    <Folder Include="Models/Culinary/Ratings/" />
-    <Folder Include="Models/Culinary/Recipes/" />
   </ItemGroup>
 
   <PropertyGroup>

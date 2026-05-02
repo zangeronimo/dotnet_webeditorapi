@@ -3,8 +3,8 @@ using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases;
-using WEBEditorAPI.Domain.Entities.System;
-using WEBEditorAPI.Domain.Interfaces.Repository.System;
+using WEBEditorAPI.Domain.Entities.Core;
+using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 
 namespace WEBEditorAPI.Application.UseCases.System.Users;
 
@@ -16,7 +16,7 @@ public class GetUserByIdUC(IUserRepository userRepository, IMapper mapper) : IUs
 
     public async Task<UserDto> ExecuteAsync(GetByIdRequest request)
     {
-        User? user = await _userRepository.GetByIdAsync(request.ResourceId, request.Context.CompanyId);
+        User? user = await _userRepository.GetByIdAsync(request.ResourceId);
         if (user == null)
             throw new ApiNotFoundException("Usuário não encontrado");
         return _mapper.Map<UserDto>(user);

@@ -1,32 +1,60 @@
 using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.ValueObjects;
+using WEBEditorAPI.Domain.ValueObjects.Culinary;
 
 namespace WEBEditorAPI.Domain.Entities.Culinary;
 
 public class Category : Entity
 {
     public Slug Slug { get; private set; } = null!;
-    public string Name { get; private set; } = null!;
+    public CategoryName Name { get; private set; } = null!;
+    public string? Description { get; private set; }
+    public Guid? ParentId { get; private set; }
+    public Category? Parent { get; private set; }
+    public ICollection<Category> Children { get; private set; }
+    public int DisplayOrder { get; private set; }
+    public Status Status { get; private set; }
+    public CategorySeo Seo { get; private set; }
     public Guid CompanyId { get; private set; }
-    public Status Active { get; private set; }
-    public Guid LevelId { get; private set; }
 
-    public Category(Slug slug, string name, Status active, Guid levelId, Guid companyId) : base()
+    public Category(
+        Slug slug,
+        CategoryName name,
+        string? description,
+        Guid? parentId,
+        int displayOrder,
+        Status status,
+        CategorySeo seo,
+        Guid companyId) : base()
     {
         Slug = slug;
         Name = name;
-        Active = active;
-        LevelId = levelId;
+        Description = description;
+        ParentId = parentId;
+        DisplayOrder = displayOrder;
+        Status = status;
+        Seo = seo;
         CompanyId = companyId;
     }
 
     protected Category() : base() { }
 
-    public void Update(Slug newSlug, string newName, Status newActive)
+    public void Update(
+        Slug newSlug,
+        CategoryName newName,
+        string? newDescription,
+        Guid? newParentId,
+        int newDisplayOrder,
+        Status newStatus,
+        CategorySeo newSeo)
     {
         Slug = newSlug;
         Name = newName;
-        Active = newActive;
+        Description = newDescription;
+        ParentId = newParentId;
+        DisplayOrder = newDisplayOrder;
+        Status = newStatus;
+        Seo = newSeo;
         Touch();
     }
 }

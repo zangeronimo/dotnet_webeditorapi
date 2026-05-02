@@ -32,10 +32,4 @@ public class CompanyRepository(AppDbContext context) : ICompanyRepository
         _context.Companies.Update(entity);
         await _context.SaveChangesAsync();
     }
-
-    public async Task DeleteAsync(Company entity)
-    {
-        _context.Companies.Remove(entity);
-        await _context.SaveChangesAsync();
-    }
 }

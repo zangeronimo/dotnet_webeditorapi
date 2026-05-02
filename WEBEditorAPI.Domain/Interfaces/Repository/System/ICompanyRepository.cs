@@ -8,5 +8,4 @@ public interface ICompanyRepository
     Task<Company?> GetByIdAsync(Guid id);
     Task AddAsync(Company entity);
     Task UpdateAsync(Company entity);
-    Task DeleteAsync(Company entity);
 }

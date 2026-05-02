@@ -23,7 +23,7 @@ public class RecipeJsonLdProvider
     {
         var baseUrl = _options.Value.BaseUrl;
         var recipe = request.Recipe;
-        var level = request.Level;
+        var category = request.Category;
 
         var totalMinutes = recipe.Timing.PrepTime + recipe.Timing.CookTime + recipe.Timing.RestTime;
 
@@ -55,7 +55,7 @@ public class RecipeJsonLdProvider
 
             RecipeYield = recipe.Yield.YieldTotal,
 
-            RecipeCategory = BuildCategory(recipe, level),
+            RecipeCategory = BuildCategory(recipe, category),
 
             RecipeCuisine = recipe.Attributes.Cuisine,
 
@@ -153,17 +153,17 @@ public class RecipeJsonLdProvider
         return list;
     }
 
-    private static string BuildCategory(Recipe recipe, Level level)
+    private static string BuildCategory(Recipe recipe, Category category)
     {
-        var category = level.Name;
+        var categoryName = category.Name.Value;
 
         if (!string.IsNullOrWhiteSpace(recipe.Attributes.Difficulty))
         {
-            category = string.IsNullOrWhiteSpace(category)
+            categoryName = string.IsNullOrWhiteSpace(categoryName)
                 ? recipe.Attributes.Difficulty
-                : $"{category} - {recipe.Attributes.Difficulty}";
+                : $"{categoryName} - {recipe.Attributes.Difficulty}";
         }
 
-        return category;
+        return categoryName;
     }
 }

@@ -1,4 +1,4 @@
-using WEBEditorAPI.Application.DTOs.System;
+using WEBEditorAPI.Application.DTOs.Core;
 
 namespace WEBEditorAPI.Application.Interfaces;
 

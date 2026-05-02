@@ -1,4 +1,6 @@
+using WEBEditorAPI.Domain.Commands.Core;
 using WEBEditorAPI.Domain.Enums;
+using WEBEditorAPI.Domain.Exceptions;
 
 namespace WEBEditorAPI.Domain.Entities.Core;
 
@@ -22,5 +24,40 @@ public class Module : Entity
         Name = newName;
         Status = newStatus;
         Touch();
+    }
+
+    public void UpdatePermissions(IEnumerable<UpdatePermissionCommand> commands)
+    {
+        var commandIds = commands
+            .Where(c => c.Id != Guid.Empty)
+            .Select(c => c.Id)
+            .ToHashSet();
+
+        // Soft delete
+        foreach (var permission in Permissions)
+        {
+            if (!commandIds.Contains(permission.Id))
+            {
+                permission.Delete();
+            }
+        }
+
+        // Add / Update
+        foreach (var cmd in commands)
+        {
+            if (cmd.Id != Guid.Empty)
+            {
+                var existing = Permissions.FirstOrDefault(c => c.Id == cmd.Id);
+                if (existing == null)
+                {
+                    throw new DomainException($"Permission {cmd.Label} não pertence ao Modulo {Name}");
+                }
+                existing.Update(cmd.Code, cmd.Label, cmd.Status);
+                continue;
+            }
+
+            var permission = new Permission(cmd.Code, cmd.Label, cmd.Status, Id);
+            _permissions.Add(permission);
+        }
     }
 }

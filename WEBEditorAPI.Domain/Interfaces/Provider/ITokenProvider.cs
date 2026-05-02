@@ -9,6 +9,7 @@ public enum TokenType
 }
 public interface ITokenProvider
 {
-    public string GenerateToken(Guid userId, string username, Guid companyId, TokenType type);
-    public TokenPayload ValidateToken(string token);
+    public string GenerateToken(Guid userId, string username, IReadOnlyList<string> permissions, Guid companyId, TokenType type);
+    public TokenPayload ValidateAccessToken(string token);
+    public TokenPayload ValidateRefreshToken(string token);
 }

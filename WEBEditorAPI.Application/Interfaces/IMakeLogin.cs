@@ -1,5 +1,5 @@
-using WEBEditorAPI.Application.DTOs.System;
-using WEBEditorAPI.Application.Requests.UseCases.System;
+using WEBEditorAPI.Application.DTOs.Core;
+using WEBEditorAPI.Application.Requests.UseCases.Core;
 
 namespace WEBEditorAPI.Application.Interfaces;
 

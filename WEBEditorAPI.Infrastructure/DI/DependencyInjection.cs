@@ -8,7 +8,7 @@ public static class DependencyInjection
     {
         services.AddDatabase();
         services.AddProviders();
-        services.AddSystemModule();
+        services.AddPlatformModule();
         services.AddCulinaryModule();
 
         return services;

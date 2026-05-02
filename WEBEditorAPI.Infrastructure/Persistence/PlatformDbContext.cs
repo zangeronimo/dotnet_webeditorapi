@@ -11,6 +11,7 @@ public class PlatformDbContext : DbContext
     public DbSet<UserCompany> UserCompanies { get; set; }
     public DbSet<Module> Modules { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<UserCompanyModuleRole> UserCompanyModuleRoles { get; set; }
 
     public PlatformDbContext(DbContextOptions<PlatformDbContext> options) : base(options) { }
 

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WEBEditorAPI.Domain.Entities.Culinary;
+using WEBEditorAPI.Domain.ValueObjects;
+using WEBEditorAPI.Domain.ValueObjects.Culinary;
 
 namespace WEBEditorAPI.Infrastructure.Persistence.Mappings.Culinary;
 
@@ -11,14 +13,44 @@ public class CategoryMapping : EntityMapping<Category>
     {
         base.Configure(builder);
         builder.ToTable("recipe_categories");
-
-        builder.OwnsOne(c => c.Slug, slug =>
+        builder.Property(c => c.Slug)
+            .HasConversion(v => v.Value, v => Slug.Create(v))
+            .HasColumnName("slug")
+            .HasMaxLength(45)
+            .IsRequired();
+        builder.Property(c => c.Name)
+            .HasConversion(v => v.Value, v => new CategoryName(v))
+            .HasColumnName("name")
+            .HasMaxLength(45)
+            .IsRequired();
+        builder.OwnsOne(x => x.Seo, seo =>
         {
-            slug.Property(s => s.Value).HasColumnName("slug").HasMaxLength(45).IsRequired();
+            seo.WithOwner();
+            seo.Property(s => s.MetaTitle)
+                .HasColumnName("meta_title")
+                .HasMaxLength(60);
+            seo.Property(s => s.MetaDescription)
+                .HasColumnName("meta_description")
+                .HasMaxLength(155);
         });
-        builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(45).IsRequired();
-        builder.Property(c => c.Active).HasColumnName("active").HasConversion<int>().IsRequired();
-        builder.Property(c => c.LevelId).HasColumnName("recipe_levels_id").IsRequired();
-        builder.Property(c => c.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
+        builder.Property(x => x.Description)
+            .HasColumnName("description")
+            .HasMaxLength(500);
+        builder.Property(x => x.DisplayOrder)
+            .HasColumnName("display_order");
+        builder.Property(c => c.Status).HasColumnName("status").HasConversion<int>().IsRequired();
+        builder.Property(c => c.ParentId).HasColumnName("parent_id");
+        builder.Property(c => c.CompanyId).HasColumnName("core_companies_id").IsRequired();
+
+        builder.HasOne(x => x.Parent)
+            .WithMany(x => x.Children)
+            .HasForeignKey(x => x.ParentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.CompanyId, x.Slug }).IsUnique();
+        builder.HasIndex(x => new { x.CompanyId, x.ParentId });
+        builder.HasIndex(x => new { x.CompanyId, x.Status });
+        builder.HasIndex(x => x.CompanyId);
+        builder.HasIndex(x => x.DeletedAt);
     }
 }

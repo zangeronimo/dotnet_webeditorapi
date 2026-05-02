@@ -1,7 +1,9 @@
 using System.Text;
 using DotNetEnv;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using WEBEditorAPI.Api.Authorization;
 using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Api.Middlewares;
 using WEBEditorAPI.Infrastructure.DI;
@@ -67,6 +69,7 @@ builder.Services.AddAuthentication("Bearer")
             ClockSkew = TimeSpan.Zero
         };
     });
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 builder.Services.AddAuthorization();
 builder.Services.AddAutoMapper(cfg => { }, AppDomain.CurrentDomain.GetAssemblies());
 

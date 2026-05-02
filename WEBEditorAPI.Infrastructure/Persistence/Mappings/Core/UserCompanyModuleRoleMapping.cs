@@ -26,7 +26,7 @@ public class UserCompanyModuleRoleMapping : IEntityTypeConfiguration<UserCompany
             .HasForeignKey(x => x.ModuleId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne<Role>()
+        builder.HasOne(x => x.Role)
             .WithMany()
             .HasForeignKey(x => x.RoleId)
             .OnDelete(DeleteBehavior.Restrict);

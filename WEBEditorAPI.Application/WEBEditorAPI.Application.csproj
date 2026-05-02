@@ -14,8 +14,7 @@
     <Folder Include="Requests/UseCases/Culinary/Levels/" />
     <Folder Include="Requests/UseCases/Culinary/Ratings/" />
     <Folder Include="Requests/UseCases/Culinary/Recipes/" />
-    <Folder Include="UseCases/Culinary/Levels/" />
-    <Folder Include="UseCases/Culinary/Ratings/" />
+    <Folder Include="UseCases/Core/Modules/" />
     <Folder Include="UseCases/Culinary/Recipes/" />
   </ItemGroup>
 

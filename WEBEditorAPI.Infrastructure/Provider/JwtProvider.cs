@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using WEBEditorAPI.Domain.Security.System;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Infrastructure.Options;
+using WEBEditorAPI.Application.Exceptions;
 
 namespace WEBEditorAPI.Infrastructure.Provider;
 
@@ -18,15 +19,20 @@ public class JwtProvider : ITokenProvider
         _options = options.Value;
     }
 
-    public string GenerateToken(Guid userId, string username, Guid companyId, TokenType type)
+    public string GenerateToken(Guid userId, string username, IReadOnlyList<string> permissions, Guid companyId, TokenType type)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, username),
-                new Claim("companyId", companyId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, username),
+            new Claim("companyId", companyId.ToString()),
+            new Claim("token_type", type.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        if (type == TokenType.Access && permissions != null)
+        {
+            claims.AddRange(permissions.Select(p => new Claim("permission", p)));
+        }
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -49,7 +55,7 @@ public class JwtProvider : ITokenProvider
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public TokenPayload ValidateToken(string token)
+    private ClaimsPrincipal Validate(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_options.Secret);
@@ -66,8 +72,30 @@ public class JwtProvider : ITokenProvider
             ClockSkew = TimeSpan.Zero
         };
 
-        var principal = tokenHandler.ValidateToken(token, parameters, out _);
+        return tokenHandler.ValidateToken(token, parameters, out _);
+    }
 
-        return new TokenPayload(Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)!.Value), Guid.Parse(principal.FindFirst("companyId")!.Value));
+    private TokenPayload BuildPayload(ClaimsPrincipal principal)
+    {
+        var permissions = principal.FindAll("permission").Select(c => c.Value).ToList();
+        return new TokenPayload(Guid.Parse(principal.FindFirst(ClaimTypes.NameIdentifier)!.Value), Guid.Parse(principal.FindFirst("companyId")!.Value), permissions);
+    }
+
+    public TokenPayload ValidateAccessToken(string token)
+    {
+        var principal = Validate(token);
+        var type = principal.FindFirst("token_type")?.Value;
+        if (type != TokenType.Access.ToString())
+            throw new ApiInvalidCredentialsException("Invalid token type");
+        return BuildPayload(principal);
+    }
+
+    public TokenPayload ValidateRefreshToken(string token)
+    {
+        var principal = Validate(token);
+        var type = principal.FindFirst("token_type")?.Value;
+        if (type != TokenType.Refresh.ToString())
+            throw new ApiInvalidCredentialsException("Invalid token type");
+        return BuildPayload(principal);
     }
 }

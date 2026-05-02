@@ -1,0 +1,48 @@
+using WEBEditorAPI.Application.DTOs.Core;
+using WEBEditorAPI.Application.Exceptions;
+using WEBEditorAPI.Application.Interfaces;
+using WEBEditorAPI.Domain.Interfaces.Provider;
+using WEBEditorAPI.Domain.Interfaces.Repository.Core;
+
+namespace WEBEditorAPI.Application.UseCases.Core;
+
+public class RefreshTokenUC : IRefreshToken
+{
+    private readonly IUserRepository _userRepository;
+    private readonly IUserCompanyRepository _userCompanyRepository;
+    private readonly IPermissionRepository _permissionRepository;
+    private readonly ITokenProvider _tokenProvider;
+
+    public RefreshTokenUC(
+        IUserRepository userRepository,
+        IUserCompanyRepository userCompanyRepository,
+        IPermissionRepository permissionRepository,
+        ITokenProvider tokenProvider)
+    {
+        _userRepository = userRepository;
+        _userCompanyRepository = userCompanyRepository;
+        _permissionRepository = permissionRepository;
+        _tokenProvider = tokenProvider;
+    }
+
+    public async Task<AuthResponse> ExecuteAsync(string refresh)
+    {
+        var payload = _tokenProvider.ValidateRefreshToken(refresh);
+        var user = await _userRepository.GetByIdAsync(payload.UserId)
+            ?? throw new ApiInvalidCredentialsException();
+        var userCompanies = await _userCompanyRepository.GetByUserIdAsync(user.Id);
+        if (!userCompanies.Any())
+            throw new ApiInvalidCredentialsException();
+        var selectedCompany = userCompanies.OrderByDescending(x => x.LastAccessedAt).First();
+        var permissions = await _permissionRepository.GetByUserCompanyAsync(selectedCompany.Id);
+        var token = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Access)
+            ?? throw new ApiBadRequestException("Falha ao gerar JWT");
+        var refreshToken = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Refresh)
+            ?? throw new ApiBadRequestException("Falha ao gerar JWT");
+        return new AuthResponse()
+        {
+            Token = token,
+            RefreshToken = refreshToken
+        };
+    }
+}
