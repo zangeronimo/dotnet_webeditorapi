@@ -16,7 +16,7 @@ public class CreateModuleUC(IModuleRepository moduleRepository, IMapper mapper) 
     {
         Module? module = await _moduleRepository.GetByNameAsync(request.Name);
         if (module != null)
-            throw new ApiBadRequestException("Module já cadastrado com esse nome");
+            throw new ApiBadRequestException("Módule já cadastrado com esse nome");
         Module newModule = new Module(request.Name, request.Status);
         await _moduleRepository.AddAsync(newModule);
         Module? createdModule = await _moduleRepository.GetByIdAsync(newModule.Id);

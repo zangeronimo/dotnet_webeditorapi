@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Core;
 using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Interfaces;
@@ -28,10 +29,11 @@ public static class PlatformModuleDI
         // services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
         // services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
 
+        services.AddScoped<IUseCase<GetAllModulesFilterRequest, PaginationResult<ModuleDto>>, GetAllModulesUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, ModuleDto>, GetModuleByIdUC>();
         services.AddScoped<IUseCase<CreateModuleRequest, ModuleDto>, CreateModuleUC>();
         services.AddScoped<IUseCase<UpdateModuleRequest, ModuleDto>, UpdateModuleUC>();
-
-
+        services.AddScoped<IUseCase<DeleteRequest, ModuleDto>, DeleteModuleUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

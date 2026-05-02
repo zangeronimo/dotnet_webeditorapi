@@ -18,10 +18,10 @@ public class UpdateModuleUC(IModuleRepository moduleRepository, IMapper mapper) 
     {
         Module? module = await _moduleRepository.GetByNameAsync(request.Name);
         if (module != null && module.Id != request.Id)
-            throw new ApiBadRequestException("Modulo já cadastrado com esse nome");
+            throw new ApiBadRequestException("Módulo já cadastrado com esse nome");
         Module? updateModule = await _moduleRepository.GetByIdAsync(request.Id);
         if (updateModule == null)
-            throw new ApiBadRequestException("Modulo não encontrado.");
+            throw new ApiBadRequestException("Módulo não encontrado.");
         updateModule.Update(request.Name, request.Active);
         var commands = CreatePermissionCommand(request.PermissionsDtos);
         try
