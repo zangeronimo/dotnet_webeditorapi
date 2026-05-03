@@ -10,10 +10,12 @@
     <Folder Include="Exceptions/" />
     <Folder Include="Mapping/" />
     <Folder Include="Requests/JsonLd/" />
+    <Folder Include="Requests/UseCases/Core/Companies/" />
     <Folder Include="Requests/UseCases/Culinary/Categories/" />
     <Folder Include="Requests/UseCases/Culinary/Levels/" />
     <Folder Include="Requests/UseCases/Culinary/Ratings/" />
     <Folder Include="Requests/UseCases/Culinary/Recipes/" />
+    <Folder Include="UseCases/Core/Companies/" />
     <Folder Include="UseCases/Core/Modules/" />
     <Folder Include="UseCases/Culinary/Recipes/" />
   </ItemGroup>

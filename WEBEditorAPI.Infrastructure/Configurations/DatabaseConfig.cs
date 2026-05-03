@@ -8,7 +8,7 @@ public static class DatabaseConfig
 {
     public static void AddDatabase(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<AppDbContext>(options =>
+        services.AddDbContext<PlatformDbContext>(options =>
             options.UseNpgsql(connectionString));
     }
 }

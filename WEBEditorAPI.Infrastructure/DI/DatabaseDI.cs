@@ -16,12 +16,6 @@ public static class DatabaseDI
             options.UseNpgsql(dbOptions.ConnectionString);
         });
 
-        services.AddDbContext<AppDbContext>((sp, options) =>
-        {
-            var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
-            options.UseNpgsql(dbOptions.ConnectionString);
-        });
-
         services.AddDbContext<CulinaryDbContext>((sp, options) =>
         {
             var dbOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;

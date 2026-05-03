@@ -8,7 +8,6 @@ using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
 using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
-using WEBEditorAPI.Application.UseCases.Core.Modules;
 
 namespace WEBEditorAPI.Api.Controllers.Core;
 

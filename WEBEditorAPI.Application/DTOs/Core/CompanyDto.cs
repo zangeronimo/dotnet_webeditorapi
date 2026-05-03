@@ -2,9 +2,9 @@ using WEBEditorAPI.Domain.Enums;
 
 namespace WEBEditorAPI.Application.DTOs.Core;
 
-public class ModuleDto : BaseDto
+public class CompanyDto : BaseDto
 {
     public string Name { get; set; } = string.Empty;
     public Status Status { get; set; }
-    public List<PermissionDto> Permissions { get; set; } = new List<PermissionDto>() { };
+    public List<ModuleDto> Modules { get; set; } = new List<ModuleDto>();
 }

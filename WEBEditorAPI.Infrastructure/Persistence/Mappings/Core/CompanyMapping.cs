@@ -14,7 +14,7 @@ public class CompanyMapping : EntityMapping<Company>
         builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(200).IsRequired();
         builder.Property(c => c.Status).HasColumnName("status").HasConversion<byte>().HasColumnType("smallint").IsRequired();
 
-        builder.HasMany<Module>()
+        builder.HasMany(c => c.Modules)
             .WithMany()
             .UsingEntity<Dictionary<string, object>>(
                 "core_company_modules",

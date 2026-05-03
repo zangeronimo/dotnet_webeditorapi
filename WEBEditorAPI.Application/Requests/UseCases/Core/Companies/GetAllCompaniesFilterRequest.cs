@@ -1,8 +1,8 @@
 using WEBEditorAPI.Domain.Enums;
 
-namespace WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
+namespace WEBEditorAPI.Application.Requests.UseCases.Core.Companies;
 
-public sealed record GetAllModulesFilterRequest(
+public sealed record GetAllCompaniesFilterRequest(
     int Page,
     int PageSize,
     string OrderBy,

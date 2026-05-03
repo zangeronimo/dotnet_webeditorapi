@@ -6,7 +6,8 @@ public class Company : Entity
 {
     public string Name { get; private set; } = null!;
     public Status Status { get; private set; }
-    public ICollection<UserCompany> Users { get; set; } = [];
+    public ICollection<UserCompany> Users { get; set; } = new List<UserCompany>();
+    public ICollection<Module> Modules { get; set; } = new List<Module>();
 
     public Company(string name, Status status) : base()
     {
