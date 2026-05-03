@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Core;
-using WEBEditorAPI.Application.DTOs.System;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Companies;
@@ -9,7 +8,7 @@ using WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
 using WEBEditorAPI.Application.UseCases.Core;
 using WEBEditorAPI.Application.UseCases.Core.Companies;
 using WEBEditorAPI.Application.UseCases.Core.Modules;
-using WEBEditorAPI.Application.UseCases.System.Users;
+using WEBEditorAPI.Application.UseCases.Core.Users;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 using WEBEditorAPI.Infrastructure.Repositories.Core;
 
@@ -32,6 +31,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>>, GetAllCompaniesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, CompanyDto>, GetCompanyByIdUC>();
         services.AddScoped<IUseCase<CreateCompanyRequest, CompanyDto>, CreateCompanyUC>();
+        services.AddScoped<IUseCase<UpdateModulesRequest, CompanyDto>, UpdateModulesUC>();
 
         services.AddScoped<IUseCase<GetAllModulesFilterRequest, PaginationResult<ModuleDto>>, GetAllModulesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, ModuleDto>, GetModuleByIdUC>();

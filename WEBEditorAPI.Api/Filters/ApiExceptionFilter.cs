@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WEBEditorAPI.Application.Exceptions;
-using WEBEditorAPI.Application.DTOs.System;
+using WEBEditorAPI.Application.DTOs.Core;
 
 namespace WEBEditorAPI.Api.Filters
 {

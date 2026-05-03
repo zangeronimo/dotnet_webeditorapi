@@ -15,11 +15,13 @@ namespace WEBEditorAPI.Api.Controllers.Core;
 public class CompanyController(
     IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> getAllCompaniesUC,
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
-    IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC) : ControllerBase
+    IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
+    IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC) : ControllerBase
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
+    private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
 
     [HasPermission("core.company.view")]
     [HttpGet]
@@ -51,8 +53,24 @@ public class CompanyController(
     }
 
     [HasPermission("core.company.create")]
+    [HttpPut("{id}/modules")]
+    public async Task<IActionResult> UpdateModules([FromBody] UpdateModulesModel model, [FromRoute] Guid id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new UpdateModulesRequest(id, model.Modules, context);
+        var company = await _updateModulesUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HasPermission("core.company.update")]
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateCompanyModel model)
+    public async Task<IActionResult> UpdateModules([FromBody] CreateCompanyModel model)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);

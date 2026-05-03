@@ -1,4 +1,6 @@
+using WEBEditorAPI.Domain.Commands.Core;
 using WEBEditorAPI.Domain.Enums;
+using WEBEditorAPI.Domain.Exceptions;
 
 namespace WEBEditorAPI.Domain.Entities.Core;
 
@@ -7,7 +9,8 @@ public class Company : Entity
     public string Name { get; private set; } = null!;
     public Status Status { get; private set; }
     public ICollection<UserCompany> Users { get; set; } = new List<UserCompany>();
-    public ICollection<Module> Modules { get; set; } = new List<Module>();
+    private readonly List<Module> _modules = [];
+    public IReadOnlyCollection<Module> Modules => _modules;
 
     public Company(string name, Status status) : base()
     {
@@ -22,5 +25,18 @@ public class Company : Entity
         Name = newName;
         Status = newStatus;
         Touch();
+    }
+
+    public void SetModules(IEnumerable<Module> modules)
+    {
+        var newModules = modules.ToList();
+        _modules.RemoveAll(m => !newModules.Any(n => n.Id == m.Id));
+        foreach (var module in newModules)
+        {
+            if (_modules.All(m => m.Id != module.Id))
+            {
+                _modules.Add(module);
+            }
+        }
     }
 }

@@ -13,6 +13,7 @@ public interface ICompanyRepository
         string? name,
         Status? status);
     Task<Company?> GetByIdAsync(Guid id);
+    Task<Company?> GetByIdReadOnlyAsync(Guid id);
     Task<Company?> GetByNameAsync(string name);
     Task AddAsync(Company entity);
     Task UpdateAsync(Company entity);

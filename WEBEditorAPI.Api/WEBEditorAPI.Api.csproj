@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Authorization/" />
-    <Folder Include="Controllers/System/" />
+    <Folder Include="Controllers/WEBEditor/" />
     <Folder Include="Filters/" />
     <Folder Include="Models/Core/Companies/" />
   </ItemGroup>

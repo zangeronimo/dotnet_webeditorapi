@@ -11,5 +11,6 @@ public class CoreProfile : Profile
         CreateMap<Module, ModuleDto>();
         CreateMap<Permission, PermissionDto>();
         CreateMap<Company, CompanyDto>();
+        CreateMap<User, UserDto>();
     }
 }

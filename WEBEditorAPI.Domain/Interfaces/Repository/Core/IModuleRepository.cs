@@ -14,6 +14,7 @@ public interface IModuleRepository
         bool desc,
         string? name,
         Status? status);
+    Task<List<Module>> GetByRangeIdAsync(List<Guid> rangeIds);
     Task<Module?> GetByIdAsync(Guid id);
     Task<Module?> GetByNameAsync(string name);
     Task AddAsync(Module entity);
