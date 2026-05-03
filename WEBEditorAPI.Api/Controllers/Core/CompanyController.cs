@@ -3,6 +3,7 @@ using WEBEditorAPI.Api.Authorization;
 using WEBEditorAPI.Api.Models.Core.Companies;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Core;
+using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
 using WEBEditorAPI.Application.Requests.UseCases;
@@ -16,12 +17,14 @@ public class CompanyController(
     IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> getAllCompaniesUC,
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
-    IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC) : ControllerBase
+    IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
+    IUseCase<UpdateCompanyRequest, CompanyDto> updateCompanyUC) : ControllerBase
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
+    private readonly IUseCase<UpdateCompanyRequest, CompanyDto> _updateCompanyUC = updateCompanyUC;
 
     [HasPermission("core.company.view")]
     [HttpGet]
@@ -53,6 +56,22 @@ public class CompanyController(
     }
 
     [HasPermission("core.company.create")]
+    [HttpPost]
+    public async Task<IActionResult> CreateCompany([FromBody] CreateCompanyModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new CreateCompanyRequest(model.Name, model.Status, context);
+        var company = await _createCompanyUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HasPermission("core.company.update")]
     [HttpPut("{id}/modules")]
     public async Task<IActionResult> UpdateModules([FromBody] UpdateModulesModel model, [FromRoute] Guid id)
     {
@@ -69,17 +88,19 @@ public class CompanyController(
     }
 
     [HasPermission("core.company.update")]
-    [HttpPost]
-    public async Task<IActionResult> UpdateModules([FromBody] CreateCompanyModel model)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCompany([FromBody] UpdateCompanyModel model, [FromRoute] Guid id)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+        if (id != model.Id)
+            throw new ApiBadRequestException("Id da rota diferente do Id do corpo da request");
 
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new CreateCompanyRequest(model.Name, model.Status, context);
-        var company = await _createCompanyUC.ExecuteAsync(request);
+        var request = new UpdateCompanyRequest(id, model.Name, model.Status, context);
+        var company = await _updateCompanyUC.ExecuteAsync(request);
 
         return Ok(company);
     }
