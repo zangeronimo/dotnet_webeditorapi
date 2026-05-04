@@ -8,18 +8,18 @@ using WEBEditorAPI.Application.Exceptions;
 
 namespace WEBEditorAPI.Application.UseCases.Core.Modules;
 
-public class DeleteModuleUC(IModuleRepository ModuleRepository, IMapper mapper) : IUseCase<DeleteRequest, ModuleDto>
+public class DeleteModuleUC(IModuleRepository moduleRepository, IMapper mapper) : IUseCase<DeleteRequest, ModuleDto>
 {
-    private readonly IModuleRepository _ModuleRepository = ModuleRepository;
+    private readonly IModuleRepository _moduleRepository = moduleRepository;
     private readonly IMapper _mapper = mapper;
 
     public async Task<ModuleDto> ExecuteAsync(DeleteRequest request)
     {
-        Module? Module = await _ModuleRepository.GetByIdAsync(request.ResourceId);
-        if (Module == null)
+        Module? module = await _moduleRepository.GetByIdAsync(request.ResourceId);
+        if (module == null)
             throw new ApiNotFoundException("Módulo não encontrado");
-        Module.Delete();
-        await _ModuleRepository.UpdateAsync(Module);
-        return _mapper.Map<ModuleDto>(Module);
+        module.Delete();
+        await _moduleRepository.UpdateAsync(module);
+        return _mapper.Map<ModuleDto>(module);
     }
 }

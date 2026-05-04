@@ -18,13 +18,15 @@ public class CompanyController(
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
     IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
-    IUseCase<UpdateCompanyRequest, CompanyDto> updateCompanyUC) : ControllerBase
+    IUseCase<UpdateCompanyRequest, CompanyDto> updateCompanyUC,
+    IUseCase<DeleteRequest, CompanyDto> deleteCompanyUC) : ControllerBase
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
     private readonly IUseCase<UpdateCompanyRequest, CompanyDto> _updateCompanyUC = updateCompanyUC;
+    private readonly IUseCase<DeleteRequest, CompanyDto> _deleteCompanyUC = deleteCompanyUC;
 
     [HasPermission("core.company.view")]
     [HttpGet]
@@ -101,6 +103,19 @@ public class CompanyController(
         var context = new RequestContext(userId, companyId);
         var request = new UpdateCompanyRequest(id, model.Name, model.Status, context);
         var company = await _updateCompanyUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HasPermission("core.company.delete")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new DeleteRequest(id, context);
+        var company = await _deleteCompanyUC.ExecuteAsync(request);
 
         return Ok(company);
     }
