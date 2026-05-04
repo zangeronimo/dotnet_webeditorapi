@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter</value>
+  </resheader>
+
+  <data name="company.not_found" xml:space="preserve">
+    <value>Empresa não encontrada</value>
+  </data>
+  <data name="company.already_exists" xml:space="preserve">
+    <value>Empresa já existe</value>
+  </data>
+  
+  <data name="auth.invalid_credentials" xml:space="preserve">
+    <value>E-mail ou senha inválido</value>
+  </data>  
+  <data name="auth.access_denied" xml:space="preserve">
+    <value>Acesso negado</value>
+  </data>
+  <data name="auth.token_expired" xml:space="preserve">
+    <value>Access Token expirado</value>
+  </data>
+  <data name="auth.invalid_grant_type" xml:space="preserve">
+    <value>grant_type inválido</value>
+  </data>
+</root>

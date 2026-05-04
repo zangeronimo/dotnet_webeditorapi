@@ -1,11 +1,14 @@
+using System.Globalization;
 using System.Text;
 using DotNetEnv;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using WEBEditorAPI.Api.Authorization;
 using WEBEditorAPI.Api.Filters;
 using WEBEditorAPI.Api.Middlewares;
+using WEBEditorAPI.Domain.Config;
 using WEBEditorAPI.Infrastructure.DI;
 using WEBEditorAPI.Infrastructure.Options;
 
@@ -39,6 +42,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod();
     });
 });
+
+// Location (i18n)
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
 builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
@@ -100,6 +106,18 @@ if (!env.IsProduction())
         RequestPath = "/files"
     });
 }
+
+// Location (i18n)
+var supportedCultures = LocalizationConfig.SupportedCultures
+    .Select(c => new CultureInfo(c))
+    .ToList();
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pt-BR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+});
+
 app.UseAuthentication();
 app.UseMiddleware<UserContextMiddleware>();
 app.UseAuthorization();

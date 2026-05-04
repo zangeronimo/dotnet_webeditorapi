@@ -1,8 +1,9 @@
-using FluentAssertions;
 using Microsoft.Extensions.Options;
+using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Infrastructure.Options;
 using WEBEditorAPI.Infrastructure.Provider;
+using Xunit;
 
 namespace WEBEditorAPI.Tests.Infrastructure.Provider;
 
@@ -18,7 +19,9 @@ public class JwtProviderTests
             ExpirationSeconds = 15,
             RefreshExpirationHours = 24
         };
+
         var options = Options.Create(jwtOptions);
+
         return new JwtProvider(options);
     }
 
@@ -50,9 +53,16 @@ public class JwtProviderTests
         var payload = provider.ValidateAccessToken(token);
 
         // Assert
-        payload.UserId.Should().Be(userId);
-        payload.CompanyId.Should().Be(companyId);
-        payload.Permissions.Should().BeEquivalentTo(permissions);
+        Assert.Equal(userId, payload.UserId);
+        Assert.Equal(companyId, payload.CompanyId);
+
+        Assert.NotNull(payload.Permissions);
+        Assert.Equal(permissions.Count, payload.Permissions.Count);
+
+        foreach (var permission in permissions)
+        {
+            Assert.Contains(permission, payload.Permissions);
+        }
     }
 
     [Fact]
@@ -72,16 +82,16 @@ public class JwtProviderTests
             TokenType.Refresh
         );
 
-        // Act
-        Action act = () => provider.ValidateAccessToken(refreshToken);
-
-        // Assert
-        act.Should().Throw<Exception>();
+        // Act & Assert
+        Assert.Throws<ApiInvalidCredentialsException>(() =>
+            provider.ValidateAccessToken(refreshToken)
+        );
     }
 
     [Fact]
     public void Should_Allow_Access_Token_As_Access_Token()
     {
+        // Arrange
         var provider = MakeSut();
 
         var token = provider.GenerateToken(
@@ -92,8 +102,10 @@ public class JwtProviderTests
             TokenType.Access
         );
 
+        // Act
         var payload = provider.ValidateAccessToken(token);
 
-        payload.Should().NotBeNull();
+        // Assert
+        Assert.NotNull(payload);
     }
 }

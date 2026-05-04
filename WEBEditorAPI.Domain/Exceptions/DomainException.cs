@@ -1,5 +1,5 @@
 
 namespace WEBEditorAPI.Domain.Exceptions;
 
-public class DomainException(string message) : Exception(message)
+public class DomainException(string key) : Exception(key)
 { }

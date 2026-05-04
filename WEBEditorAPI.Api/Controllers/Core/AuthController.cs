@@ -4,6 +4,7 @@ using WEBEditorAPI.Application.DTOs.Core;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases.Core;
+using WEBEditorAPI.Domain.Errors.Core;
 using WEBEditorAPI.Infrastructure.Options;
 
 namespace WEBEditorAPI.Api.Controllers.Core;
@@ -31,7 +32,7 @@ public class AuthController : ControllerBase
         else if (request.GrantType == "refresh_token")
             result = await RefreshToken();
         else
-            throw new ApiBadRequestException("Invalid grant_type");
+            throw new ApiBadRequestException(AuthErrors.InvalidGrantType);
 
         Response.Cookies.Append("refreshToken", result.RefreshToken, new CookieOptions
         {
@@ -52,7 +53,7 @@ public class AuthController : ControllerBase
     {
         if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken))
         {
-            throw new ApiInvalidCredentialsException("Acesso negado");
+            throw new ApiInvalidCredentialsException(AuthErrors.AccessDenied);
         }
         return await Refresh.ExecuteAsync(refreshToken);
     }

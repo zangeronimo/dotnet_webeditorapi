@@ -1,17 +1,20 @@
+using WEBEditorAPI.Domain.Errors.Core;
+
 namespace WEBEditorAPI.Application.Exceptions;
 
-public abstract class ApiException(int statusCode, string message) : Exception(message)
+public abstract class ApiException(int statusCode, string key) : Exception(key)
 {
+    public string Key { get; } = key;
     public int StatusCode { get; } = statusCode;
 }
-public class ApiInvalidCredentialsException(string message = "Usuário ou Senha inválido") : ApiException(401, message)
+public class ApiInvalidCredentialsException(string key = AuthErrors.InvalidCredentials) : ApiException(401, key)
 { }
 
-public class ApiForbiddenException(string message = "Acesso negado") : ApiException(403, message)
+public class ApiForbiddenException(string key = AuthErrors.AccessDenied) : ApiException(403, key)
 { }
 
-public class ApiNotFoundException(string message = "Recurso não encontrado") : ApiException(404, message)
+public class ApiNotFoundException(string key) : ApiException(404, key)
 { }
 
-public class ApiBadRequestException(string message = "Falha no processamento") : ApiException(400, message)
+public class ApiBadRequestException(string key) : ApiException(400, key)
 { }
