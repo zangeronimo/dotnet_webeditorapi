@@ -8,6 +8,7 @@ public class Permission : Entity
     public string Label { get; private set; } = null!;
     public Status Status { get; private set; }
     public Guid ModuleId { get; private set; }
+    public Module Module { get; private set; }
 
     public Permission(string code, string label, Status status, Guid moduleId)
     {

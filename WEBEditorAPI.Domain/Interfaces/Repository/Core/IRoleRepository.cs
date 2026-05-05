@@ -15,4 +15,5 @@ public interface IRoleRepository : IRepository<Role>
             Status? status,
             Guid companyId);
     Task<Role?> GetByNameAsync(string name, Guid companyId);
+    Task<Role?> GetByIdReadOnlyAsync(Guid id, Guid companyId);
 }

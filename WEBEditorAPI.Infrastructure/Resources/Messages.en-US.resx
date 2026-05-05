@@ -39,4 +39,14 @@
   <data name="role.already_exists" xml:space="preserve">
     <value>Role already exists</value>
   </data>
+
+  <data name="permission.not_found" xml:space="preserve">
+    <value>Permission not found</value>
+  </data>
+  <data name="permission.already_exists" xml:space="preserve">
+    <value>Permission already exists</value>
+  </data>
+  <data name="permission.some_permission_was_not_found" xml:space="preserve">
+    <value>Some permission was not found</value>
+  </data>
 </root>

@@ -16,7 +16,7 @@ public class PermissionMapping : EntityMapping<Permission>
         builder.Property(c => c.Status).HasColumnName("status").HasConversion<byte>().HasColumnType("smallint").IsRequired();
         builder.Property(r => r.ModuleId).HasColumnName("module_id").IsRequired();
 
-        builder.HasOne<Module>()
+        builder.HasOne(p => p.Module)
             .WithMany(m => m.Permissions)
             .HasForeignKey(p => p.ModuleId)
             .OnDelete(DeleteBehavior.Cascade);

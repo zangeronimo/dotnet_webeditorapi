@@ -51,9 +51,24 @@ public class RoleRepository(PlatformDbContext context) : IRoleRepository
         return (items, total);
     }
 
+    private async Task<Role?> GetByIdInternalAsync(Guid id, Guid companyId, bool asNoTracking = false)
+    {
+        IQueryable<Role> query = _context.Roles;
+        if (asNoTracking)
+            query = query.AsNoTracking();
+        return await query
+            .Include(r => r.Permissions)
+            .FirstOrDefaultAsync(r => r.Id == id && r.CompanyId == companyId);
+    }
+
     public async Task<Role?> GetByIdAsync(Guid id, Guid companyId)
     {
-        return await _context.Roles.FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
+        return await GetByIdInternalAsync(id, companyId, false);
+    }
+
+    public async Task<Role?> GetByIdReadOnlyAsync(Guid id, Guid companyId)
+    {
+        return await GetByIdInternalAsync(id, companyId, true);
     }
 
     public async Task<Role?> GetByNameAsync(string name, Guid companyId)

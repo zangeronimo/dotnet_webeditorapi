@@ -47,6 +47,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<GetByIdRequest, RoleDto>, GetRoleByIdUC>();
         services.AddScoped<IUseCase<CreateRoleRequest, RoleDto>, CreateRoleUC>();
         services.AddScoped<IUseCase<UpdateRoleRequest, RoleDto>, UpdateRoleUC>();
+        services.AddScoped<IUseCase<UpdatePermissionsRequest, RoleDto>, UpdatePermissionsUC>();
         services.AddScoped<IUseCase<DeleteRequest, RoleDto>, DeleteRoleUC>();
 
 

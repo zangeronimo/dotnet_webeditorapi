@@ -8,6 +8,7 @@ using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
 using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Roles;
+using WEBEditorAPI.Application.UseCases.Core.Roles;
 
 namespace WEBEditorAPI.Api.Controllers.Core;
 
@@ -18,12 +19,14 @@ public class RoleController(
     IUseCase<GetByIdRequest, RoleDto> getRoleByIdUC,
     IUseCase<CreateRoleRequest, RoleDto> createRoleUC,
     IUseCase<UpdateRoleRequest, RoleDto> updateRoleUC,
+    IUseCase<UpdatePermissionsRequest, RoleDto> updatePermissionsUC,
     IUseCase<DeleteRequest, RoleDto> deleteRoleUC) : ControllerBase
 {
     private readonly IUseCase<GetAllRolesFilterRequest, PaginationResult<RoleDto>> _getAllRolesUC = getAllRolesUC;
     private readonly IUseCase<GetByIdRequest, RoleDto> _getRoleByIdUC = getRoleByIdUC;
     private readonly IUseCase<CreateRoleRequest, RoleDto> _createRoleUC = createRoleUC;
     private readonly IUseCase<UpdateRoleRequest, RoleDto> _updateRoleUC = updateRoleUC;
+    private readonly IUseCase<UpdatePermissionsRequest, RoleDto> _updatePermissionsUC = updatePermissionsUC;
     private readonly IUseCase<DeleteRequest, RoleDto> _deleteRoleUC = deleteRoleUC;
 
     [HasPermission("core.role.view")]
@@ -87,6 +90,22 @@ public class RoleController(
         var role = await _updateRoleUC.ExecuteAsync(request);
 
         return Ok(role);
+    }
+
+    [HasPermission("core.role.update")]
+    [HttpPut("{id}/permissions")]
+    public async Task<IActionResult> UpdatePermissions([FromBody] UpdatePermissionsModel model, [FromRoute] Guid id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new UpdatePermissionsRequest(id, model.Permissions, context);
+        var company = await _updatePermissionsUC.ExecuteAsync(request);
+
+        return Ok(company);
     }
 
     [HasPermission("core.role.delete")]
