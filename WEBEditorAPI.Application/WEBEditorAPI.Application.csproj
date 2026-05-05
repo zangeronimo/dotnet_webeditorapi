@@ -17,6 +17,7 @@
     <Folder Include="Requests/UseCases/Culinary/Recipes/" />
     <Folder Include="UseCases/Core/Companies/" />
     <Folder Include="UseCases/Core/Modules/" />
+    <Folder Include="UseCases/Core/Roles/" />
     <Folder Include="UseCases/Culinary/Recipes/" />
   </ItemGroup>
 

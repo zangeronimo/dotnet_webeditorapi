@@ -12,13 +12,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter</value>
   </resheader>
-
-  <data name="company.not_found" xml:space="preserve">
-    <value>Empresa não encontrada</value>
-  </data>
-  <data name="company.already_exists" xml:space="preserve">
-    <value>Empresa já existe</value>
-  </data>
   
   <data name="auth.invalid_credentials" xml:space="preserve">
     <value>E-mail ou senha inválido</value>
@@ -31,5 +24,19 @@
   </data>
   <data name="auth.invalid_grant_type" xml:space="preserve">
     <value>grant_type inválido</value>
+  </data>
+
+  <data name="company.not_found" xml:space="preserve">
+    <value>Empresa não encontrada</value>
+  </data>
+  <data name="company.already_exists" xml:space="preserve">
+    <value>Empresa já existe</value>
+  </data>
+
+  <data name="role.not_found" xml:space="preserve">
+    <value>Papel não encontrado</value>
+  </data>
+  <data name="role.already_exists" xml:space="preserve">
+    <value>Papel já existe</value>
   </data>
 </root>

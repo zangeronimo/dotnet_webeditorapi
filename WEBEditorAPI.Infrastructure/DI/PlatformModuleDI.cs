@@ -5,9 +5,11 @@ using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Companies;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
+using WEBEditorAPI.Application.Requests.UseCases.Core.Roles;
 using WEBEditorAPI.Application.UseCases.Core;
 using WEBEditorAPI.Application.UseCases.Core.Companies;
 using WEBEditorAPI.Application.UseCases.Core.Modules;
+using WEBEditorAPI.Application.UseCases.Core.Roles;
 using WEBEditorAPI.Application.UseCases.Core.Users;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 using WEBEditorAPI.Infrastructure.Repositories.Core;
@@ -41,12 +43,20 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<UpdateModuleRequest, ModuleDto>, UpdateModuleUC>();
         services.AddScoped<IUseCase<DeleteRequest, ModuleDto>, DeleteModuleUC>();
 
+        services.AddScoped<IUseCase<GetAllRolesFilterRequest, PaginationResult<RoleDto>>, GetAllRolesUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, RoleDto>, GetRoleByIdUC>();
+        services.AddScoped<IUseCase<CreateRoleRequest, RoleDto>, CreateRoleUC>();
+        services.AddScoped<IUseCase<UpdateRoleRequest, RoleDto>, UpdateRoleUC>();
+        services.AddScoped<IUseCase<DeleteRequest, RoleDto>, DeleteRoleUC>();
+
+
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserCompanyRepository, UserCompanyRepository>();
         services.AddScoped<IModuleRepository, ModuleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
         return services;
     }
