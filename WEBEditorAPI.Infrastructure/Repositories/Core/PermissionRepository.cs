@@ -13,9 +13,9 @@ public class PermissionRepository(PlatformDbContext context) : IPermissionReposi
     {
         return await _context.UserCompanyModuleRoles
             .Where(ucr => ucr.UserCompanyId == userCompanyId)
-            .SelectMany(ucr => ucr.Role.Permissions
-                .Where(p => p.ModuleId == ucr.ModuleId)
-                .Select(p => p.Code))
+            .SelectMany(ucr => ucr.Role.RolePermissions
+                .Where(rp => rp.Permission.ModuleId == ucr.ModuleId)
+                .Select(rp => rp.Permission.Code))
             .Distinct()
             .ToListAsync();
     }

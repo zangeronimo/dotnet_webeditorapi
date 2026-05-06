@@ -57,7 +57,8 @@ public class RoleRepository(PlatformDbContext context) : IRoleRepository
         if (asNoTracking)
             query = query.AsNoTracking();
         return await query
-            .Include(r => r.Permissions)
+            .Include(r => r.RolePermissions)
+                .ThenInclude(rp => rp.Permission)
             .FirstOrDefaultAsync(r => r.Id == id && r.CompanyId == companyId);
     }
 

@@ -31,7 +31,7 @@ public class RoleTests
             .Select(r => new
             {
                 r.Id,
-                Permissions = r.Permissions
+                Permissions = r.RolePermissions
             })
             .First();
 
@@ -57,7 +57,7 @@ public class RoleTests
         context.SaveChanges();
 
         var saved = context.Set<Role>()
-            .Select(r => r.Permissions)
+            .Select(r => r.RolePermissions)
             .First();
 
         Assert.Empty(saved);

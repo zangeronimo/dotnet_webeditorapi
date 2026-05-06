@@ -9,6 +9,7 @@ public class Permission : Entity
     public Status Status { get; private set; }
     public Guid ModuleId { get; private set; }
     public Module Module { get; private set; }
+    public ICollection<RolePermission> RolePermissions { get; set; } = new List<RolePermission>();
 
     public Permission(string code, string label, Status status, Guid moduleId)
     {

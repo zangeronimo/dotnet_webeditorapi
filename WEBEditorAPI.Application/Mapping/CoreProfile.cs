@@ -12,6 +12,9 @@ public class CoreProfile : Profile
         CreateMap<Permission, PermissionDto>();
         CreateMap<Company, CompanyDto>();
         CreateMap<User, UserDto>();
-        CreateMap<Role, RoleDto>();
+        CreateMap<Role, RoleDto>()
+            .ForMember(dest => dest.Permissions,
+                opt => opt.MapFrom(src => src.RolePermissions
+                    .Select(rp => rp.Permission)));
     }
 }

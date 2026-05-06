@@ -17,25 +17,8 @@ public class RoleMapping : EntityMapping<Role>
 
         builder.HasOne<Company>().WithMany().HasForeignKey(r => r.CompanyId).HasConstraintName("FK_core_roles_company_id");
 
-        builder.HasMany(r => r.Permissions)
-            .WithMany()
-            .UsingEntity<Dictionary<string, object>>(
-                "core_role_permissions",
-                r => r.HasOne<Permission>()
-                      .WithMany()
-                      .HasForeignKey("permission_id")
-                      .OnDelete(DeleteBehavior.Restrict),
-
-                l => l.HasOne<Role>()
-                      .WithMany()
-                      .HasForeignKey("role_id")
-                      .OnDelete(DeleteBehavior.Cascade),
-
-                j =>
-                {
-                    j.HasKey("role_id", "permission_id");
-                    j.ToTable("core_role_permissions");
-                }
-            );
+        builder.Metadata
+            .FindNavigation(nameof(Role.RolePermissions))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

@@ -20,5 +20,9 @@ public class PermissionMapping : EntityMapping<Permission>
             .WithMany(m => m.Permissions)
             .HasForeignKey(p => p.ModuleId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(m => m.RolePermissions)
+            .WithOne(cm => cm.Permission)
+            .HasForeignKey(cm => cm.PermissionId);
     }
 }

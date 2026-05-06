@@ -7,8 +7,8 @@ public class Role : Entity
     public string Name { get; private set; } = null!;
     public Status Status { get; private set; }
     public Guid CompanyId { get; private set; }
-    private readonly List<Permission> _permissions = [];
-    public IReadOnlyCollection<Permission> Permissions => _permissions;
+    private readonly List<RolePermission> _rolePermissions = [];
+    public IReadOnlyCollection<RolePermission> RolePermissions => _rolePermissions;
 
     public Role(string name, Status status, Guid companyId) : base()
     {
@@ -28,13 +28,14 @@ public class Role : Entity
 
     public void SetPermissions(IEnumerable<Permission> permissions)
     {
-        var newPermissions = permissions.ToList();
-        _permissions.RemoveAll(m => !newPermissions.Any(n => n.Id == m.Id));
-        foreach (var permission in newPermissions)
+        var newPermissionIds = permissions.Select(m => m.Id).ToHashSet();
+        _rolePermissions.RemoveAll(m => !newPermissionIds.Contains(m.PermissionId));
+        foreach (var permission in permissions)
         {
-            if (_permissions.All(m => m.Id != permission.Id))
+            if (_rolePermissions.All(m => m.PermissionId != permission.Id))
             {
-                _permissions.Add(permission);
+                var rolePermission = new RolePermission() { PermissionId = permission.Id, RoleId = Id, Role = this, Permission = permission };
+                _rolePermissions.Add(rolePermission);
             }
         }
     }
