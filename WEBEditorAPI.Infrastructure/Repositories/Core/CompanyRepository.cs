@@ -56,7 +56,7 @@ public class CompanyRepository(PlatformDbContext context) : ICompanyRepository
         if (asNoTracking)
             query = query.AsNoTracking();
         return await query
-            .Include(c => c.Modules)
+            .Include(c => c.CompanyModules)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 

@@ -20,6 +20,7 @@ public class PlatformDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new UserMapping());
         modelBuilder.ApplyConfiguration(new CompanyMapping());
+        modelBuilder.ApplyConfiguration(new CompanyModuleMapping());
         modelBuilder.ApplyConfiguration(new UserCompanyMapping());
         modelBuilder.ApplyConfiguration(new ModuleMapping());
         modelBuilder.ApplyConfiguration(new PermissionMapping());

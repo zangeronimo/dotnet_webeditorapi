@@ -7,8 +7,8 @@ public class Company : Entity
     public string Name { get; private set; } = null!;
     public Status Status { get; private set; }
     public ICollection<UserCompany> Users { get; set; } = new List<UserCompany>();
-    private readonly List<Module> _modules = [];
-    public IReadOnlyCollection<Module> Modules => _modules;
+    private readonly List<CompanyModule> _companyModules = [];
+    public IReadOnlyCollection<CompanyModule> CompanyModules => _companyModules;
 
     public Company(string name, Status status) : base()
     {
@@ -27,13 +27,14 @@ public class Company : Entity
 
     public void SetModules(IEnumerable<Module> modules)
     {
-        var newModules = modules.ToList();
-        _modules.RemoveAll(m => !newModules.Any(n => n.Id == m.Id));
-        foreach (var module in newModules)
+        var newModuleIds = modules.Select(m => m.Id).ToHashSet();
+        _companyModules.RemoveAll(m => !newModuleIds.Contains(m.ModuleId));
+        foreach (var module in modules)
         {
-            if (_modules.All(m => m.Id != module.Id))
+            if (_companyModules.All(m => m.ModuleId != module.Id))
             {
-                _modules.Add(module);
+                var companyModule = new CompanyModule() { ModuleId = module.Id, CompanyId = Id, Company = this, Module = module };
+                _companyModules.Add(companyModule);
             }
         }
     }

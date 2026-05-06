@@ -18,5 +18,9 @@ public class ModuleMapping : EntityMapping<Module>
            .WithOne()
            .HasForeignKey(p => p.ModuleId)
            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(m => m.CompanyModules)
+            .WithOne(cm => cm.Module)
+            .HasForeignKey(cm => cm.ModuleId);
     }
 }

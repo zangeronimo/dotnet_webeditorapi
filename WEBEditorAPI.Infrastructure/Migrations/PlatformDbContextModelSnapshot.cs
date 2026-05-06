@@ -357,7 +357,7 @@ namespace WEBEditorAPI.Infrastructure.Migrations
                                 .IsUnique()
                                 .HasDatabaseName("IX_core_users_email");
 
-                            b1.ToTable("core_users");
+                            b1.ToTable("core_users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -375,7 +375,7 @@ namespace WEBEditorAPI.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("core_users");
+                            b1.ToTable("core_users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");

@@ -10,6 +10,7 @@ public class Module : Entity
     public Status Status { get; private set; }
     private readonly List<Permission> _permissions = new();
     public IReadOnlyCollection<Permission> Permissions => _permissions;
+    public ICollection<CompanyModule> CompanyModules { get; set; } = new List<CompanyModule>();
 
     public Module(string name, Status status) : base()
     {

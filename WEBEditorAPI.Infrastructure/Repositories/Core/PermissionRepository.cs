@@ -22,19 +22,10 @@ public class PermissionRepository(PlatformDbContext context) : IPermissionReposi
 
     public async Task<List<Permission>> GetByRangeIdAsync(List<Guid> rangeIds, Guid companyId)
     {
-        var sql = @"
-            SELECT p.*
-            FROM core_permissions p
-            INNER JOIN core_company_modules cm ON cm.module_id = p.module_id
-            WHERE p.deleted_at IS NULL
-            AND cm.company_id = @companyId
-            AND p.id = ANY(@rangeIds)
-        ";
-
         return await _context.Permissions
-            .FromSqlRaw(sql,
-                new Npgsql.NpgsqlParameter("@companyId", companyId),
-                new Npgsql.NpgsqlParameter("@rangeIds", rangeIds))
+            .Where(p => rangeIds.Contains(p.Id)
+                     && p.Module.CompanyModules
+                         .Any(cm => cm.CompanyId == companyId))
             .ToListAsync();
     }
 }

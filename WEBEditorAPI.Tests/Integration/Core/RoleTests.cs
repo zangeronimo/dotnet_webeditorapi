@@ -20,8 +20,7 @@ public class RoleTests
 
         var role = new Role("Admin", Status.Active, companyId);
 
-        role.Permissions.Add(permission1);
-        role.Permissions.Add(permission2);
+        role.SetPermissions(new[] { permission1, permission2 });
 
         // Act
         context.Add(role);
@@ -48,13 +47,13 @@ public class RoleTests
         var role = new Role("Admin", Status.Active, Guid.NewGuid());
         var permission = new Permission("module.view", "View", Status.Active, Guid.NewGuid());
 
-        role.Permissions.Add(permission);
+        role.SetPermissions(new[] { permission });
 
         context.Add(role);
         context.SaveChanges();
 
         // remove
-        role.Permissions.Remove(permission);
+        role.SetPermissions([]);
         context.SaveChanges();
 
         var saved = context.Set<Role>()
