@@ -16,12 +16,12 @@ public class UserCompanyModuleRoleMapping : IEntityTypeConfiguration<UserCompany
         builder.Property(x => x.ModuleId).HasColumnName("module_id");
         builder.Property(x => x.RoleId).HasColumnName("role_id");
 
-        builder.HasOne<UserCompany>()
+        builder.HasOne(x => x.UserCompany)
             .WithMany(uc => uc.ModuleRoles)
             .HasForeignKey(x => x.UserCompanyId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne<Module>()
+        builder.HasOne(x => x.Module)
             .WithMany()
             .HasForeignKey(x => x.ModuleId)
             .OnDelete(DeleteBehavior.Restrict);

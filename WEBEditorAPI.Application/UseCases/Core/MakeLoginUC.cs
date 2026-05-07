@@ -2,6 +2,7 @@ using WEBEditorAPI.Application.DTOs.Core;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests.UseCases.Core;
+using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.Interfaces.Provider;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 
@@ -31,16 +32,22 @@ public class MakeLoginUC : IMakeLogin
 
     public async Task<AuthResponse> ExecuteAsync(AuthRequest request)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email!)
-            ?? throw new ApiInvalidCredentialsException();
+        var user = await _userRepository.GetByEmailAsync(request.Email!);
+        if (user == null || user.Status == Status.Inactive)
+            throw new ApiInvalidCredentialsException();
         if (_passwordProvider.Validate(request.Password!, user.PasswordHash.Hash) == false)
         {
             throw new ApiInvalidCredentialsException();
         }
         var userCompanies = await _userCompanyRepository.GetByUserIdAsync(user.Id);
-        if (!userCompanies.Any())
+        var activeUserCompanies = userCompanies
+            .Where(x => x.Status == Status.Active
+                && x.Company.Status == Status.Active
+                && x.User.Status == Status.Active)
+            .ToList();
+        if (!activeUserCompanies.Any())
             throw new ApiInvalidCredentialsException();
-        var selectedCompany = userCompanies.OrderByDescending(x => x.LastAccessedAt).First();
+        var selectedCompany = activeUserCompanies.OrderByDescending(x => x.LastAccessedAt).First();
         var permissions = await _permissionRepository.GetByUserCompanyAsync(selectedCompany.Id);
         var token = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Access);
         if (string.IsNullOrEmpty(token))

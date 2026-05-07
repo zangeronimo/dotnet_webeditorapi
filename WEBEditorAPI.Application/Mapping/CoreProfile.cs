@@ -10,7 +10,10 @@ public class CoreProfile : Profile
     {
         CreateMap<Module, ModuleDto>();
         CreateMap<Permission, PermissionDto>();
-        CreateMap<Company, CompanyDto>();
+        CreateMap<Company, CompanyDto>()
+            .ForMember(dest => dest.Modules,
+                opt => opt.MapFrom(src => src.CompanyModules
+                    .Select(cm => cm.Module)));
         CreateMap<User, UserDto>();
         CreateMap<Role, RoleDto>()
             .ForMember(dest => dest.Permissions,

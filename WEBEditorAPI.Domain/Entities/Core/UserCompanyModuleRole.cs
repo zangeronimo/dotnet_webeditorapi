@@ -6,6 +6,8 @@ public class UserCompanyModuleRole
     public Guid ModuleId { get; private set; }
     public Guid RoleId { get; private set; }
 
+    public UserCompany UserCompany { get; private set; } = null!;
+    public Module Module { get; private set; } = null!;
     public Role Role { get; private set; } = null!;
 
     protected UserCompanyModuleRole() { }

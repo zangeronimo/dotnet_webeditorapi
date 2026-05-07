@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Domain.Entities.Core;
+using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 using WEBEditorAPI.Infrastructure.Persistence;
 
@@ -12,9 +13,18 @@ public class PermissionRepository(PlatformDbContext context) : IPermissionReposi
     public async Task<IReadOnlyList<string>> GetByUserCompanyAsync(Guid userCompanyId)
     {
         return await _context.UserCompanyModuleRoles
-            .Where(ucr => ucr.UserCompanyId == userCompanyId)
+            .Where(ucr =>
+                ucr.UserCompanyId == userCompanyId &&
+                ucr.UserCompany.Status == Status.Active &&
+                ucr.Role.Status == Status.Active &&
+                ucr.Module.Status == Status.Active)
+            .Where(ucr =>
+                ucr.UserCompany.Company.CompanyModules
+                    .Any(cm => cm.ModuleId == ucr.ModuleId))
             .SelectMany(ucr => ucr.Role.RolePermissions
-                .Where(rp => rp.Permission.ModuleId == ucr.ModuleId)
+                .Where(rp =>
+                    rp.Permission.Status == Status.Active &&
+                    rp.Permission.ModuleId == ucr.ModuleId)
                 .Select(rp => rp.Permission.Code))
             .Distinct()
             .ToListAsync();

@@ -30,6 +30,9 @@ public class UserCompanyRepository(PlatformDbContext context) : IUserCompanyRepo
 
     public async Task<IReadOnlyList<UserCompany>> GetByUserIdAsync(Guid userId)
     {
-        return await _context.UserCompanies.Where(uc => uc.UserId == userId).ToListAsync();
+        return await _context.UserCompanies
+            .Include(uc => uc.Company)
+            .Include(uc => uc.User)
+            .Where(uc => uc.UserId == userId).ToListAsync();
     }
 }
