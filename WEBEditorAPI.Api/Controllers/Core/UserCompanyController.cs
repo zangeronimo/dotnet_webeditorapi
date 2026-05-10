@@ -20,19 +20,22 @@ public class UserCompanyController : ControllerBase
     private readonly IUseCase<CreateUserCompanyRequest, UserCompanyDto> _createUserCompanyUC;
     private readonly IUseCase<UpdateUserCompanyRequest, UserCompanyDto> _updateUserCompanyUC;
     private readonly IUseCase<DeleteRequest, UserCompanyDto> _deleteUserCompanyUC;
+    private readonly IUseCase<UpdateUserCompanyAvatarRequest, UserCompanyDto> _updateUserCompanyAvatarUC;
 
     public UserCompanyController(
         IUseCase<GetAllUserCompaniesFilterRequest, PaginationResult<UserCompanyDto>> getAllUserCompaniesUC,
         IUseCase<GetByIdRequest, UserCompanyDto> getUserCompanyByIdUC,
         IUseCase<CreateUserCompanyRequest, UserCompanyDto> createUserCompanyUC,
         IUseCase<UpdateUserCompanyRequest, UserCompanyDto> updateUserCompanyUC,
-        IUseCase<DeleteRequest, UserCompanyDto> deleteUserCompanyUC)
+        IUseCase<DeleteRequest, UserCompanyDto> deleteUserCompanyUC,
+        IUseCase<UpdateUserCompanyAvatarRequest, UserCompanyDto> updateUserCompanyAvatarUC)
     {
         _getAllUserCompaniesUC = getAllUserCompaniesUC;
         _getUserCompanyByIdUC = getUserCompanyByIdUC;
         _createUserCompanyUC = createUserCompanyUC;
         _updateUserCompanyUC = updateUserCompanyUC;
         _deleteUserCompanyUC = deleteUserCompanyUC;
+        _updateUserCompanyAvatarUC = updateUserCompanyAvatarUC;
     }
 
     [HasPermission("core.usercompany.view")]
@@ -94,6 +97,23 @@ public class UserCompanyController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new UpdateUserCompanyRequest(model.Id, model.NickName, model.Status, context);
         var userCompany = await _updateUserCompanyUC.ExecuteAsync(request);
+
+        return Ok(userCompany);
+    }
+
+    [HasPermission("core.usercompany.update")]
+    [HttpPut("{id}/avatar")]
+    public async Task<IActionResult> UpdateAvatar([FromRoute] Guid id, [FromForm] UpdateUserCompanyAvatarModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        FileData fileData = new FileData(model.Avatar.OpenReadStream(), model.Avatar.FileName, model.Avatar.ContentType, model.Avatar.Length);
+        var request = new UpdateUserCompanyAvatarRequest(id, fileData, context);
+        var userCompany = await _updateUserCompanyAvatarUC.ExecuteAsync(request);
 
         return Ok(userCompany);
     }

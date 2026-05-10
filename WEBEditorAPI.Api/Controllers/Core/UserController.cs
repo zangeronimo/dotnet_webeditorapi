@@ -109,9 +109,9 @@ public class UserController : ControllerBase
         var context = new RequestContext(userId, companyId);
         FileData fileData = new FileData(model.Avatar.OpenReadStream(), model.Avatar.FileName, model.Avatar.ContentType, model.Avatar.Length);
         var request = new UserProfileAvatarRequest(fileData, context);
-        var user = await _userProfileAvatarUC.ExecuteAsync(request);
+        var avatar = await _userProfileAvatarUC.ExecuteAsync(request);
 
-        return NoContent();
+        return Ok(avatar);
     }
 
     [HasPermission("core.user.update")]
