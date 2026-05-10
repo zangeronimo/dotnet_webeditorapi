@@ -49,4 +49,17 @@
   <data name="permission.some_permission_was_not_found" xml:space="preserve">
     <value>Alguma permissão não existe</value>
   </data>
+
+  <data name="user.not_found" xml:space="preserve">
+    <value>Usuário não encontrado</value>
+  </data>
+  <data name="user.already_exists" xml:space="preserve">
+    <value>Usuário já existe</value>
+  </data>
+  <data name="user.email_already_registered" xml:space="preserve">
+    <value>Email já cadastrado</value>
+  </data>
+  <data name="user.delete_own_account_not_allowed" xml:space="preserve">
+    <value>Não é permitido deletar a própria conta</value>
+  </data>
 </root>

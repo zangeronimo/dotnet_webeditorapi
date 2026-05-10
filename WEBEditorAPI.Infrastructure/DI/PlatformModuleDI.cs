@@ -6,6 +6,7 @@ using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Companies;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Roles;
+using WEBEditorAPI.Application.Requests.UseCases.Core.Users;
 using WEBEditorAPI.Application.UseCases.Core;
 using WEBEditorAPI.Application.UseCases.Core.Companies;
 using WEBEditorAPI.Application.UseCases.Core.Modules;
@@ -24,11 +25,11 @@ public static class PlatformModuleDI
         services.AddScoped<IMakeLogin, MakeLoginUC>();
         services.AddScoped<IRefreshToken, RefreshTokenUC>();
 
-        // services.AddScoped<IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>>, GetAllUsersUC>();
+        services.AddScoped<IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>>, GetAllUsersUC>();
         services.AddScoped<IUseCase<GetByIdRequest, UserDto>, GetUserByIdUC>();
-        // services.AddScoped<IUseCase<CreateUserRequest, UserDto>, CreateUserUC>();
-        // services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
-        // services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
+        services.AddScoped<IUseCase<CreateUserRequest, UserDto>, CreateUserUC>();
+        services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
+        services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
 
         services.AddScoped<IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>>, GetAllCompaniesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, CompanyDto>, GetCompanyByIdUC>();
@@ -36,6 +37,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<UpdateModulesRequest, CompanyDto>, UpdateModulesUC>();
         services.AddScoped<IUseCase<UpdateCompanyRequest, CompanyDto>, UpdateCompanyUC>();
         services.AddScoped<IUseCase<DeleteRequest, CompanyDto>, DeleteCompanyUC>();
+        services.AddScoped<IUseCase<CompanyProfileRequest, CompanyDto>, CompanyProfileUC>();
 
         services.AddScoped<IUseCase<GetAllModulesFilterRequest, PaginationResult<ModuleDto>>, GetAllModulesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, ModuleDto>, GetModuleByIdUC>();

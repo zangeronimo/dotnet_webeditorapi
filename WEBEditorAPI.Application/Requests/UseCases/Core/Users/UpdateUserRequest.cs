@@ -1,10 +1,12 @@
-namespace WEBEditorAPI.Application.Requests.UseCases.System.Users;
+using WEBEditorAPI.Domain.Enums;
+
+namespace WEBEditorAPI.Application.Requests.UseCases.Core.Users;
 
 public sealed record UpdateUserRequest(
     Guid Id,
     string Name,
     string Email,
     string? Password,
-    List<Guid> RoleIds,
+    Status Status,
     RequestContext Context
 ) : ApplicationRequest(Context);

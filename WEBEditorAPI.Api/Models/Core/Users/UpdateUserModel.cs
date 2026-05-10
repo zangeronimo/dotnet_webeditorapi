@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using WEBEditorAPI.Domain.Enums;
 
-namespace WEBEditorAPI.Api.Models.System.Users;
+namespace WEBEditorAPI.Api.Models.Core.Users;
 
 public class UpdateUserModel
 {
@@ -17,5 +18,8 @@ public class UpdateUserModel
 
     [StringLength(50, MinimumLength = 8, ErrorMessage = "O Password deve ter entre 8 e 50 caracteres.")]
     public string? Password { get; set; }
-    public List<Guid> RoleIds { get; set; } = [];
+
+    [Required(ErrorMessage = "O campo Status é obrigatório.")]
+    [Range(0, 1, ErrorMessage = "O Status deve ser entre 0 e 1")]
+    public Status Status { get; set; }
 }

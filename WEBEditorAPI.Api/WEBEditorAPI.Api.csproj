@@ -19,6 +19,7 @@
     <Folder Include="Filters/" />
     <Folder Include="Models/Core/Companies/" />
     <Folder Include="Models/Core/Roles/" />
+    <Folder Include="Models/System/" />
   </ItemGroup>
 
   <PropertyGroup>

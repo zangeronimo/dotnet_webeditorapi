@@ -19,7 +19,8 @@ public class CompanyController(
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
     IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
     IUseCase<UpdateCompanyRequest, CompanyDto> updateCompanyUC,
-    IUseCase<DeleteRequest, CompanyDto> deleteCompanyUC) : ControllerBase
+    IUseCase<DeleteRequest, CompanyDto> deleteCompanyUC,
+    IUseCase<CompanyProfileRequest, CompanyDto> companyProfileUC) : ControllerBase
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
@@ -27,6 +28,7 @@ public class CompanyController(
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
     private readonly IUseCase<UpdateCompanyRequest, CompanyDto> _updateCompanyUC = updateCompanyUC;
     private readonly IUseCase<DeleteRequest, CompanyDto> _deleteCompanyUC = deleteCompanyUC;
+    private readonly IUseCase<CompanyProfileRequest, CompanyDto> _companyProfileUC = companyProfileUC;
 
     [HasPermission("core.company.view")]
     [HttpGet]
@@ -103,6 +105,21 @@ public class CompanyController(
         var context = new RequestContext(userId, companyId);
         var request = new UpdateCompanyRequest(id, model.Name, model.Status, context);
         var company = await _updateCompanyUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HttpPost("profile")]
+    public async Task<IActionResult> CompanyProfile([FromBody] CompanyProfileModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new CompanyProfileRequest(model.Name, context);
+        var company = await _companyProfileUC.ExecuteAsync(request);
 
         return Ok(company);
     }

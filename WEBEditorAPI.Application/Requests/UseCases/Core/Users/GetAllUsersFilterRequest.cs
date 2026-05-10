@@ -1,4 +1,6 @@
-namespace WEBEditorAPI.Application.Requests.UseCases.System.Users;
+using WEBEditorAPI.Domain.Enums;
+
+namespace WEBEditorAPI.Application.Requests.UseCases.Core.Users;
 
 public sealed record GetAllUsersFilterRequest(
     int Page,
@@ -7,4 +9,5 @@ public sealed record GetAllUsersFilterRequest(
     bool Desc,
     string? Name,
     string? Email,
+    Status? Status,
     RequestContext Context) : ApplicationRequest(Context);

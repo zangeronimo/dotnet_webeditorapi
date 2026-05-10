@@ -1,15 +1,15 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WEBEditorAPI.Api.Models.System.Users;
+using WEBEditorAPI.Api.Authorization;
+using WEBEditorAPI.Api.Models.Core.Users;
 using WEBEditorAPI.Application.DTOs;
 using WEBEditorAPI.Application.DTOs.Core;
 using WEBEditorAPI.Application.Exceptions;
 using WEBEditorAPI.Application.Interfaces;
 using WEBEditorAPI.Application.Requests;
 using WEBEditorAPI.Application.Requests.UseCases;
-using WEBEditorAPI.Application.Requests.UseCases.System.Users;
+using WEBEditorAPI.Application.Requests.UseCases.Core.Users;
 
-namespace WEBEditorAPI.Api.Controllers.System;
+namespace WEBEditorAPI.Api.Controllers.Core;
 
 [ApiController]
 [Route("api/users")]
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
         _deleteUserUC = deleteUserUC;
     }
 
-    [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
+    [HasPermission("core.user.view")]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] GetAllUsersFilterModel model)
     {
@@ -45,13 +45,13 @@ public class UserController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new GetAllUsersFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.Name, model.Email, context);
+        var request = new GetAllUsersFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.Name, model.Email, model.Status, context);
         var result = await _getAllUsersUC.ExecuteAsync(request);
 
         return Ok(result);
     }
 
-    [Authorize(Roles = "WEBEDITOR_USER_VIEW")]
+    [HasPermission("core.user.view")]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById([FromRoute] Guid id)
     {
@@ -64,7 +64,7 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [Authorize(Roles = "WEBEDITOR_USER_UPDATE")]
+    [HasPermission("core.user.create")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateUserModel model)
     {
@@ -74,13 +74,13 @@ public class UserController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new CreateUserRequest(model.Name, model.Email, model.Password, context);
+        var request = new CreateUserRequest(model.Name, model.Email, model.Password, model.Status, context);
         var user = await _createUserUC.ExecuteAsync(request);
 
         return Ok(user);
     }
 
-    [Authorize(Roles = "WEBEDITOR_USER_UPDATE")]
+    [HasPermission("core.user.update")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateUserModel model)
     {
@@ -92,13 +92,13 @@ public class UserController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new UpdateUserRequest(model.Id, model.Name, model.Email, model.Password, model.RoleIds, context);
+        var request = new UpdateUserRequest(model.Id, model.Name, model.Email, model.Password, model.Status, context);
         var user = await _updateUserUC.ExecuteAsync(request);
 
         return Ok(user);
     }
 
-    [Authorize(Roles = "WEBEDITOR_USER_DELETE")]
+    [HasPermission("core.user.delete")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
