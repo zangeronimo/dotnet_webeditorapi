@@ -52,6 +52,11 @@ public class UserCompanyRepository(PlatformDbContext context) : IUserCompanyRepo
         return (items, total);
     }
 
+    public async Task<List<UserCompanyModuleRole>> GetUserCompanyModuleRoleAsync(Guid userCompanyId)
+    {
+        return await _context.UserCompanyModuleRoles.AsNoTracking().Where(m => m.UserCompanyId == userCompanyId).ToListAsync();
+    }
+
     public async Task<UserCompany?> GetByIdAsync(Guid id, Guid companyId)
     {
         return await _context.UserCompanies

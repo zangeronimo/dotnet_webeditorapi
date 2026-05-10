@@ -15,4 +15,5 @@ public interface IUserCompanyRepository : IRepository<UserCompany>
         Status? status,
         Guid companyId);
     Task<IReadOnlyList<UserCompany>> GetByUserIdAsync(Guid userId);
+    Task<List<UserCompanyModuleRole>> GetUserCompanyModuleRoleAsync(Guid userCompanyId);
 }

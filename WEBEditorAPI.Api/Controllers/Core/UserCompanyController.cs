@@ -17,6 +17,7 @@ public class UserCompanyController : ControllerBase
 {
     private readonly IUseCase<GetAllUserCompaniesFilterRequest, PaginationResult<UserCompanyDto>> _getAllUserCompaniesUC;
     private readonly IUseCase<GetByIdRequest, UserCompanyDto> _getUserCompanyByIdUC;
+    private readonly IUseCase<GetUserCompanyModulesRequest, List<ModuleWithRolesDto>> _getModulesWithRolesUC;
     private readonly IUseCase<CreateUserCompanyRequest, UserCompanyDto> _createUserCompanyUC;
     private readonly IUseCase<UpdateUserCompanyRequest, UserCompanyDto> _updateUserCompanyUC;
     private readonly IUseCase<DeleteRequest, UserCompanyDto> _deleteUserCompanyUC;
@@ -25,6 +26,7 @@ public class UserCompanyController : ControllerBase
     public UserCompanyController(
         IUseCase<GetAllUserCompaniesFilterRequest, PaginationResult<UserCompanyDto>> getAllUserCompaniesUC,
         IUseCase<GetByIdRequest, UserCompanyDto> getUserCompanyByIdUC,
+        IUseCase<GetUserCompanyModulesRequest, List<ModuleWithRolesDto>> getModulesWithRolesUC,
         IUseCase<CreateUserCompanyRequest, UserCompanyDto> createUserCompanyUC,
         IUseCase<UpdateUserCompanyRequest, UserCompanyDto> updateUserCompanyUC,
         IUseCase<DeleteRequest, UserCompanyDto> deleteUserCompanyUC,
@@ -32,6 +34,7 @@ public class UserCompanyController : ControllerBase
     {
         _getAllUserCompaniesUC = getAllUserCompaniesUC;
         _getUserCompanyByIdUC = getUserCompanyByIdUC;
+        _getModulesWithRolesUC = getModulesWithRolesUC;
         _createUserCompanyUC = createUserCompanyUC;
         _updateUserCompanyUC = updateUserCompanyUC;
         _deleteUserCompanyUC = deleteUserCompanyUC;
@@ -50,6 +53,19 @@ public class UserCompanyController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new GetAllUserCompaniesFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.NickName, model.Status, context);
         var result = await _getAllUserCompaniesUC.ExecuteAsync(request);
+
+        return Ok(result);
+    }
+
+    [HasPermission("core.usercompany.view")]
+    [HttpGet("{id}/modules")]
+    public async Task<IActionResult> GetAllModules([FromRoute] Guid id)
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new GetUserCompanyModulesRequest(id, context);
+        var result = await _getModulesWithRolesUC.ExecuteAsync(request);
 
         return Ok(result);
     }

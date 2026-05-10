@@ -55,6 +55,11 @@ public class ModuleRepository(PlatformDbContext context) : IModuleRepository
         return await _context.Modules.Where(m => rangeIds.Contains(m.Id)).ToListAsync();
     }
 
+    public async Task<List<Module>> GetAllByCompanyIdAsync(Guid companyId)
+    {
+        return await _context.Modules.AsNoTracking().Where(m => m.CompanyModules.Any(cm => cm.CompanyId == companyId)).ToListAsync();
+    }
+
     private async Task<Module?> GetByIdInternalAsync(Guid id, bool asNoTracking = false)
     {
         IQueryable<Module> query = _context.Modules;
