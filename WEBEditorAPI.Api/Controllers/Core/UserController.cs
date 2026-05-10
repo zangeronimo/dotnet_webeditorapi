@@ -19,6 +19,8 @@ public class UserController : ControllerBase
     private readonly IUseCase<GetByIdRequest, UserDto> _getUserByIdUC;
     private readonly IUseCase<CreateUserRequest, UserDto> _createUserUC;
     private readonly IUseCase<UpdateUserRequest, UserDto> _updateUserUC;
+    private readonly IUseCase<UserProfileRequest, UserProfileDto> _userProfileUC;
+    private readonly IUseCase<UserProfileAvatarRequest, UserProfileAvatarDto> _userProfileAvatarUC;
     private readonly IUseCase<DeleteRequest, UserDto> _deleteUserUC;
 
     public UserController(
@@ -26,12 +28,16 @@ public class UserController : ControllerBase
         IUseCase<GetByIdRequest, UserDto> getUserByIdUC,
         IUseCase<CreateUserRequest, UserDto> createUserUC,
         IUseCase<UpdateUserRequest, UserDto> updateUserUC,
+        IUseCase<UserProfileRequest, UserProfileDto> userProfileUC,
+        IUseCase<UserProfileAvatarRequest, UserProfileAvatarDto> userProfileAvatarUC,
         IUseCase<DeleteRequest, UserDto> deleteUserUC)
     {
         _getAllUsersUC = getAllUsersUC;
         _getUserByIdUC = getUserByIdUC;
         _createUserUC = createUserUC;
         _updateUserUC = updateUserUC;
+        _userProfileUC = userProfileUC;
+        _userProfileAvatarUC = userProfileAvatarUC;
         _deleteUserUC = deleteUserUC;
     }
 
@@ -78,6 +84,34 @@ public class UserController : ControllerBase
         var user = await _createUserUC.ExecuteAsync(request);
 
         return Ok(user);
+    }
+
+    [HttpPut("profile")]
+    public async Task<IActionResult> UserProfile([FromBody] UserProfileModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new UserProfileRequest(model.Name, model.Email, model.Password, model.NickName, context);
+        var user = await _userProfileUC.ExecuteAsync(request);
+
+        return Ok(user);
+    }
+
+    [HttpPut("profile/avatar")]
+    public async Task<IActionResult> UpdateAvatar([FromForm] UserProfileAvatarModel model)
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        FileData fileData = new FileData(model.Avatar.OpenReadStream(), model.Avatar.FileName, model.Avatar.ContentType, model.Avatar.Length);
+        var request = new UserProfileAvatarRequest(fileData, context);
+        var user = await _userProfileAvatarUC.ExecuteAsync(request);
+
+        return NoContent();
     }
 
     [HasPermission("core.user.update")]

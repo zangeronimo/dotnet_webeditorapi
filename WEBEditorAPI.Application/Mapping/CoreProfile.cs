@@ -15,6 +15,7 @@ public class CoreProfile : Profile
                 opt => opt.MapFrom(src => src.CompanyModules
                     .Select(cm => cm.Module)));
         CreateMap<User, UserDto>();
+        CreateMap<UserCompany, UserCompanyDto>();
         CreateMap<Role, RoleDto>()
             .ForMember(dest => dest.Permissions,
                 opt => opt.MapFrom(src => src.RolePermissions

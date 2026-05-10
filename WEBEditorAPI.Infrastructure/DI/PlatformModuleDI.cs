@@ -29,6 +29,8 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<GetByIdRequest, UserDto>, GetUserByIdUC>();
         services.AddScoped<IUseCase<CreateUserRequest, UserDto>, CreateUserUC>();
         services.AddScoped<IUseCase<UpdateUserRequest, UserDto>, UpdateUserUC>();
+        services.AddScoped<IUseCase<UserProfileRequest, UserProfileDto>, UserProfileUC>();
+        services.AddScoped<IUseCase<UserProfileAvatarRequest, UserProfileAvatarDto>, UserProfileAvatarUC>();
         services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
 
         services.AddScoped<IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>>, GetAllCompaniesUC>();

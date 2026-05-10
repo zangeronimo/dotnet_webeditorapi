@@ -62,4 +62,8 @@
   <data name="user.delete_own_account_not_allowed" xml:space="preserve">
     <value>Deleting your own account is not allowed</value>
   </data>
+
+  <data name="usercompany.not_found" xml:space="preserve">
+    <value>No relationship found between user and company</value>
+  </data>
 </root>

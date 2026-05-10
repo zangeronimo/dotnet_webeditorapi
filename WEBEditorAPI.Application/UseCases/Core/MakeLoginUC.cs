@@ -42,8 +42,8 @@ public class MakeLoginUC : IMakeLogin
         var userCompanies = await _userCompanyRepository.GetByUserIdAsync(user.Id);
         var activeUserCompanies = userCompanies
             .Where(x => x.Status == Status.Active
-                && x.Company.Status == Status.Active
-                && x.User.Status == Status.Active)
+                && x.Company!.Status == Status.Active
+                && x.User!.Status == Status.Active)
             .ToList();
         if (!activeUserCompanies.Any())
             throw new ApiInvalidCredentialsException();
@@ -59,6 +59,8 @@ public class MakeLoginUC : IMakeLogin
         {
             throw new ApiBadRequestException("Falha ao gerar JWT");
         }
+        selectedCompany.MakeLogin();
+        await _userCompanyRepository.UpdateAsync(selectedCompany);
         return new AuthResponse()
         {
             Token = token,

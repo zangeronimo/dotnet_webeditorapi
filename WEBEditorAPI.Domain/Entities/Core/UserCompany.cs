@@ -39,14 +39,19 @@ public class UserCompany : Entity
         Status = newStatus;
     }
 
+    public void MakeLogin()
+    {
+        LastAccessedAt = DateTimeOffset.UtcNow;
+    }
+
     public void SetInvite()
     {
-        InvitedAt = DateTimeOffset.Now;
+        InvitedAt = DateTimeOffset.UtcNow;
     }
 
     public void SetJoined()
     {
-        JoinedAt = DateTimeOffset.Now;
+        JoinedAt = DateTimeOffset.UtcNow;
     }
 
     public void SetModuleRoles(IEnumerable<(Guid moduleId, Guid roleId)> roles)
