@@ -1,13 +1,56 @@
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using WEBEditorAPI.Domain.Entities.Core;
+using WEBEditorAPI.Domain.Enums;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 using WEBEditorAPI.Infrastructure.Persistence;
+using WEBEditorAPI.Infrastructure.Persistence.Query;
 
 namespace WEBEditorAPI.Infrastructure.Repositories.Core;
 
 public class UserCompanyRepository(PlatformDbContext context) : IUserCompanyRepository
 {
     private readonly PlatformDbContext _context = context;
+
+    public async Task<(IEnumerable<UserCompany> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? nickName, Status? status, Guid companyId)
+    {
+        var query = _context.UserCompanies
+            .AsNoTracking()
+            .Where(uc => uc.CompanyId == companyId);
+
+        if (!string.IsNullOrEmpty(nickName))
+        {
+            var pattern = $"%{nickName}%";
+            query = query.Where(c => EF.Functions.ILike(EF.Functions.Unaccent(c.NickName ?? ""), EF.Functions.Unaccent(pattern)));
+        }
+
+        if (status != null)
+        {
+            query = query.Where(c => c.Status == status);
+        }
+
+        // total before pagination
+        var total = await query.CountAsync();
+
+        query = OrderByHelper.ApplyOrdering(
+            query,
+            orderBy,
+            desc,
+            allowedFields:
+            [
+                "NickName",
+                "Status"
+            ]
+        );
+
+        // pagination
+        var items = await query
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (items, total);
+    }
 
     public async Task<UserCompany?> GetByIdAsync(Guid id, Guid companyId)
     {

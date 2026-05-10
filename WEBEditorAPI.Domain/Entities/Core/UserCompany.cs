@@ -37,6 +37,7 @@ public class UserCompany : Entity
         NickName = newNickName;
         AvatarUrl = newAvatarUrl;
         Status = newStatus;
+        Touch();
     }
 
     public void MakeLogin()

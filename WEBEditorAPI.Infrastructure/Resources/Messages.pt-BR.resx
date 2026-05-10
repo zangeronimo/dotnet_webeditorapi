@@ -66,4 +66,10 @@
   <data name="usercompany.not_found" xml:space="preserve">
     <value>Relação entre usuário e empresa não encontrada</value>
   </data>
+  <data name="usercompany.already_exists" xml:space="preserve">
+    <value>Relação entre usuário e empresa já existe</value>
+  </data>
+  <data name="usercompany.delete_own_account_not_allowed" xml:space="preserve">
+    <value>Não é permitido deletar a própria conta</value>
+  </data>
 </root>

@@ -27,7 +27,7 @@ public class UserCompanyMapping : EntityMapping<UserCompany>
             .HasForeignKey(x => x.UserCompanyId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasIndex(x => new { x.UserId, x.CompanyId }).IsUnique();
+        builder.HasIndex(x => new { x.UserId, x.CompanyId }).IsUnique().HasFilter("\"deleted_at\" IS NULL");
 
     }
 }

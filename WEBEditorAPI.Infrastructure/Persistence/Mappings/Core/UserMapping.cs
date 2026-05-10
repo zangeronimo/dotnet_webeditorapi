@@ -16,7 +16,7 @@ public class UserMapping : EntityMapping<User>
         builder.OwnsOne(u => u.Email, email =>
         {
             email.Property(e => e.Value).HasColumnName("email").HasMaxLength(200).IsRequired();
-            email.HasIndex(e => e.Value).IsUnique().HasDatabaseName("IX_core_users_email");
+            email.HasIndex(e => e.Value).IsUnique().HasDatabaseName("IX_core_users_email").HasFilter("\"deleted_at\" IS NULL");
         });
 
         builder.OwnsOne(u => u.PasswordHash, password =>

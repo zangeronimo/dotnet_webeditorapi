@@ -6,11 +6,13 @@ using WEBEditorAPI.Application.Requests.UseCases;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Companies;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Modules;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Roles;
+using WEBEditorAPI.Application.Requests.UseCases.Core.UserCompanies;
 using WEBEditorAPI.Application.Requests.UseCases.Core.Users;
 using WEBEditorAPI.Application.UseCases.Core;
 using WEBEditorAPI.Application.UseCases.Core.Companies;
 using WEBEditorAPI.Application.UseCases.Core.Modules;
 using WEBEditorAPI.Application.UseCases.Core.Roles;
+using WEBEditorAPI.Application.UseCases.Core.UserCompanies;
 using WEBEditorAPI.Application.UseCases.Core.Users;
 using WEBEditorAPI.Domain.Interfaces.Repository.Core;
 using WEBEditorAPI.Infrastructure.Repositories.Core;
@@ -32,6 +34,12 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<UserProfileRequest, UserProfileDto>, UserProfileUC>();
         services.AddScoped<IUseCase<UserProfileAvatarRequest, UserProfileAvatarDto>, UserProfileAvatarUC>();
         services.AddScoped<IUseCase<DeleteRequest, UserDto>, DeleteUserUC>();
+
+        services.AddScoped<IUseCase<GetAllUserCompaniesFilterRequest, PaginationResult<UserCompanyDto>>, GetAllUserCompaniesUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, UserCompanyDto>, GetUserCompanyByIdUC>();
+        services.AddScoped<IUseCase<CreateUserCompanyRequest, UserCompanyDto>, CreateUserCompanyUC>();
+        services.AddScoped<IUseCase<UpdateUserCompanyRequest, UserCompanyDto>, UpdateUserCompanyUC>();
+        services.AddScoped<IUseCase<DeleteRequest, UserCompanyDto>, DeleteUserCompanyUC>();
 
         services.AddScoped<IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>>, GetAllCompaniesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, CompanyDto>, GetCompanyByIdUC>();

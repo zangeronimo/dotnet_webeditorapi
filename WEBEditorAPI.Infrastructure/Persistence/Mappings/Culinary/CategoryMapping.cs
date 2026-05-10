@@ -47,7 +47,7 @@ public class CategoryMapping : EntityMapping<Category>
             .HasForeignKey(x => x.ParentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => new { x.CompanyId, x.Slug }).IsUnique();
+        builder.HasIndex(x => new { x.CompanyId, x.Slug }).IsUnique().HasFilter("\"deleted_at\" IS NULL");
         builder.HasIndex(x => new { x.CompanyId, x.ParentId });
         builder.HasIndex(x => new { x.CompanyId, x.Status });
         builder.HasIndex(x => x.CompanyId);

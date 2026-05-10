@@ -109,7 +109,7 @@ public class CompanyController(
         return Ok(company);
     }
 
-    [HttpPost("profile")]
+    [HttpPut("profile")]
     public async Task<IActionResult> CompanyProfile([FromBody] CompanyProfileModel model)
     {
         if (!ModelState.IsValid)
