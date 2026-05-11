@@ -1,0 +1,18 @@
+services:
+  webeditor-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: webeditor-api
+
+    network_mode: host
+
+    env_file:
+      - ./WEBEditorAPI.Api/.env.development
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:4000
+
+    restart: unless-stopped
