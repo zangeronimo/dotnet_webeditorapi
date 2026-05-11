@@ -39,6 +39,19 @@
   <data name="role.already_exists" xml:space="preserve">
     <value>Papel já existe</value>
   </data>
+  <data name="role.invalid" xml:space="preserve">
+    <value>O Papel selecionado não possui permissões para o módulo informado</value>
+  </data>
+
+  <data name="module.not_found" xml:space="preserve">
+    <value>Módulo não encontrado</value>
+  </data>
+  <data name="module.already_exists" xml:space="preserve">
+    <value>Módulo já existe</value>
+  </data>
+  <data name="module.invalid" xml:space="preserve">
+    <value>A requisição contém módulos duplicados ou inválidos</value>
+  </data>
 
   <data name="permission.not_found" xml:space="preserve">
     <value>Permissão não encontrada</value>

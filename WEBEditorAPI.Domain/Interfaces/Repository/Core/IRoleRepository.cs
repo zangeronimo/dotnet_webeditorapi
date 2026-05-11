@@ -14,6 +14,7 @@ public interface IRoleRepository : IRepository<Role>
             string? name,
             Status? status,
             Guid companyId);
+    Task<List<Role>> GetByRangeIdAsync(List<Guid> rangeIds);
     Task<List<Role>> GetAllByCompanyIdAsync(Guid companyId);
     Task<Role?> GetByNameAsync(string name, Guid companyId);
     Task<Role?> GetByIdReadOnlyAsync(Guid id, Guid companyId);

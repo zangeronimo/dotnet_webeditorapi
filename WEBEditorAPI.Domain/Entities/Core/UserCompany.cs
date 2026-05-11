@@ -63,7 +63,6 @@ public class UserCompany : Entity
         {
             _moduleRoles.Add(new UserCompanyModuleRole(Id, moduleId, roleId));
         }
-
         Touch();
     }
 }

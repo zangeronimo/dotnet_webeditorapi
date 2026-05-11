@@ -52,7 +52,7 @@ public class ModuleRepository(PlatformDbContext context) : IModuleRepository
 
     public async Task<List<Module>> GetByRangeIdAsync(List<Guid> rangeIds)
     {
-        return await _context.Modules.Where(m => rangeIds.Contains(m.Id)).ToListAsync();
+        return await _context.Modules.Include(m => m.CompanyModules).Where(m => rangeIds.Contains(m.Id)).ToListAsync();
     }
 
     public async Task<List<Module>> GetAllByCompanyIdAsync(Guid companyId)

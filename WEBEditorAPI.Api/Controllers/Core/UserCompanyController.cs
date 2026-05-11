@@ -20,6 +20,7 @@ public class UserCompanyController : ControllerBase
     private readonly IUseCase<GetUserCompanyModulesRequest, List<ModuleWithRolesDto>> _getModulesWithRolesUC;
     private readonly IUseCase<CreateUserCompanyRequest, UserCompanyDto> _createUserCompanyUC;
     private readonly IUseCase<UpdateUserCompanyRequest, UserCompanyDto> _updateUserCompanyUC;
+    private readonly IUseCase<UpdateUserCompanyModulesRequest, UserCompanyDto> _updateUserCompanyModulesUC;
     private readonly IUseCase<DeleteRequest, UserCompanyDto> _deleteUserCompanyUC;
     private readonly IUseCase<UpdateUserCompanyAvatarRequest, UserCompanyDto> _updateUserCompanyAvatarUC;
 
@@ -29,6 +30,7 @@ public class UserCompanyController : ControllerBase
         IUseCase<GetUserCompanyModulesRequest, List<ModuleWithRolesDto>> getModulesWithRolesUC,
         IUseCase<CreateUserCompanyRequest, UserCompanyDto> createUserCompanyUC,
         IUseCase<UpdateUserCompanyRequest, UserCompanyDto> updateUserCompanyUC,
+        IUseCase<UpdateUserCompanyModulesRequest, UserCompanyDto> updateUserCompanyModulesUC,
         IUseCase<DeleteRequest, UserCompanyDto> deleteUserCompanyUC,
         IUseCase<UpdateUserCompanyAvatarRequest, UserCompanyDto> updateUserCompanyAvatarUC)
     {
@@ -37,6 +39,7 @@ public class UserCompanyController : ControllerBase
         _getModulesWithRolesUC = getModulesWithRolesUC;
         _createUserCompanyUC = createUserCompanyUC;
         _updateUserCompanyUC = updateUserCompanyUC;
+        _updateUserCompanyModulesUC = updateUserCompanyModulesUC;
         _deleteUserCompanyUC = deleteUserCompanyUC;
         _updateUserCompanyAvatarUC = updateUserCompanyAvatarUC;
     }
@@ -113,6 +116,22 @@ public class UserCompanyController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new UpdateUserCompanyRequest(model.Id, model.NickName, model.Status, context);
         var userCompany = await _updateUserCompanyUC.ExecuteAsync(request);
+
+        return Ok(userCompany);
+    }
+
+    [HasPermission("core.usercompany.update")]
+    [HttpPut("{id}/modules")]
+    public async Task<IActionResult> UpdateModules([FromRoute] Guid id, [FromBody] UpdateUserCompanyModulesModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new UpdateUserCompanyModulesRequest(id, model.Roles.Select(r => new ModuleRoleRequest(r.ModuleId, r.RoleId)).ToList(), context);
+        var userCompany = await _updateUserCompanyModulesUC.ExecuteAsync(request);
 
         return Ok(userCompany);
     }

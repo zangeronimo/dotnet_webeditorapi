@@ -39,6 +39,19 @@
   <data name="role.already_exists" xml:space="preserve">
     <value>Role already exists</value>
   </data>
+  <data name="role.invalid" xml:space="preserve">
+    <value>The selected role does not contain permissions for the specified module</value>
+  </data>
+
+  <data name="module.not_found" xml:space="preserve">
+    <value>Module not found</value>
+  </data>
+  <data name="module.already_exists" xml:space="preserve">
+    <value>Module already exists</value>
+  </data>
+  <data name="module.invalid" xml:space="preserve">
+    <value>The request contains duplicated or invalid modules</value>
+  </data>
 
   <data name="permission.not_found" xml:space="preserve">
     <value>Permission not found</value>

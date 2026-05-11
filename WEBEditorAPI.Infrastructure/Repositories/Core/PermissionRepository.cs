@@ -13,6 +13,7 @@ public class PermissionRepository(PlatformDbContext context) : IPermissionReposi
     public async Task<IReadOnlyList<string>> GetByUserCompanyAsync(Guid userCompanyId)
     {
         return await _context.UserCompanyModuleRoles
+            .AsNoTracking()
             .Where(ucr =>
                 ucr.UserCompanyId == userCompanyId &&
                 ucr.UserCompany.Status == Status.Active &&
