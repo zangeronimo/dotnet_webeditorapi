@@ -1,8 +1,8 @@
 # ===== CONFIG =====
 
 CONTEXT=PlatformDbContext
-INFRA=WEBEditorAPI.Infrastructure
-API=WEBEditorAPI.Api
+INFRA=Nexora.Infrastructure
+API=Nexora.Api
 MIGRATION?=NewMigration
 
 DOCKER_COMPOSE=docker compose

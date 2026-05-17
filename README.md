@@ -1,4 +1,4 @@
-# WebEditor API
+# Nexora API
 
 A clean architecture API built with **.NET 10**, designed to manage entities such as **Company**, **User**, **Role**, and **Module**.  
 The project emphasizes separation of concerns, dependency injection, and maintainability, while leveraging Entity Framework Core and PostgreSQL.
@@ -17,12 +17,12 @@ The project emphasizes separation of concerns, dependency injection, and maintai
 
 ## 🏗️ Project Structure
 
-dotnet_webeditorapi/
+nexora-api/
 ├── src/
-│   ├── WEBEditorAPI.Domain/          # Entities and contracts (repository interfaces)
-│   ├── WEBEditorAPI.Application/     # Services and use cases (business logic)
-│   ├── WEBEditorAPI.Infrastructure/  # Infrastructure (EF Core, DbContext, repositories, DI)
-│   └── WEBEditorAPI.API/             # Minimal API endpoints
+│   ├── Nexora.Domain/          # Entities and contracts (repository interfaces)
+│   ├── Nexora.Application/     # Services and use cases (business logic)
+│   ├── Nexora.Infrastructure/  # Infrastructure (EF Core, DbContext, repositories, DI)
+│   └── Nexora.API/             # Minimal API endpoints
 └── tests/                            # Unit and integration tests
 
 ### 📌 Layers

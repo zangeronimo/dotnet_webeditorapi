@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nexora.Domain\Nexora.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs/Culinary/" />
+    <Folder Include="DTOs/JsonLd/" />
+    <Folder Include="Exceptions/" />
+    <Folder Include="Mapping/" />
+    <Folder Include="Requests/JsonLd/" />
+    <Folder Include="Requests/UseCases/Core/Companies/" />
+    <Folder Include="Requests/UseCases/Core/UserCompanies/" />
+    <Folder Include="Requests/UseCases/Culinary/Categories/" />
+    <Folder Include="Requests/UseCases/Culinary/Levels/" />
+    <Folder Include="Requests/UseCases/Culinary/Ratings/" />
+    <Folder Include="Requests/UseCases/Culinary/Recipes/" />
+    <Folder Include="UseCases/Core/Companies/" />
+    <Folder Include="UseCases/Core/Modules/" />
+    <Folder Include="UseCases/Core/Roles/" />
+    <Folder Include="UseCases/Culinary/Recipes/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Nexora.Domain.Entities.Core;
+
+namespace Nexora.Infrastructure.Persistence.Mappings.Core;
+
+public class ModuleMapping : EntityMapping<Module>
+{
+    public override void Configure(EntityTypeBuilder<Module> builder)
+    {
+        base.Configure(builder);
+        builder.ToTable("core_modules");
+
+        builder.Property(c => c.Name).HasColumnName("name").HasMaxLength(30).IsRequired();
+        builder.Property(c => c.Status).HasColumnName("status").HasConversion<byte>().HasColumnType("smallint").IsRequired();
+
+        builder.HasMany(m => m.Permissions)
+           .WithOne()
+           .HasForeignKey(p => p.ModuleId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(m => m.CompanyModules)
+            .WithOne(cm => cm.Module)
+            .HasForeignKey(cm => cm.ModuleId);
+    }
+}

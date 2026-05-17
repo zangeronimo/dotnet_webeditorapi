@@ -1,15 +1,18 @@
 services:
-  webeditor-api:
+  nexora-api:
     build:
       context: .
       dockerfile: Dockerfile
 
-    container_name: webeditor-api
+    container_name: nexora-api
 
     network_mode: host
 
+    volumes:
+      - ./Nexora.Api/upload:/app/upload
+
     env_file:
-      - ./WEBEditorAPI.Api/.env.development
+      - ./Nexora.Api/.env.development
 
     environment:
       ASPNETCORE_ENVIRONMENT: Development

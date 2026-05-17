@@ -1,0 +1,68 @@
+using Nexora.Domain.Enums;
+
+namespace Nexora.Domain.Entities.Core;
+
+public class UserCompany : Entity
+{
+    public Guid UserId { get; protected set; }
+    public User? User { get; protected set; }
+
+    public Guid CompanyId { get; protected set; }
+    public Company? Company { get; protected set; }
+
+    public string? NickName { get; protected set; }
+    public string? AvatarUrl { get; protected set; }
+    public DateTimeOffset? InvitedAt { get; protected set; }
+    public DateTimeOffset? JoinedAt { get; protected set; }
+
+    public DateTimeOffset? LastAccessedAt { get; private set; }
+
+    public Status Status { get; private set; }
+    private readonly List<UserCompanyModuleRole> _moduleRoles = new();
+    public IReadOnlyCollection<UserCompanyModuleRole> ModuleRoles => _moduleRoles;
+
+    protected UserCompany() : base() { }
+
+    public UserCompany(Guid userId, Guid companyId, string? nickName, string? avatarUrl, Status status)
+    {
+        UserId = userId;
+        CompanyId = companyId;
+        NickName = nickName;
+        AvatarUrl = avatarUrl;
+        Status = status;
+    }
+
+    public void Update(string? newNickName, string? newAvatarUrl, Status newStatus)
+    {
+        NickName = newNickName;
+        AvatarUrl = newAvatarUrl;
+        Status = newStatus;
+        Touch();
+    }
+
+    public void MakeLogin()
+    {
+        LastAccessedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void SetInvite()
+    {
+        InvitedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void SetJoined()
+    {
+        JoinedAt = DateTimeOffset.UtcNow;
+    }
+
+    public void SetModuleRoles(IEnumerable<(Guid moduleId, Guid roleId)> roles)
+    {
+        _moduleRoles.Clear();
+
+        foreach (var (moduleId, roleId) in roles)
+        {
+            _moduleRoles.Add(new UserCompanyModuleRole(Id, moduleId, roleId));
+        }
+        Touch();
+    }
+}

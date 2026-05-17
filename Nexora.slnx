@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Nexora.Api/Nexora.Api.csproj" />
+  <Project Path="Nexora.Application/Nexora.Application.csproj" />
+  <Project Path="Nexora.Domain/Nexora.Domain.csproj" />
+  <Project Path="Nexora.Infrastructure/Nexora.Infrastructure.csproj" />
+  <Project Path="Nexora.Tests/Nexora.Tests.csproj" />
+</Solution>
