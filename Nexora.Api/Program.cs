@@ -67,7 +67,7 @@ builder.Services.AddAuthentication("Bearer")
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = "Nexora",
+            ValidIssuer = "Nexora-api",
             ValidateAudience = true,
             ValidAudience = "Nexora",
             ValidateLifetime = true,
