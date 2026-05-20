@@ -44,6 +44,19 @@ public class AuthController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        Response.Cookies.Append("refreshToken", "", new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow
+        });
+        return NoContent();
+    }
+
     private async Task<AuthResponse> MakeLogin(AuthRequest request)
     {
         return await Login.ExecuteAsync(request);
