@@ -3,6 +3,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Domain.Interfaces.Repository.Core;
+using Nexora.Domain.Interfaces.Repository.System;
 
 namespace Nexora.Application.UseCases.Core;
 

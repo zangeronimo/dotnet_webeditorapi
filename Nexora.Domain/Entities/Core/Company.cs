@@ -1,3 +1,4 @@
+using Nexora.Domain.Entities.System;
 using Nexora.Domain.Enums;
 
 namespace Nexora.Domain.Entities.Core;

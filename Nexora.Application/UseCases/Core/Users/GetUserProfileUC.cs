@@ -1,12 +1,16 @@
 using AutoMapper;
 using Nexora.Application.DTOs.Core;
+using Nexora.Application.DTOs.System;
 using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases.Core.Users;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 using Nexora.Domain.Enums;
 using Nexora.Domain.Errors.Core;
+using Nexora.Domain.Errors.System;
 using Nexora.Domain.Interfaces.Repository.Core;
+using Nexora.Domain.Interfaces.Repository.System;
 
 namespace Nexora.Application.UseCases.Core.Users;
 

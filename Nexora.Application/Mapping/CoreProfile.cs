@@ -1,6 +1,8 @@
 using AutoMapper;
 using Nexora.Application.DTOs.Core;
+using Nexora.Application.DTOs.System;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 
 namespace Nexora.Application.Mapping;
 

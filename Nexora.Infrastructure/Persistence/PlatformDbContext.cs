@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 using Nexora.Infrastructure.Persistence.Mappings.Core;
+using Nexora.Infrastructure.Persistence.Mappings.System;
 
 namespace Nexora.Infrastructure.Persistence;
 

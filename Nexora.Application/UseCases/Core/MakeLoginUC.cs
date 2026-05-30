@@ -5,6 +5,7 @@ using Nexora.Application.Requests.UseCases.Core;
 using Nexora.Domain.Enums;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Domain.Interfaces.Repository.Core;
+using Nexora.Domain.Interfaces.Repository.System;
 
 namespace Nexora.Application.UseCases.Core;
 

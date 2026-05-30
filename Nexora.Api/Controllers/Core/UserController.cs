@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nexora.Api.Authorization;
-using Nexora.Api.Models.Core.Users;
+using Nexora.Api.Models.System.Users;
 using Nexora.Application.DTOs;
 using Nexora.Application.DTOs.Core;
+using Nexora.Application.DTOs.System;
 using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests;
@@ -13,7 +14,7 @@ using Nexora.Application.Requests.UseCases.Core.Users;
 namespace Nexora.Api.Controllers.Core;
 
 [ApiController]
-[Route("api/users")]
+[Route("api/core/users")]
 public class UserController : ControllerBase
 {
     private readonly IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>> _getAllUsersUC;

@@ -1,21 +1,24 @@
 using Microsoft.Extensions.DependencyInjection;
 using Nexora.Application.DTOs;
 using Nexora.Application.DTOs.Core;
+using Nexora.Application.DTOs.System;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Core.Companies;
 using Nexora.Application.Requests.UseCases.Core.Modules;
-using Nexora.Application.Requests.UseCases.Core.Roles;
-using Nexora.Application.Requests.UseCases.Core.UserCompanies;
+using Nexora.Application.Requests.UseCases.System.Roles;
+using Nexora.Application.Requests.UseCases.System.UserCompanies;
 using Nexora.Application.Requests.UseCases.Core.Users;
 using Nexora.Application.UseCases.Core;
 using Nexora.Application.UseCases.Core.Companies;
 using Nexora.Application.UseCases.Core.Modules;
-using Nexora.Application.UseCases.Core.Roles;
-using Nexora.Application.UseCases.Core.UserCompanies;
+using Nexora.Application.UseCases.System.Roles;
+using Nexora.Application.UseCases.System.UserCompanies;
 using Nexora.Application.UseCases.Core.Users;
 using Nexora.Domain.Interfaces.Repository.Core;
 using Nexora.Infrastructure.Repositories.Core;
+using Nexora.Domain.Interfaces.Repository.System;
+using Nexora.Infrastructure.Repositories.System;
 
 namespace Nexora.Infrastructure.DI;
 

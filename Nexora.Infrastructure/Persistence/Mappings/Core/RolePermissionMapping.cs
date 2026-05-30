@@ -1,7 +1,6 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 
 namespace Nexora.Infrastructure.Persistence.Mappings.Core;
 
