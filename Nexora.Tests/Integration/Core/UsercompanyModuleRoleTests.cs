@@ -1,4 +1,4 @@
-using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 using Nexora.Tests.Infrastructure;
 
 namespace Nexora.Tests.Integration.Core;

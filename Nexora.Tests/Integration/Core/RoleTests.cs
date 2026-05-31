@@ -1,4 +1,5 @@
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Entities.System;
 using Nexora.Domain.Enums;
 using Nexora.Tests.Infrastructure;
 
