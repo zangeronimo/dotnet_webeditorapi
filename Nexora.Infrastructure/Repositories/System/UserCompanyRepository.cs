@@ -59,6 +59,7 @@ public class UserCompanyRepository(PlatformDbContext context) : IUserCompanyRepo
     public async Task<UserCompany?> GetByIdAsync(Guid id, Guid companyId)
     {
         return await _context.UserCompanies
+            .Include(uc => uc.User)
             .Include(uc => uc.ModuleRoles)
             .Include(uc => uc.Company)
             .Where(uc => uc.Id == id && uc.CompanyId == companyId)

@@ -1,5 +1,3 @@
-using System;
-
 namespace Nexora.Application.DTOs.Core;
 
 public class UserProfileAvatarDto

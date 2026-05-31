@@ -50,6 +50,6 @@ public class UserProfileUC(IUserRepository userRepository, IUserCompanyRepositor
         UserCompany? updatedUserCompany = await _userCompanyRepository.GetByIdAsync(selectedUserCompany.Id, request.Context.CompanyId);
         UserCompanyDto? userCompanyDto = _mapper.Map<UserCompanyDto>(updatedUserCompany);
 
-        return new UserProfileDto() { User = userDto, UserCompany = userCompanyDto };
+        return new UserProfileDto() { UserCompany = userCompanyDto };
     }
 }

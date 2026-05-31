@@ -32,6 +32,6 @@ public class GetUserProfileUC(IUserRepository userRepository, IUserCompanyReposi
         UserDto userDto = _mapper.Map<UserDto>(user);
         UserCompanyDto? userCompanyDto = _mapper.Map<UserCompanyDto>(selectedUserCompany);
 
-        return new UserProfileDto() { User = userDto, UserCompany = userCompanyDto };
+        return new UserProfileDto() { UserCompany = userCompanyDto };
     }
 }
