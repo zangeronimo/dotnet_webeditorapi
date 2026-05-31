@@ -15,6 +15,7 @@ public class UserCompanyRepository(PlatformDbContext context) : IUserCompanyRepo
     {
         var query = _context.UserCompanies
             .AsNoTracking()
+            .Include(uc => uc.User)
             .Where(uc => uc.CompanyId == companyId);
 
         if (!string.IsNullOrEmpty(nickName))
