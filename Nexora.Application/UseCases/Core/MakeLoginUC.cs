@@ -3,6 +3,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases.Core;
 using Nexora.Domain.Enums;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Domain.Interfaces.Repository.Core;
 using Nexora.Domain.Interfaces.Repository.System;
@@ -53,12 +54,12 @@ public class MakeLoginUC : IMakeLogin
         var token = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Access);
         if (string.IsNullOrEmpty(token))
         {
-            throw new ApiBadRequestException("Falha ao gerar JWT");
+            throw new ApiBadRequestException(AuthErrors.CreateJwtError);
         }
         var refreshToken = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Refresh);
         if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new ApiBadRequestException("Falha ao gerar JWT");
+            throw new ApiBadRequestException(AuthErrors.CreateJwtError);
         }
         selectedCompany.MakeLogin();
         await _userCompanyRepository.UpdateAsync(selectedCompany);

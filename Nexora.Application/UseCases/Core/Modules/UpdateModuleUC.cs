@@ -5,6 +5,7 @@ using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases.Core.Modules;
 using Nexora.Domain.Commands.Core;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Exceptions;
 using Nexora.Domain.Interfaces.Repository.Core;
 
@@ -18,10 +19,10 @@ public class UpdateModuleUC(IModuleRepository moduleRepository, IMapper mapper) 
     {
         Module? module = await _moduleRepository.GetByNameAsync(request.Name);
         if (module != null && module.Id != request.Id)
-            throw new ApiBadRequestException("Módulo já cadastrado com esse nome");
+            throw new ApiBadRequestException(ModuleErrors.AlreadyExists);
         Module? updateModule = await _moduleRepository.GetByIdAsync(request.Id);
         if (updateModule == null)
-            throw new ApiBadRequestException("Módulo não encontrado.");
+            throw new ApiNotFoundException(ModuleErrors.NotFound);
         updateModule.Update(request.Name, request.Active);
         var commands = CreatePermissionCommand(request.PermissionsDtos);
         try

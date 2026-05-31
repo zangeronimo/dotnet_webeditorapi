@@ -10,6 +10,7 @@ using Nexora.Application.Interfaces;
 using Nexora.Application.Requests;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Core.Users;
+using Nexora.Domain.Errors.Core;
 
 namespace Nexora.Api.Controllers.Core;
 
@@ -144,7 +145,7 @@ public class UserController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         if (id != model.Id)
-            throw new ApiBadRequestException("Id da rota diferente do Id do corpo da request");
+            throw new ApiBadRequestException(ControllerErrors.RouteIdBodyId);
 
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;

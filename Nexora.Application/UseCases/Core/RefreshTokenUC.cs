@@ -1,6 +1,7 @@
 using Nexora.Application.DTOs.Core;
 using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Domain.Interfaces.Repository.Core;
 using Nexora.Domain.Interfaces.Repository.System;
@@ -37,9 +38,9 @@ public class RefreshTokenUC : IRefreshToken
         var selectedCompany = userCompanies.OrderByDescending(x => x.LastAccessedAt).First();
         var permissions = await _permissionRepository.GetByUserCompanyAsync(selectedCompany.Id);
         var token = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Access)
-            ?? throw new ApiBadRequestException("Falha ao gerar JWT");
+            ?? throw new ApiBadRequestException(AuthErrors.CreateJwtError);
         var refreshToken = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Refresh)
-            ?? throw new ApiBadRequestException("Falha ao gerar JWT");
+            ?? throw new ApiBadRequestException(AuthErrors.CreateJwtError);
         return new AuthResponse()
         {
             Token = token,

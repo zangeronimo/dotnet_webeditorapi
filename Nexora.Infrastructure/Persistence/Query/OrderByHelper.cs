@@ -18,7 +18,7 @@ public static class OrderByHelper
         var field = orderBy.Trim();
 
         if (allowedFields != null && !allowedFields.Contains(field))
-            throw new ApiBadRequestException($"Ordering por '{field}' não é permitido.");
+            throw new ApiBadRequestException($"Ordering by '{field}' is not accepted.");
 
         Expression<Func<T, object?>> expression;
 

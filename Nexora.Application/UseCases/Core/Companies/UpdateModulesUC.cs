@@ -4,6 +4,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases.Core.Companies;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Repository.Core;
 
 namespace Nexora.Application.UseCases.Core.Companies;
@@ -17,11 +18,11 @@ public class UpdateModulesUC(ICompanyRepository companyRepository, IModuleReposi
     {
         Company? company = await _companyRepository.GetByIdAsync(request.CompanyId);
         if (company == null)
-            throw new ApiBadRequestException("Empresa não encontrada.");
+            throw new ApiBadRequestException(CompanyErrors.NotFound);
         var modules = await _moduleRepository.GetByRangeIdAsync(request.ModuleIds);
         if (modules.Count != request.ModuleIds.Count)
         {
-            throw new ApiBadRequestException("Algum módulo não existe");
+            throw new ApiBadRequestException(CompanyErrors.SomeModuleWasNotExists);
         }
         company.SetModules(modules);
         await _companyRepository.UpdateAsync(company);

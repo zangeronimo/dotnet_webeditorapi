@@ -4,6 +4,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Repository.Core;
 
 namespace Nexora.Application.UseCases.Core.Companies;
@@ -17,7 +18,7 @@ public class DeleteCompanyUC(ICompanyRepository companyRepository, IMapper mappe
     {
         Company? company = await _companyRepository.GetByIdAsync(request.ResourceId);
         if (company == null)
-            throw new ApiNotFoundException("Empresa não encontrada");
+            throw new ApiNotFoundException(CompanyErrors.NotFound);
         company.Delete();
         await _companyRepository.UpdateAsync(company);
         return _mapper.Map<CompanyDto>(company);

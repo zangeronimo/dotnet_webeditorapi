@@ -5,6 +5,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Repository.Core;
 
 namespace Nexora.Application.UseCases.Core.Modules;
@@ -19,7 +20,7 @@ public class GetModuleByIdUC(IModuleRepository moduleRepository, IMapper mapper)
     {
         Module? module = await _moduleRepository.GetByIdAsync(request.ResourceId);
         if (module == null)
-            throw new ApiNotFoundException("Módulo não encontrado");
+            throw new ApiNotFoundException(ModuleErrors.NotFound);
         return _mapper.Map<ModuleDto>(module);
     }
 }

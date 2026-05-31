@@ -13,6 +13,10 @@
     <value>System.Resources.ResXResourceWriter</value>
   </resheader>
 
+  <data name="controller_route_id_body_id" xml:space="preserve">
+    <value>Route ID differente from request body ID</value>
+  </data>
+
   <data name="auth.invalid_credentials" xml:space="preserve">
     <value>Invalid email or password</value>
   </data>
@@ -25,12 +29,18 @@
   <data name="auth.invalid_grant_type" xml:space="preserve">
     <value>Invalid grant_type</value>
   </data>
+  <data name="auth.create.jwt.error" xml:space="preserve">
+    <value>Fail on access token generation</value>
+  </data>
 
   <data name="company.not_found" xml:space="preserve">
     <value>Company not found</value>
   </data>
   <data name="company.already_exists" xml:space="preserve">
     <value>Company already exists</value>
+  </data>
+  <data name="company.some_module_was_not_exists" xml:space="preserve">
+    <value>Some module was not exists</value>
   </data>
 
   <data name="role.not_found" xml:space="preserve">

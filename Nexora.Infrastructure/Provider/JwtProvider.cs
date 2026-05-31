@@ -7,6 +7,7 @@ using Nexora.Domain.Security.System;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Infrastructure.Options;
 using Nexora.Application.Exceptions;
+using Nexora.Domain.Errors.Core;
 
 namespace Nexora.Infrastructure.Provider;
 
@@ -86,7 +87,7 @@ public class JwtProvider : ITokenProvider
         var principal = Validate(token);
         var type = principal.FindFirst("token_type")?.Value;
         if (type != TokenType.Access.ToString())
-            throw new ApiInvalidCredentialsException("Invalid token type");
+            throw new ApiInvalidCredentialsException(AuthErrors.InvalidGrantType);
         return BuildPayload(principal);
     }
 
@@ -95,7 +96,7 @@ public class JwtProvider : ITokenProvider
         var principal = Validate(token);
         var type = principal.FindFirst("token_type")?.Value;
         if (type != TokenType.Refresh.ToString())
-            throw new ApiInvalidCredentialsException("Invalid token type");
+            throw new ApiInvalidCredentialsException(AuthErrors.InvalidGrantType);
         return BuildPayload(principal);
     }
 }

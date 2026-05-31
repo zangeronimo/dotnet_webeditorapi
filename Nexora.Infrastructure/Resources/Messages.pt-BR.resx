@@ -12,6 +12,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter</value>
   </resheader>
+
+  <data name="controller_route_id_body_id" xml:space="preserve">
+    <value>ID da rota diferente do ID do corpo da request</value>
+  </data>
   
   <data name="auth.invalid_credentials" xml:space="preserve">
     <value>E-mail ou senha inválido</value>
@@ -25,12 +29,18 @@
   <data name="auth.invalid_grant_type" xml:space="preserve">
     <value>grant_type inválido</value>
   </data>
+  <data name="auth.create.jwt.error" xml:space="preserve">
+    <value>Falha na geração do token de acesso</value>
+  </data>
 
   <data name="company.not_found" xml:space="preserve">
     <value>Empresa não encontrada</value>
   </data>
   <data name="company.already_exists" xml:space="preserve">
     <value>Empresa já existe</value>
+  </data>
+  <data name="company.some_module_was_not_exists" xml:space="preserve">
+    <value>Algum módulo não existe</value>
   </data>
 
   <data name="role.not_found" xml:space="preserve">

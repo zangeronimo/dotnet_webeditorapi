@@ -5,6 +5,7 @@ using Nexora.Application.Requests.UseCases;
 using Nexora.Domain.Interfaces.Repository.Core;
 using Nexora.Domain.Entities.Core;
 using Nexora.Application.Exceptions;
+using Nexora.Domain.Errors.Core;
 
 namespace Nexora.Application.UseCases.Core.Modules;
 
@@ -17,7 +18,7 @@ public class DeleteModuleUC(IModuleRepository moduleRepository, IMapper mapper) 
     {
         Module? module = await _moduleRepository.GetByIdAsync(request.ResourceId);
         if (module == null)
-            throw new ApiNotFoundException("Módulo não encontrado");
+            throw new ApiNotFoundException(ModuleErrors.NotFound);
         module.Delete();
         await _moduleRepository.UpdateAsync(module);
         return _mapper.Map<ModuleDto>(module);

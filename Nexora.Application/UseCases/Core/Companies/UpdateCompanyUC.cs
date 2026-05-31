@@ -4,6 +4,7 @@ using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases.Core.Companies;
 using Nexora.Domain.Entities.Core;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.Interfaces.Repository.Core;
 
 namespace Nexora.Application.UseCases.Core.Companies;
@@ -16,10 +17,10 @@ public class UpdateCompanyUC(ICompanyRepository companyRepository, IMapper mappe
     {
         Company? company = await _companyRepository.GetByNameAsync(request.Name);
         if (company != null && company.Id != request.Id)
-            throw new ApiBadRequestException("Empresa já cadastrada com esse nome.");
+            throw new ApiBadRequestException(CompanyErrors.AlreadyExists);
         Company? updateCompany = await _companyRepository.GetByIdAsync(request.Id);
         if (updateCompany == null)
-            throw new ApiBadRequestException("Empresa não encontrada.");
+            throw new ApiBadRequestException(CompanyErrors.NotFound);
         updateCompany.Update(request.Name, request.Active);
         await _companyRepository.UpdateAsync(updateCompany);
         Company? updatedCompany = await _companyRepository.GetByIdReadOnlyAsync(updateCompany.Id);
