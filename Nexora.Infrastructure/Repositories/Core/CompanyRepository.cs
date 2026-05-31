@@ -50,6 +50,15 @@ public class CompanyRepository(PlatformDbContext context) : ICompanyRepository
         return (items, total);
     }
 
+    public async Task<Company?> GetByIdWithPermissionsAsync(Guid id)
+    {
+        return await _context.Companies.AsNoTracking()
+            .Include(c => c.CompanyModules)
+                .ThenInclude(cm => cm.Module)
+                    .ThenInclude(cm => cm.Permissions)
+            .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     private async Task<Company?> GetByIdInternalAsync(Guid id, bool asNoTracking = false)
     {
         IQueryable<Company> query = _context.Companies;

@@ -17,6 +17,7 @@ namespace Nexora.Api.Controllers.Core;
 [Route("api/core/companies")]
 public class CompanyController(
     IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> getAllCompaniesUC,
+    IUseCase<GetAllCompanyModulesRequest, CompanyDto> getAllCompanyModulesUC,
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
     IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
@@ -25,6 +26,7 @@ public class CompanyController(
     IUseCase<CompanyProfileRequest, CompanyDto> companyProfileUC) : ControllerBase
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
+    private readonly IUseCase<GetAllCompanyModulesRequest, CompanyDto> _getAllCompanyModulesUC = getAllCompanyModulesUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
@@ -46,6 +48,19 @@ public class CompanyController(
         var result = await _getAllCompaniesUC.ExecuteAsync(request);
 
         return Ok(result);
+    }
+
+    [Authorize]
+    [HttpGet("modules")]
+    public async Task<IActionResult> GetAllCompanyModules()
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new GetAllCompanyModulesRequest(context);
+        var company = await _getAllCompanyModulesUC.ExecuteAsync(request);
+
+        return Ok(company);
     }
 
     [HasPermission("core.company.view")]

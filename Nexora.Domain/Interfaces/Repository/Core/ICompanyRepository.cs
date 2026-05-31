@@ -12,6 +12,7 @@ public interface ICompanyRepository
         bool desc,
         string? name,
         Status? status);
+    Task<Company?> GetByIdWithPermissionsAsync(Guid id);
     Task<Company?> GetByIdAsync(Guid id);
     Task<Company?> GetByIdReadOnlyAsync(Guid id);
     Task<Company?> GetByNameAsync(string name);
