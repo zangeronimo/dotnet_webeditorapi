@@ -12,5 +12,5 @@ public class UserCompanyDto : BaseDto
     public string? NickName { get; set; }
     public string? AvatarUrl { get; set; }
     public Status Status { get; set; }
-    public DateTimeOffset LastAccessedAt { get; set; }
+    public DateTimeOffset? LastAccessedAt { get; set; }
 }
