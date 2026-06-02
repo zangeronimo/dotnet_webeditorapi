@@ -15,6 +15,7 @@ public class Category : Entity
     public int DisplayOrder { get; private set; }
     public Status Status { get; private set; }
     public CategorySeo Seo { get; private set; }
+    public string? FeaturedImage {get; private set;}
     public Guid CompanyId { get; private set; }
 
     public Category(
@@ -25,6 +26,7 @@ public class Category : Entity
         int displayOrder,
         Status status,
         CategorySeo seo,
+        string? featuredImage,
         Guid companyId) : base()
     {
         Slug = slug;
@@ -34,6 +36,7 @@ public class Category : Entity
         DisplayOrder = displayOrder;
         Status = status;
         Seo = seo;
+        FeaturedImage = featuredImage;
         CompanyId = companyId;
     }
 
@@ -46,7 +49,8 @@ public class Category : Entity
         Guid? newParentId,
         int newDisplayOrder,
         Status newStatus,
-        CategorySeo newSeo)
+        CategorySeo newSeo,
+        string? featuredImage)
     {
         Slug = newSlug;
         Name = newName;
@@ -55,6 +59,7 @@ public class Category : Entity
         DisplayOrder = newDisplayOrder;
         Status = newStatus;
         Seo = newSeo;
+        FeaturedImage = featuredImage;
         Touch();
     }
 }

@@ -1,8 +1,9 @@
+using Nexora.Domain.Enums;
+
 namespace Nexora.Domain.ValueObjects.Culinary;
 
-public class RecipeAttributes(string difficulty, string tools, string cuisine)
+public class RecipeAttributes(CulinaryRecipeDifficulty difficulty, string cuisine)
 {
-    public string Difficulty { get; } = difficulty;
-    public string Tools { get; } = tools;
+    public CulinaryRecipeDifficulty Difficulty { get; } = difficulty;
     public string Cuisine { get; } = cuisine;
 }

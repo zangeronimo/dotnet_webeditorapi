@@ -20,20 +20,14 @@ public class RecipeMapping : EntityMapping<Recipe>
         {
             content.Property(p => p.ShortDescription).HasColumnName("short_description").HasMaxLength(255);
             content.Property(p => p.FullDescription).HasColumnName("full_description");
-            content.Property(p => p.Ingredients).HasColumnName("ingredients").IsRequired();
-            content.Property(p => p.Preparation).HasColumnName("preparation").IsRequired();
+            content.Property(p => p.Ingredients).HasColumnName("ingredients").HasColumnType("varchar[]").IsRequired();
+            content.Property(p => p.Steps).HasColumnName("preparation").HasColumnType("varchar[]").IsRequired();
             content.Property(p => p.Notes).HasColumnName("notes");
         });
         builder.OwnsOne(r => r.Attributes, attribute =>
         {
             attribute.Property(p => p.Difficulty).HasColumnName("difficulty").HasMaxLength(20);
-            attribute.Property(p => p.Tools).HasColumnName("tools");
             attribute.Property(p => p.Cuisine).HasColumnName("cuisine").HasMaxLength(100);
-        });
-        builder.OwnsOne(r => r.Engagement, engagement =>
-        {
-            engagement.Property(p => p.Views).HasColumnName("views").HasConversion<int>().IsRequired();
-            engagement.Property(p => p.Likes).HasColumnName("likes").HasConversion<int>().IsRequired();
         });
         builder.OwnsOne(r => r.Yield, yield =>
         {
@@ -49,16 +43,16 @@ public class RecipeMapping : EntityMapping<Recipe>
         {
             seo.Property(s => s.MetaTitle).HasColumnName("meta_title").HasMaxLength(255);
             seo.Property(s => s.MetaDescription).HasColumnName("meta_description").HasMaxLength(255);
-            seo.Property(s => s.Keywords).HasColumnName("keywords").HasColumnType("varchar[]");
+            seo.Property(s => s.CanonicalUrl).HasColumnName("canonical_url").HasMaxLength(500);
         });
         builder.OwnsOne(r => r.Media, media =>
         {
             media.Property(m => m.ImageUrl).HasColumnName("image_url").HasMaxLength(255);
         });
-        builder.Property(r => r.SchemaJsonLd).HasColumnName("schema_jsonld").HasColumnType("jsonb");
-        builder.Property(r => r.Active).HasColumnName("active").HasConversion<int>().IsRequired();
-        builder.Property(r => r.LevelId).HasColumnName("recipe_levels_id").IsRequired();
-        builder.Property(r => r.CompanyId).HasColumnName("webeditor_companies_id").IsRequired();
+        builder.Property(r => r.StructuredData).HasColumnName("structured_data").HasColumnType("jsonb");
+        builder.Property(r => r.Status).HasColumnName("active").HasConversion<int>().IsRequired();
+        builder.Property(r => r.CategoryId).HasColumnName("category_id").IsRequired();
+        builder.Property(r => r.CompanyId).HasColumnName("companies_id").IsRequired();
         builder.Property(r => r.PublishedAt).HasColumnName("published_at");
     }
 }

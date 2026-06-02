@@ -1,4 +1,6 @@
 using Nexora.Domain.Enums;
+using Nexora.Domain.Errors.Culiarny;
+using Nexora.Domain.Exceptions;
 using Nexora.Domain.ValueObjects;
 using Nexora.Domain.ValueObjects.Culinary;
 
@@ -14,11 +16,12 @@ public class Recipe : Entity
     public RecipeAttributes Attributes { get; private set; }
     public RecipeMedia Media { get; private set; }
     public RecipeSeo Seo { get; private set; }
-    public string? SchemaJsonLd { get; private set; } = null;
-    public RecipeEngagement Engagement { get; private set; }
-    public Status Active { get; private set; }
+    public string? StructuredData { get; private set; } = null;
+    private readonly List<Guid> _tagIds = [];
+    public IReadOnlyCollection<Guid> TagIds => _tagIds;
+    public Status Status { get; private set; }
     public DateTime? PublishedAt { get; private set; }
-    public Guid LevelId { get; private set; }
+    public Guid CategoryId { get; private set; }
     public Guid CompanyId { get; private set; }
 
     public Recipe(
@@ -30,9 +33,8 @@ public class Recipe : Entity
         RecipeAttributes attributes,
         RecipeMedia media,
         RecipeSeo seo,
-        RecipeEngagement engagement,
-        Status active,
-        Guid levelId,
+        IEnumerable<Guid> tagIds,
+        Guid categoryId,
         Guid companyId) : base()
     {
         Slug = slug;
@@ -43,10 +45,12 @@ public class Recipe : Entity
         Attributes = attributes;
         Media = media;
         Seo = seo;
-        Engagement = engagement;
-        Active = active;
-        LevelId = levelId;
+        Status = Status.Inactive;
+        CategoryId = categoryId;
         CompanyId = companyId;
+
+        if (tagIds is null) throw new DomainException(RecipeErrors.InvalidTagIds);
+        _tagIds.AddRange(tagIds.Distinct());
     }
 
     protected Recipe() : base() { }
@@ -60,8 +64,8 @@ public class Recipe : Entity
         RecipeAttributes newAttributes,
         RecipeMedia newMedia,
         RecipeSeo newSeo,
-        Status newActive,
-        Guid newLevelId)
+        Status newStatus,        
+        Guid newCategoryId)
     {
         Slug = newSlug;
         Name = newName;
@@ -71,19 +75,40 @@ public class Recipe : Entity
         Attributes = newAttributes;
         Media = newMedia;
         Seo = newSeo;
-        Active = newActive;
-        LevelId = newLevelId;
+        Status = newStatus;
+        CategoryId = newCategoryId;
 
-        if (PublishedAt == null && Active == Status.Active)
-        {
-            PublishedAt = DateTime.UtcNow;
-        }
-
+        PublishIfNeeded();
         Touch();
     }
 
-    public void SetSchemaJsonLd(string JsonLd)
+
+
+    public void SetTags(IEnumerable<Guid> tagIds)
     {
-        SchemaJsonLd = JsonLd;
+        if (tagIds is null) throw new DomainException(RecipeErrors.InvalidTagIds);
+
+        _tagIds.Clear();
+        _tagIds.AddRange(tagIds.Distinct());
+        Touch();
     }
+
+    public void SetStructuredData(string data)
+    {
+
+        if (string.IsNullOrWhiteSpace(data))
+            throw new DomainException(RecipeErrors.InvalidStructuredData);
+            
+        StructuredData = data.Trim();
+        Touch();
+    }
+
+    private void PublishIfNeeded()
+{
+    if (PublishedAt is null &&
+        Status == Status.Active)
+    {
+        PublishedAt = DateTime.UtcNow;
+    }
+}
 }

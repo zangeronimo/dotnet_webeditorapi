@@ -3,13 +3,15 @@ namespace Nexora.Domain.ValueObjects.Culinary;
 public class RecipeContent(
     string shortDescription,
     string fullDescription,
-    string ingredients,
-    string preparation,
+    IReadOnlyCollection<RecipeIngredient> ingredients,
+    IReadOnlyCollection<RecipeHowToStep> steps,
     string notes)
 {
     public string ShortDescription { get; } = shortDescription;
     public string FullDescription { get; } = fullDescription;
-    public string Ingredients { get; } = ingredients;
-    public string Preparation { get; } = preparation;
+
+    public IReadOnlyCollection<RecipeIngredient> Ingredients { get; } = ingredients;
+
+    public IReadOnlyCollection<RecipeHowToStep> Steps { get; } = steps;
     public string? Notes { get; } = notes;
 }

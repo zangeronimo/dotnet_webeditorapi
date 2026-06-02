@@ -3,9 +3,9 @@ namespace Nexora.Domain.ValueObjects.Culinary;
 public class RecipeSeo(
     string metaTitle,
     string metaDescription,
-    List<string> keywords)
+    string? canonicalUrl)
 {
     public string MetaTitle { get; } = metaTitle;
     public string MetaDescription { get; } = metaDescription;
-    public List<string> Keywords { get; } = keywords;
+    public string? CanonicalUrl { get; } = canonicalUrl;
 }
