@@ -3,8 +3,8 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Nexora.Infrastructure.Persistence;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -49,10 +49,15 @@ namespace Nexora.Infrastructure.Migrations.CulinaryDb
                         .HasColumnType("integer")
                         .HasColumnName("display_order");
 
+                    b.Property<string>("FeaturedImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("featured_image_url");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("name");
 
                     b.Property<Guid?>("ParentId")
@@ -61,8 +66,8 @@ namespace Nexora.Infrastructure.Migrations.CulinaryDb
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasMaxLength(45)
-                        .HasColumnType("character varying(45)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("slug");
 
                     b.Property<int>("Status")
@@ -81,14 +86,17 @@ namespace Nexora.Infrastructure.Migrations.CulinaryDb
 
                     b.HasIndex("ParentId");
 
+                    b.HasIndex("CompanyId", "DisplayOrder");
+
                     b.HasIndex("CompanyId", "ParentId");
 
                     b.HasIndex("CompanyId", "Slug")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"deleted_at\" IS NULL");
 
                     b.HasIndex("CompanyId", "Status");
 
-                    b.ToTable("recipe_categories", (string)null);
+                    b.ToTable("culinary_categories", (string)null);
                 });
 
             modelBuilder.Entity("Nexora.Domain.Entities.Culinary.Category", b =>
@@ -103,19 +111,24 @@ namespace Nexora.Infrastructure.Migrations.CulinaryDb
                             b1.Property<Guid>("CategoryId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<string>("CanonicalUrl")
+                                .HasMaxLength(500)
+                                .HasColumnType("character varying(500)")
+                                .HasColumnName("canonical_url");
+
                             b1.Property<string>("MetaDescription")
-                                .HasMaxLength(155)
-                                .HasColumnType("character varying(155)")
+                                .HasMaxLength(170)
+                                .HasColumnType("character varying(170)")
                                 .HasColumnName("meta_description");
 
                             b1.Property<string>("MetaTitle")
-                                .HasMaxLength(60)
-                                .HasColumnType("character varying(60)")
+                                .HasMaxLength(70)
+                                .HasColumnType("character varying(70)")
                                 .HasColumnName("meta_title");
 
                             b1.HasKey("CategoryId");
 
-                            b1.ToTable("recipe_categories");
+                            b1.ToTable("culinary_categories");
 
                             b1.WithOwner()
                                 .HasForeignKey("CategoryId");
