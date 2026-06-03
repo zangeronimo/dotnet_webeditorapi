@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nexora.Domain.Entities.Culinary;
+using Nexora.Domain.ValueObjects;
+using Nexora.Infrastructure.Persistence.Converters.Culinary;
 
 namespace Nexora.Infrastructure.Persistence.Mappings.Culinary;
 
@@ -9,24 +11,33 @@ public class RecipeMapping : EntityMapping<Recipe>
     public override void Configure(EntityTypeBuilder<Recipe> builder)
     {
         base.Configure(builder);
-        builder.ToTable("recipe_recipes");
+        builder.ToTable("culinary_recipes");
 
-        builder.OwnsOne(r => r.Slug, slug =>
-        {
-            slug.Property(s => s.Value).HasColumnName("slug").HasMaxLength(120).IsRequired();
-        });
-        builder.Property(r => r.Name).HasColumnName("name").HasMaxLength(120).IsRequired();
+        builder.Property(c => c.Slug)
+            .HasConversion(v => v.Value, v => Slug.Create(v))
+            .HasColumnName("slug")
+            .HasMaxLength(150)
+            .IsRequired();
+        builder.Property(r => r.Name).HasColumnName("name").HasMaxLength(150).IsRequired();
         builder.OwnsOne(r => r.Content, content =>
         {
             content.Property(p => p.ShortDescription).HasColumnName("short_description").HasMaxLength(255);
             content.Property(p => p.FullDescription).HasColumnName("full_description");
-            content.Property(p => p.Ingredients).HasColumnName("ingredients").HasColumnType("varchar[]").IsRequired();
-            content.Property(p => p.Steps).HasColumnName("preparation").HasColumnType("varchar[]").IsRequired();
+            content.Property(p => p.Ingredients)
+                .HasConversion(RecipeJsonConverters.IngredientsConverter)
+                .HasColumnName("ingredients")
+                .HasColumnType("jsonb")
+                .IsRequired();
+            content.Property(p => p.Steps)
+                .HasConversion(RecipeJsonConverters.StepsConverter)
+                .HasColumnName("steps")
+                .HasColumnType("jsonb")
+                .IsRequired();
             content.Property(p => p.Notes).HasColumnName("notes");
         });
         builder.OwnsOne(r => r.Attributes, attribute =>
         {
-            attribute.Property(p => p.Difficulty).HasColumnName("difficulty").HasMaxLength(20);
+            attribute.Property(p => p.Difficulty).HasColumnName("difficulty").HasConversion<int>();
             attribute.Property(p => p.Cuisine).HasColumnName("cuisine").HasMaxLength(100);
         });
         builder.OwnsOne(r => r.Yield, yield =>
@@ -41,18 +52,33 @@ public class RecipeMapping : EntityMapping<Recipe>
         });
         builder.OwnsOne(r => r.Seo, seo =>
         {
-            seo.Property(s => s.MetaTitle).HasColumnName("meta_title").HasMaxLength(255);
-            seo.Property(s => s.MetaDescription).HasColumnName("meta_description").HasMaxLength(255);
+            seo.Property(s => s.MetaTitle).HasColumnName("meta_title").HasMaxLength(70);
+            seo.Property(s => s.MetaDescription).HasColumnName("meta_description").HasMaxLength(170);
             seo.Property(s => s.CanonicalUrl).HasColumnName("canonical_url").HasMaxLength(500);
         });
         builder.OwnsOne(r => r.Media, media =>
         {
-            media.Property(m => m.ImageUrl).HasColumnName("image_url").HasMaxLength(255);
+            media.Property(m => m.ImageUrl).HasColumnName("image_url").HasMaxLength(500);
         });
         builder.Property(r => r.StructuredData).HasColumnName("structured_data").HasColumnType("jsonb");
-        builder.Property(r => r.Status).HasColumnName("active").HasConversion<int>().IsRequired();
-        builder.Property(r => r.CategoryId).HasColumnName("category_id").IsRequired();
-        builder.Property(r => r.CompanyId).HasColumnName("companies_id").IsRequired();
+        builder.Property(r => r.Status).HasColumnName("status").HasConversion<int>().IsRequired();
+        builder.Property(r => r.CategoryId).HasColumnName("culinary_category_id").IsRequired();
+        builder.Property(r => r.CompanyId).HasColumnName("core_companies_id").IsRequired();
         builder.Property(r => r.PublishedAt).HasColumnName("published_at");
+        builder.Property<List<Guid>>("_tagIds").HasColumnName("tag_ids").HasColumnType("uuid[]");
+
+        builder.HasOne<Category>()
+            .WithMany()
+            .HasForeignKey(r => r.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(x => new { x.CompanyId, x.Slug })
+            .IsUnique()
+            .HasFilter("\"deleted_at\" IS NULL");
+        builder.HasIndex(x => new { x.CompanyId, x.Status });
+        builder.HasIndex(x => new { x.CompanyId, x.CategoryId });
+        builder.HasIndex(x => x.CompanyId);
+        builder.HasIndex(x => x.PublishedAt);
+        builder.HasIndex(x => x.DeletedAt);
     }
 }

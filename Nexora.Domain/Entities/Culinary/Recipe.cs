@@ -20,7 +20,7 @@ public class Recipe : Entity
     private readonly List<Guid> _tagIds = [];
     public IReadOnlyCollection<Guid> TagIds => _tagIds;
     public Status Status { get; private set; }
-    public DateTime? PublishedAt { get; private set; }
+    public DateTimeOffset? PublishedAt { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid CompanyId { get; private set; }
 
@@ -108,7 +108,7 @@ public class Recipe : Entity
     if (PublishedAt is null &&
         Status == Status.Active)
     {
-        PublishedAt = DateTime.UtcNow;
+        PublishedAt = DateTimeOffset.UtcNow;
     }
 }
 }
