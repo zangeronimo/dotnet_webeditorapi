@@ -20,6 +20,8 @@ public class Recipe : Entity
     private readonly List<Guid> _tagIds = [];
     public IReadOnlyCollection<Guid> TagIds => _tagIds;
     public Status Status { get; private set; }
+    public decimal AverageRating { get; private set; }
+    public int TotalRatings { get; private set; }
     public DateTimeOffset? PublishedAt { get; private set; }
     public Guid CategoryId { get; private set; }
     public Guid CompanyId { get; private set; }
@@ -46,6 +48,8 @@ public class Recipe : Entity
         Media = media;
         Seo = seo;
         Status = Status.Inactive;
+        AverageRating = 0;
+        TotalRatings = 0;
         CategoryId = categoryId;
         CompanyId = companyId;
 
@@ -82,7 +86,19 @@ public class Recipe : Entity
         Touch();
     }
 
+    public void UpdateRatingSummary(decimal averageRating, int totalRatings)
+    {
+        if (averageRating < 0 || averageRating > 10)
+            throw new DomainException(RecipeErrors.InvalidAverageRating);
 
+        if (totalRatings < 0)
+            throw new DomainException(RecipeErrors.InvalidTotalRatings);
+
+        AverageRating = Math.Round(averageRating, 1);;
+        TotalRatings = totalRatings;
+
+        Touch();
+    }
 
     public void SetTags(IEnumerable<Guid> tagIds)
     {

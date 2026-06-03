@@ -62,6 +62,8 @@ public class RecipeMapping : EntityMapping<Recipe>
         });
         builder.Property(r => r.StructuredData).HasColumnName("structured_data").HasColumnType("jsonb");
         builder.Property(r => r.Status).HasColumnName("status").HasConversion<int>().IsRequired();
+        builder.Property(r => r.AverageRating).HasColumnName("average_rating").HasColumnType("numeric(3,1)");
+        builder.Property(r => r.TotalRatings).HasColumnName("total_ratings").HasColumnType("integer");
         builder.Property(r => r.CategoryId).HasColumnName("culinary_category_id").IsRequired();
         builder.Property(r => r.CompanyId).HasColumnName("core_companies_id").IsRequired();
         builder.Property(r => r.PublishedAt).HasColumnName("published_at");
@@ -77,6 +79,7 @@ public class RecipeMapping : EntityMapping<Recipe>
             .HasFilter("\"deleted_at\" IS NULL");
         builder.HasIndex(x => new { x.CompanyId, x.Status });
         builder.HasIndex(x => new { x.CompanyId, x.CategoryId });
+        builder.HasIndex(x => new { x.CompanyId, x.AverageRating});
         builder.HasIndex(x => x.CompanyId);
         builder.HasIndex(x => x.PublishedAt);
         builder.HasIndex(x => x.DeletedAt);

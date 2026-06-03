@@ -95,4 +95,17 @@
   <data name="usercompany.delete_own_account_not_allowed" xml:space="preserve">
     <value>Não é permitido deletar a própria conta</value>
   </data>
+
+  <data name="recipe_invalid_structure_data" xml:space="preserve">
+    <value>Structure data inválido</value>
+  </data>
+  <data name="recipe_invalid_tag_ids" xml:space="preserve">
+    <value>Tag ids inválida</value>
+  </data>
+  <data name="recipe_invalid_average_rating" xml:space="preserve">
+    <value>Average rating inválida</value>
+  </data>
+  <data name="recipe_invalid_total_ratings" xml:space="preserve">
+    <value>Total ratings inválido</value>
+  </data>
 </root>
