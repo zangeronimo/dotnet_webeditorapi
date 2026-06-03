@@ -11,11 +11,11 @@ public class Category : Entity
     public string? Description { get; private set; }
     public Guid? ParentId { get; private set; }
     public Category? Parent { get; private set; }
-    public ICollection<Category> Children { get; private set; }
+    public ICollection<Category> Children { get; private set; } = new List<Category>();
     public int DisplayOrder { get; private set; }
     public Status Status { get; private set; }
     public CategorySeo Seo { get; private set; }
-    public string? FeaturedImage {get; private set;}
+    public string? FeaturedImageUrl {get; private set;}
     public Guid CompanyId { get; private set; }
 
     public Category(
@@ -26,7 +26,7 @@ public class Category : Entity
         int displayOrder,
         Status status,
         CategorySeo seo,
-        string? featuredImage,
+        string? featuredImageUrl,
         Guid companyId) : base()
     {
         Slug = slug;
@@ -36,7 +36,7 @@ public class Category : Entity
         DisplayOrder = displayOrder;
         Status = status;
         Seo = seo;
-        FeaturedImage = featuredImage;
+        FeaturedImageUrl = featuredImageUrl;
         CompanyId = companyId;
     }
 
@@ -50,7 +50,7 @@ public class Category : Entity
         int newDisplayOrder,
         Status newStatus,
         CategorySeo newSeo,
-        string? featuredImage)
+        string? featuredImageUrl)
     {
         Slug = newSlug;
         Name = newName;
@@ -59,7 +59,7 @@ public class Category : Entity
         DisplayOrder = newDisplayOrder;
         Status = newStatus;
         Seo = newSeo;
-        FeaturedImage = featuredImage;
+        FeaturedImageUrl = featuredImageUrl;
         Touch();
     }
 }
