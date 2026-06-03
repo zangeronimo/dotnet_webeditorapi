@@ -6,4 +6,5 @@ public static class RecipeErrors
     public const string InvalidTagIds = "recipe_invalid_tag_ids";
     public const string InvalidAverageRating = "recipe_invalid_average_rating";
     public const string InvalidTotalRatings = "recipe_invalid_total_ratings";
+    public const string InvalidScore = "recipe_invalid_score";
 }

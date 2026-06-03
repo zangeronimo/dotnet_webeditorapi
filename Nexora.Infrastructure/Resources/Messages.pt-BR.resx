@@ -108,4 +108,7 @@
   <data name="recipe_invalid_total_ratings" xml:space="preserve">
     <value>Total ratings inválido</value>
   </data>
+  <data name="recipe_invalid_score" xml:space="preserve">
+    <value>Score inválido</value>
+  </data>
 </root>
