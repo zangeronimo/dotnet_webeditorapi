@@ -22,17 +22,20 @@ public class CategoryController : ControllerBase
     private readonly IUseCase<GetByIdRequest, CategoryDto> _getCategoryByIdUC;
     private readonly IUseCase<CreateCategoryRequest, CategoryDto> _createCategoryUC;
     private readonly IUseCase<UpdateCategoryRequest, CategoryDto> _updateCategoryUC;
+    private readonly IUseCase<DeleteRequest, CategoryDto> _deleteCategoryUC;
 
     public CategoryController(
         IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> getAllCategoriesUC,
         IUseCase<GetByIdRequest, CategoryDto> getCategoryByIdUC,
         IUseCase<CreateCategoryRequest, CategoryDto> createCategoryUC,
-        IUseCase<UpdateCategoryRequest, CategoryDto> updateCategoryUC)
+        IUseCase<UpdateCategoryRequest, CategoryDto> updateCategoryUC,
+        IUseCase<DeleteRequest, CategoryDto> deleteCategoryUC)
     {
         _getAllCategoriesUC = getAllCategoriesUC;
         _getCategoryByIdUC = getCategoryByIdUC;
         _createCategoryUC = createCategoryUC;
         _updateCategoryUC = updateCategoryUC;
+        _deleteCategoryUC = deleteCategoryUC;
     }
 
     [HasPermission("culinary.category.view")]
@@ -98,6 +101,19 @@ public class CategoryController : ControllerBase
         var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
         var request = new UpdateCategoryRequest(id, categoryName, model.Description, model.ParentId, model.DisplayOrder, model.Status, categorySeo, context);
         var category = await _updateCategoryUC.ExecuteAsync(request);
+
+        return Ok(category);
+    }
+
+    [HasPermission("culinary.category.delete")]
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new DeleteRequest(id, context);
+        var category = await _deleteCategoryUC.ExecuteAsync(request);
 
         return Ok(category);
     }

@@ -121,4 +121,7 @@
   <data name="category_name_required" xml:space="preserve">
     <value>Nome da categoria é obrigatório</value>
   </data>
+  <data name="category_cannot_be_deleted_with_children" xml:space="preserve">
+    <value>A categoria não pode ser excluída por conter filhos</value>
+  </data>
 </root>
