@@ -1,8 +1,11 @@
 using System.Linq.Expressions;
+
 using Microsoft.EntityFrameworkCore;
+
 using Nexora.Domain.Entities.Culinary;
 using Nexora.Domain.Enums;
 using Nexora.Domain.Interfaces.Repository.Culinary;
+using Nexora.Domain.ValueObjects;
 using Nexora.Infrastructure.Persistence;
 using Nexora.Infrastructure.Persistence.Query;
 
@@ -12,7 +15,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
 {
     private readonly CulinaryDbContext _context = context;
 
-    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? active, Guid companyId)
+    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid companyId)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -24,9 +27,9 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             query = query.Where(c => EF.Functions.ILike(EF.Functions.Unaccent(c.Name.Value), EF.Functions.Unaccent(pattern)));
         }
 
-        if (active != null)
+        if (status != null)
         {
-            query = query.Where(c => c.Status == active);
+            query = query.Where(c => c.Status == status);
         }
 
         // total before pagination
@@ -38,7 +41,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             desc,
             customMap: new Dictionary<string, Expression<Func<Category, object?>>>
             {
-                ["Slug"] = x => x.Slug.Value,
+                ["Slug"] = x => x.Slug,
             },
             allowedFields:
             [
@@ -86,16 +89,10 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
     {
         await _context.SaveChangesAsync();
     }
-
-    public async Task<Category?> GetBySlugAsync(string slug, Guid companyId)
+    public async Task<Category?> GetBySlugAsync(Slug slug, Guid companyId)
     {
         return await _context.Categories
-            .FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
-    }
-
-    public async Task<Category?> GetCategoryBySlugAsync(string slug, Guid companyId)
-    {
-        return await _context.Categories.FirstOrDefaultAsync(c => c.Slug.Value == slug && c.CompanyId == companyId);
+            .FirstOrDefaultAsync(c => c.Slug == slug && c.CompanyId == companyId);
     }
 }
 

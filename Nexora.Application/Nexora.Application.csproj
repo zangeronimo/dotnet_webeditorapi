@@ -13,9 +13,6 @@
     <Folder Include="Requests/UseCases/Core/Companies/" />
     <Folder Include="Requests/UseCases/Core/UserCompanies/" />
     <Folder Include="Requests/UseCases/Culinary/Categories/" />
-    <Folder Include="Requests/UseCases/Culinary/Levels/" />
-    <Folder Include="Requests/UseCases/Culinary/Ratings/" />
-    <Folder Include="Requests/UseCases/Culinary/Recipes/" />
     <Folder Include="UseCases/Core/Companies/" />
     <Folder Include="UseCases/Core/Modules/" />
     <Folder Include="UseCases/Core/Roles/" />

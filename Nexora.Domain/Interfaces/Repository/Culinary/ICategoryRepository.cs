@@ -1,6 +1,6 @@
-using System;
 using Nexora.Domain.Entities.Culinary;
 using Nexora.Domain.Enums;
+using Nexora.Domain.ValueObjects;
 
 namespace Nexora.Domain.Interfaces.Repository.Culinary;
 
@@ -12,6 +12,8 @@ public interface ICategoryRepository : IRepository<Category>
         string? orderBy,
         bool desc,
         string? name,
-        Status? active,
+        Status? status,
         Guid companyId);
+
+    Task<Category?> GetBySlugAsync(Slug slug, Guid companyId);
 }

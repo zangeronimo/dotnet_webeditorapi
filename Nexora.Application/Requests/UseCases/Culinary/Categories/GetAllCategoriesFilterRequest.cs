@@ -8,5 +8,5 @@ public sealed record GetAllCategoriesFilterRequest(
     string OrderBy,
     bool Desc,
     string? Name,
-    Status? Active,
+    Status? Status,
     RequestContext Context) : ApplicationRequest(Context);
