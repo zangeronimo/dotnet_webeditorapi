@@ -15,7 +15,7 @@ public class Category : Entity
     public int DisplayOrder { get; private set; }
     public Status Status { get; private set; }
     public CategorySeo Seo { get; private set; }
-    public string? FeaturedImageUrl {get; private set;}
+    public string? FeaturedImageUrl { get; private set; }
     public Guid CompanyId { get; private set; }
 
     public Category(

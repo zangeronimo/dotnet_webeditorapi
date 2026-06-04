@@ -79,7 +79,7 @@ public class RecipeMapping : EntityMapping<Recipe>
             .HasFilter("\"deleted_at\" IS NULL");
         builder.HasIndex(x => new { x.CompanyId, x.Status });
         builder.HasIndex(x => new { x.CompanyId, x.CategoryId });
-        builder.HasIndex(x => new { x.CompanyId, x.AverageRating});
+        builder.HasIndex(x => new { x.CompanyId, x.AverageRating });
         builder.HasIndex(x => x.CompanyId);
         builder.HasIndex(x => x.PublishedAt);
         builder.HasIndex(x => x.DeletedAt);

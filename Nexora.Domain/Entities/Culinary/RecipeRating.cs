@@ -3,7 +3,7 @@ using Nexora.Domain.ValueObjects.Culinary;
 
 namespace Nexora.Domain.Entities.Culinary;
 
-public class RecipeRating: Entity
+public class RecipeRating : Entity
 {
     public RecipeScore Score { get; private set; }
     public string? Name { get; private set; }
@@ -13,13 +13,13 @@ public class RecipeRating: Entity
     public Guid RecipeId { get; private set; }
     public Guid CompanyId { get; private set; }
 
-       public RecipeRating(
-        RecipeScore score,
-        string? name,
-        string? comment,
-        Status status,
-        Guid recipeId,
-        Guid companyId) : base()
+    public RecipeRating(
+     RecipeScore score,
+     string? name,
+     string? comment,
+     Status status,
+     Guid recipeId,
+     Guid companyId) : base()
     {
         Score = score;
         Name = name;
@@ -43,7 +43,7 @@ public class RecipeRating: Entity
         Name = newName;
         Comment = newComment;
         Status = newStatus;
-        
+
         PublishIfNeeded();
         Touch();
     }

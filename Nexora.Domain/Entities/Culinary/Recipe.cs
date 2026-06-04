@@ -68,7 +68,7 @@ public class Recipe : Entity
         RecipeAttributes newAttributes,
         RecipeMedia newMedia,
         RecipeSeo newSeo,
-        Status newStatus,        
+        Status newStatus,
         Guid newCategoryId)
     {
         Slug = newSlug;
@@ -94,7 +94,7 @@ public class Recipe : Entity
         if (totalRatings < 0)
             throw new DomainException(RecipeErrors.InvalidTotalRatings);
 
-        AverageRating = Math.Round(averageRating, 1);;
+        AverageRating = Math.Round(averageRating, 1);
         TotalRatings = totalRatings;
 
         Touch();
@@ -114,17 +114,17 @@ public class Recipe : Entity
 
         if (string.IsNullOrWhiteSpace(data))
             throw new DomainException(RecipeErrors.InvalidStructuredData);
-            
+
         StructuredData = data.Trim();
         Touch();
     }
 
     private void PublishIfNeeded()
-{
-    if (PublishedAt is null &&
-        Status == Status.Active)
     {
-        PublishedAt = DateTimeOffset.UtcNow;
+        if (PublishedAt is null &&
+            Status == Status.Active)
+        {
+            PublishedAt = DateTimeOffset.UtcNow;
+        }
     }
-}
 }

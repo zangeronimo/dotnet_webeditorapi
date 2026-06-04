@@ -27,7 +27,7 @@ public class RecipeRatingMapping : EntityMapping<RecipeRating>
         builder.Property(c => c.CompanyId).HasColumnName("core_companies_id").IsRequired();
 
         builder.HasIndex(x => new { x.CompanyId, x.Status });
-        builder.HasIndex(x => new { x.CompanyId, x.RecipeId, x.Status});
+        builder.HasIndex(x => new { x.CompanyId, x.RecipeId, x.Status });
         builder.HasIndex(x => x.PublishedAt);
         builder.HasIndex(x => x.RecipeId);
         builder.HasIndex(x => x.CompanyId);
