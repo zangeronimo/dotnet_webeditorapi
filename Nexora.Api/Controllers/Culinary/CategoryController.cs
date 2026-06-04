@@ -23,19 +23,22 @@ public class CategoryController : ControllerBase
     private readonly IUseCase<CreateCategoryRequest, CategoryDto> _createCategoryUC;
     private readonly IUseCase<UpdateCategoryRequest, CategoryDto> _updateCategoryUC;
     private readonly IUseCase<DeleteRequest, CategoryDto> _deleteCategoryUC;
+    private readonly IUseCase<CategoryFeaturedImageRequest, CategoryDto> _categoryFeaturedImageUC;
 
     public CategoryController(
         IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> getAllCategoriesUC,
         IUseCase<GetByIdRequest, CategoryDto> getCategoryByIdUC,
         IUseCase<CreateCategoryRequest, CategoryDto> createCategoryUC,
         IUseCase<UpdateCategoryRequest, CategoryDto> updateCategoryUC,
-        IUseCase<DeleteRequest, CategoryDto> deleteCategoryUC)
+        IUseCase<DeleteRequest, CategoryDto> deleteCategoryUC,
+        IUseCase<CategoryFeaturedImageRequest, CategoryDto> categoryFeaturedImageUC)
     {
         _getAllCategoriesUC = getAllCategoriesUC;
         _getCategoryByIdUC = getCategoryByIdUC;
         _createCategoryUC = createCategoryUC;
         _updateCategoryUC = updateCategoryUC;
         _deleteCategoryUC = deleteCategoryUC;
+        _categoryFeaturedImageUC = categoryFeaturedImageUC;
     }
 
     [HasPermission("culinary.category.view")]
@@ -114,6 +117,23 @@ public class CategoryController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new DeleteRequest(id, context);
         var category = await _deleteCategoryUC.ExecuteAsync(request);
+
+        return Ok(category);
+    }
+
+    [HasPermission("culinary.category.update")]
+    [HttpPut("{id}/featured_image")]
+    public async Task<IActionResult> FeaturedImage([FromRoute] Guid id, [FromForm] CategoryFeaturedImageModel model)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        FileData fileData = new FileData(model.FeaturedImage.OpenReadStream(), model.FeaturedImage.FileName, model.FeaturedImage.ContentType, model.FeaturedImage.Length);
+        var request = new CategoryFeaturedImageRequest(id, fileData, context);
+        var category = await _categoryFeaturedImageUC.ExecuteAsync(request);
 
         return Ok(category);
     }
