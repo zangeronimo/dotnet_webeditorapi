@@ -60,23 +60,9 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
         return (items, total);
     }
 
-    private async Task<Category?> GetByIdInternalAsync(Guid id, Guid companyId, bool asNoTracking = false)
-    {
-        IQueryable<Category> query = _context.Categories;
-        if (asNoTracking)
-            query = query.AsNoTracking();
-        return await query
-            .FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
-    }
-
     public async Task<Category?> GetByIdAsync(Guid id, Guid companyId)
     {
-        return await GetByIdInternalAsync(id, companyId, false);
-    }
-
-    public async Task<Category?> GetByIdReadOnlyAsync(Guid id, Guid companyId)
-    {
-        return await GetByIdInternalAsync(id, companyId, true);
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
     public async Task AddAsync(Category entity)

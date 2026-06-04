@@ -4,10 +4,12 @@ using Nexora.Api.Authorization;
 using Nexora.Api.Models.Culinary.Categories;
 using Nexora.Application.DTOs;
 using Nexora.Application.DTOs.Culinary;
+using Nexora.Application.Exceptions;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Culinary.Categories;
+using Nexora.Domain.Errors.Core;
 using Nexora.Domain.ValueObjects.Culinary;
 
 namespace Nexora.Api.Controllers.Culinary;
@@ -19,15 +21,18 @@ public class CategoryController : ControllerBase
     private readonly IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> _getAllCategoriesUC;
     private readonly IUseCase<GetByIdRequest, CategoryDto> _getCategoryByIdUC;
     private readonly IUseCase<CreateCategoryRequest, CategoryDto> _createCategoryUC;
+    private readonly IUseCase<UpdateCategoryRequest, CategoryDto> _updateCategoryUC;
 
     public CategoryController(
         IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> getAllCategoriesUC,
         IUseCase<GetByIdRequest, CategoryDto> getCategoryByIdUC,
-        IUseCase<CreateCategoryRequest, CategoryDto> createCategoryUC)
+        IUseCase<CreateCategoryRequest, CategoryDto> createCategoryUC,
+        IUseCase<UpdateCategoryRequest, CategoryDto> updateCategoryUC)
     {
         _getAllCategoriesUC = getAllCategoriesUC;
         _getCategoryByIdUC = getCategoryByIdUC;
         _createCategoryUC = createCategoryUC;
+        _updateCategoryUC = updateCategoryUC;
     }
 
     [HasPermission("culinary.category.view")]
@@ -54,9 +59,9 @@ public class CategoryController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
         var request = new GetByIdRequest(id, context);
-        var level = await _getCategoryByIdUC.ExecuteAsync(request);
+        var category = await _getCategoryByIdUC.ExecuteAsync(request);
 
-        return Ok(level);
+        return Ok(category);
     }
 
     [HasPermission("culinary.category.create")]
@@ -72,8 +77,28 @@ public class CategoryController : ControllerBase
         var categoryName = new CategoryName(model.Name);
         var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
         var request = new CreateCategoryRequest(categoryName, model.Description, model.ParentId, model.DisplayOrder, model.Status, categorySeo, context);
-        var role = await _createCategoryUC.ExecuteAsync(request);
+        var category = await _createCategoryUC.ExecuteAsync(request);
 
-        return Ok(role);
+        return Ok(category);
+    }
+
+    [HasPermission("culinary.category.update")]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryModel model, [FromRoute] Guid id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        if (id != model.Id)
+            throw new ApiBadRequestException(ControllerErrors.RouteIdBodyId);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var categoryName = new CategoryName(model.Name);
+        var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
+        var request = new UpdateCategoryRequest(id, categoryName, model.Description, model.ParentId, model.DisplayOrder, model.Status, categorySeo, context);
+        var category = await _updateCategoryUC.ExecuteAsync(request);
+
+        return Ok(category);
     }
 }

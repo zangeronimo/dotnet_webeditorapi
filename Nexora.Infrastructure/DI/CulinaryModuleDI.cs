@@ -18,6 +18,7 @@ public static class CulinaryModuleDI
         services.AddScoped<IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>>, GetAllCategoriesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, CategoryDto>, GetCategoryByIdUC>();
         services.AddScoped<IUseCase<CreateCategoryRequest, CategoryDto>, CreateCategoryUC>();
+        services.AddScoped<IUseCase<UpdateCategoryRequest, CategoryDto>, UpdateCategoryUC>();
 
         // Repositories
         services.AddScoped<ICategoryRepository, CategoryRepository>();
