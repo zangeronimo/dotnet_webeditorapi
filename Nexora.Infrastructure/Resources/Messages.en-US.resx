@@ -124,4 +124,11 @@
   <data name="category_cannot_be_deleted_with_children" xml:space="preserve">
     <value>The category cannot be deleted with children</value>
   </data>
+
+  <data name="tag_not_found" xml:space="preserve">
+    <value>Tag not found</value>
+  </data>
+  <data name="tag_already_exists" xml:space="preserve">
+    <value>Tag already exists</value>
+  </data>
 </root>

@@ -22,12 +22,12 @@ public class CreateCategoryModel
     [Range(0, 1, ErrorMessage = "O Status deve ser entre 0 e 1")]
     public Status Status { get; set; }
 
-    [MaxLength(70, ErrorMessage = "O Nome deve ter no máximo 70 caracteres.")]
+    [MaxLength(70, ErrorMessage = "A MetaTitle deve ter no máximo 70 caracteres.")]
     public string? MetaTitle { get; set; }
 
-    [MaxLength(170, ErrorMessage = "O Nome deve ter no máximo 170 caracteres.")]
+    [MaxLength(170, ErrorMessage = "A MetaDescription deve ter no máximo 170 caracteres.")]
     public string? MetaDescription { get; set; }
 
-    [MaxLength(500, ErrorMessage = "O Nome deve ter no máximo 500 caracteres.")]
+    [MaxLength(500, ErrorMessage = "A CanonicalUrl deve ter no máximo 500 caracteres.")]
     public string? CanonicalUrl { get; set; }
 }
