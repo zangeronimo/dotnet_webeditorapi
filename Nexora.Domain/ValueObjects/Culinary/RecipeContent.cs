@@ -5,7 +5,7 @@ public class RecipeContent(
     string fullDescription,
     IReadOnlyCollection<RecipeIngredient> ingredients,
     IReadOnlyCollection<RecipeHowToStep> steps,
-    string notes)
+    string? notes)
 {
     public string ShortDescription { get; } = shortDescription;
     public string FullDescription { get; } = fullDescription;

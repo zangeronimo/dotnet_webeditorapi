@@ -2,6 +2,8 @@ namespace Nexora.Domain.Errors.Culiarny;
 
 public static class RecipeErrors
 {
+    public const string NotFound = "recipe_not_found";
+    public const string AlreadyExists = "recipe_already_exists";
     public const string InvalidStructuredData = "recipe_invalid_structured_data";
     public const string InvalidTagIds = "recipe_invalid_tag_ids";
     public const string InvalidAverageRating = "recipe_invalid_average_rating";

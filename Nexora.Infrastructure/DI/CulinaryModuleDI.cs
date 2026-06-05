@@ -5,8 +5,10 @@ using Nexora.Application.DTOs.Culinary;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Culinary.Categories;
+using Nexora.Application.Requests.UseCases.Culinary.Recipes;
 using Nexora.Application.Requests.UseCases.Culinary.Tags;
 using Nexora.Application.UseCases.Culinary.Categories;
+using Nexora.Application.UseCases.Culinary.Recipes;
 using Nexora.Application.UseCases.Culinary.Tags;
 using Nexora.Domain.Interfaces.Repository.Culinary;
 using Nexora.Infrastructure.Repositories.Culinary;
@@ -33,6 +35,14 @@ public static class CulinaryModuleDI
         // Repositories
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IRecipeRepository, RecipeRepository>();
+
+        services.AddScoped<IUseCase<GetAllRecipesFilterRequest, PaginationResult<RecipeDto>>, GetAllRecipesUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, RecipeDto>, GetRecipeByIdUC>();
+        services.AddScoped<IUseCase<CreateRecipeRequest, RecipeDto>, CreateRecipeUC>();
+        services.AddScoped<IUseCase<UpdateRecipeRequest, RecipeDto>, UpdateRecipeUC>();
+        services.AddScoped<IUseCase<DeleteRequest, RecipeDto>, DeleteRecipeUC>();
+        services.AddScoped<IUseCase<RecipeImageUploadRequest, RecipeDto>, RecipeImageUploadUC>();
 
         return services;
     }

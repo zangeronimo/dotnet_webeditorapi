@@ -1,0 +1,13 @@
+using Nexora.Domain.Enums;
+
+namespace Nexora.Application.Requests.UseCases.Culinary.Recipes;
+
+public sealed record GetAllRecipesFilterRequest(
+    int Page,
+    int PageSize,
+    string OrderBy,
+    bool Desc,
+    string? Name,
+    Status? Status,
+    Guid? CategoryId,
+    RequestContext Context) : ApplicationRequest(Context);

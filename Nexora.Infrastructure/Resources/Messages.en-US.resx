@@ -96,6 +96,12 @@
     <value>Deleting your own account is not allowed</value>
   </data>
 
+  <data name="recip_not_found" xml:space="preserve">
+    <value>Recipe not found</value>
+  </data>
+  <data name="recip_already_exists" xml:space="preserve">
+    <value>Recipe already exists</value>
+  </data>
   <data name="recipe_invalid_structure_data" xml:space="preserve">
     <value>Invalid structure data</value>
   </data>

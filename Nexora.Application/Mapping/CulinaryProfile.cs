@@ -17,5 +17,22 @@ public class CulinaryProfile : Profile
 
         CreateMap<Tag, TagDto>()
             .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value));
+
+        CreateMap<Recipe, RecipeDto>()
+            .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value))
+            .ForMember(dest => dest.ShortDescription, opt => opt.MapFrom(src => src.Content.ShortDescription))
+            .ForMember(dest => dest.FullDescription, opt => opt.MapFrom(src => src.Content.FullDescription))
+            .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => src.Content.Ingredients))
+            .ForMember(dest => dest.Steps, opt => opt.MapFrom(src => src.Content.Steps))
+            .ForMember(dest => dest.PrepTime, opt => opt.MapFrom(src => src.Timing.PrepTime))
+            .ForMember(dest => dest.CookTime, opt => opt.MapFrom(src => src.Timing.CookTime))
+            .ForMember(dest => dest.RestTime, opt => opt.MapFrom(src => src.Timing.RestTime))
+            .ForMember(dest => dest.YieldTotal, opt => opt.MapFrom(src => src.Yield.YieldTotal))
+            .ForMember(dest => dest.Difficulty, opt => opt.MapFrom(src => src.Attributes.Difficulty))
+            .ForMember(dest => dest.Cuisine, opt => opt.MapFrom(src => src.Attributes.Cuisine))
+            .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Media.ImageUrl))
+            .ForMember(dest => dest.MetaTitle, opt => opt.MapFrom(src => src.Seo.MetaTitle))
+            .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
+            .ForMember(dest => dest.CanonicalUrl, opt => opt.MapFrom(src => src.Seo.CanonicalUrl));
     }
 }

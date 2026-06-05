@@ -33,9 +33,7 @@ public class Recipe : Entity
         RecipeTiming timing,
         RecipeYield yield,
         RecipeAttributes attributes,
-        RecipeMedia media,
         RecipeSeo seo,
-        IEnumerable<Guid> tagIds,
         Guid categoryId,
         Guid companyId) : base()
     {
@@ -45,16 +43,12 @@ public class Recipe : Entity
         Timing = timing;
         Yield = yield;
         Attributes = attributes;
-        Media = media;
         Seo = seo;
         Status = Status.Inactive;
         AverageRating = 0;
         TotalRatings = 0;
         CategoryId = categoryId;
         CompanyId = companyId;
-
-        if (tagIds is null) throw new DomainException(RecipeErrors.InvalidTagIds);
-        _tagIds.AddRange(tagIds.Distinct());
     }
 
     protected Recipe() : base() { }
@@ -66,7 +60,6 @@ public class Recipe : Entity
         RecipeTiming newTiming,
         RecipeYield newYield,
         RecipeAttributes newAttributes,
-        RecipeMedia newMedia,
         RecipeSeo newSeo,
         Status newStatus,
         Guid newCategoryId)
@@ -77,7 +70,6 @@ public class Recipe : Entity
         Timing = newTiming;
         Yield = newYield;
         Attributes = newAttributes;
-        Media = newMedia;
         Seo = newSeo;
         Status = newStatus;
         CategoryId = newCategoryId;
@@ -117,6 +109,11 @@ public class Recipe : Entity
 
         StructuredData = data.Trim();
         Touch();
+    }
+
+    public void SetMedia(RecipeMedia media)
+    {
+        Media = media;
     }
 
     private void PublishIfNeeded()
