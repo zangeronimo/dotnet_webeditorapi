@@ -5,9 +5,11 @@ using Nexora.Application.DTOs.Culinary;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Culinary.Categories;
+using Nexora.Application.Requests.UseCases.Culinary.RecipeRatings;
 using Nexora.Application.Requests.UseCases.Culinary.Recipes;
 using Nexora.Application.Requests.UseCases.Culinary.Tags;
 using Nexora.Application.UseCases.Culinary.Categories;
+using Nexora.Application.UseCases.Culinary.RecipeRatings;
 using Nexora.Application.UseCases.Culinary.Recipes;
 using Nexora.Application.UseCases.Culinary.Tags;
 using Nexora.Domain.Interfaces.Repository.Culinary;
@@ -32,17 +34,24 @@ public static class CulinaryModuleDI
         services.AddScoped<IUseCase<UpdateTagRequest, TagDto>, UpdateTagUC>();
         services.AddScoped<IUseCase<DeleteRequest, TagDto>, DeleteTagUC>();
 
-        // Repositories
-        services.AddScoped<ICategoryRepository, CategoryRepository>();
-        services.AddScoped<ITagRepository, TagRepository>();
-        services.AddScoped<IRecipeRepository, RecipeRepository>();
-
         services.AddScoped<IUseCase<GetAllRecipesFilterRequest, PaginationResult<RecipeDto>>, GetAllRecipesUC>();
         services.AddScoped<IUseCase<GetByIdRequest, RecipeDto>, GetRecipeByIdUC>();
         services.AddScoped<IUseCase<CreateRecipeRequest, RecipeDto>, CreateRecipeUC>();
         services.AddScoped<IUseCase<UpdateRecipeRequest, RecipeDto>, UpdateRecipeUC>();
         services.AddScoped<IUseCase<DeleteRequest, RecipeDto>, DeleteRecipeUC>();
         services.AddScoped<IUseCase<RecipeImageUploadRequest, RecipeDto>, RecipeImageUploadUC>();
+
+        services.AddScoped<IUseCase<GetAllRecipeRatingsFilterRequest, PaginationResult<RecipeRatingDto>>, GetAllRecipeRatingsUC>();
+        services.AddScoped<IUseCase<GetByIdRequest, RecipeRatingDto>, GetRecipeRatingByIdUC>();
+        services.AddScoped<IUseCase<CreateRecipeRatingRequest, RecipeRatingDto>, CreateRecipeRatingUC>();
+        services.AddScoped<IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto>, UpdateRecipeRatingUC>();
+        services.AddScoped<IUseCase<DeleteRequest, RecipeRatingDto>, DeleteRecipeRatingUC>();
+
+        // Repositories
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
+        services.AddScoped<IRecipeRepository, RecipeRepository>();
+        services.AddScoped<IRecipeRatingRepository, RecipeRatingRepository>();
 
         return services;
     }

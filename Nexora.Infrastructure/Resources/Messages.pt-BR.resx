@@ -137,4 +137,8 @@
   <data name="tag_already_exists" xml:space="preserve">
     <value>Tag já existe</value>
   </data>
+
+  <data name="reciperating_not_found" xml:space="preserve">
+    <value>Avaliação não encontrada</value>
+  </data>
 </root>

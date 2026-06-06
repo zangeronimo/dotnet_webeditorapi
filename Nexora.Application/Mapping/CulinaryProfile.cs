@@ -34,5 +34,8 @@ public class CulinaryProfile : Profile
             .ForMember(dest => dest.MetaTitle, opt => opt.MapFrom(src => src.Seo.MetaTitle))
             .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
             .ForMember(dest => dest.CanonicalUrl, opt => opt.MapFrom(src => src.Seo.CanonicalUrl));
+
+        CreateMap<RecipeRating, RecipeRatingDto>()
+            .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Score.Value));
     }
 }
