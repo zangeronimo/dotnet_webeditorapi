@@ -51,7 +51,7 @@ public class AuthController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost("switch-company")]
+    [HttpPost("/api/switch-company")]
     public async Task<IActionResult> Authenticate([FromBody] SwitchCompanyModel model, [FromServices] IOptions<JwtOptions> jwtOptions)
     {
         var options = jwtOptions.Value;
