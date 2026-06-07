@@ -35,7 +35,9 @@ public class RefreshTokenUC : IRefreshToken
         var userCompanies = await _userCompanyRepository.GetByUserIdAsync(user.Id);
         if (!userCompanies.Any())
             throw new ApiInvalidCredentialsException();
-        var selectedCompany = userCompanies.OrderByDescending(x => x.LastAccessedAt).First();
+        var selectedCompany = userCompanies.FirstOrDefault(x => x.CompanyId == payload.CompanyId);
+        if (selectedCompany == null)
+            throw new ApiInvalidCredentialsException();
         var permissions = await _permissionRepository.GetByUserCompanyAsync(selectedCompany.Id);
         var token = _tokenProvider.GenerateToken(user.Id, user.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Access)
             ?? throw new ApiBadRequestException(AuthErrors.CreateJwtError);

@@ -41,6 +41,8 @@ public class SwitchCompanyUC : ISwitchCompany
             ?? throw new ApiBadRequestException(AuthErrors.CreateJwtError);
         var refreshToken = _tokenProvider.GenerateToken(selectedCompany.User.Id, selectedCompany.User.Email.Value, permissions, selectedCompany.CompanyId, TokenType.Refresh)
             ?? throw new ApiBadRequestException(AuthErrors.CreateJwtError);
+        selectedCompany.MakeLogin();
+        await _userCompanyRepository.UpdateAsync(selectedCompany);
         return new AuthResponse()
         {
             Token = token,
