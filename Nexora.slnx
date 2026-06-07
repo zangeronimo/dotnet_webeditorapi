@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Culinary.LegacyImporter/Culinary.LegacyImporter.csproj" />
   <Project Path="Nexora.Api/Nexora.Api.csproj" />
   <Project Path="Nexora.Application/Nexora.Application.csproj" />
   <Project Path="Nexora.Domain/Nexora.Domain.csproj" />
