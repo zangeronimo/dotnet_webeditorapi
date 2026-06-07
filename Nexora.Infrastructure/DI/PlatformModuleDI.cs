@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+
 using Nexora.Application.DTOs;
 using Nexora.Application.DTOs.Core;
 using Nexora.Application.DTOs.System;
@@ -6,18 +7,18 @@ using Nexora.Application.Interfaces;
 using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Core.Companies;
 using Nexora.Application.Requests.UseCases.Core.Modules;
+using Nexora.Application.Requests.UseCases.Core.Users;
 using Nexora.Application.Requests.UseCases.System.Roles;
 using Nexora.Application.Requests.UseCases.System.UserCompanies;
-using Nexora.Application.Requests.UseCases.Core.Users;
 using Nexora.Application.UseCases.Core;
 using Nexora.Application.UseCases.Core.Companies;
 using Nexora.Application.UseCases.Core.Modules;
+using Nexora.Application.UseCases.Core.Users;
 using Nexora.Application.UseCases.System.Roles;
 using Nexora.Application.UseCases.System.UserCompanies;
-using Nexora.Application.UseCases.Core.Users;
 using Nexora.Domain.Interfaces.Repository.Core;
-using Nexora.Infrastructure.Repositories.Core;
 using Nexora.Domain.Interfaces.Repository.System;
+using Nexora.Infrastructure.Repositories.Core;
 using Nexora.Infrastructure.Repositories.System;
 
 namespace Nexora.Infrastructure.DI;
@@ -29,6 +30,7 @@ public static class PlatformModuleDI
         // UseCases
         services.AddScoped<IMakeLogin, MakeLoginUC>();
         services.AddScoped<IRefreshToken, RefreshTokenUC>();
+        services.AddScoped<ISwitchCompany, SwitchCompanyUC>();
 
         services.AddScoped<IUseCase<GetAllUsersFilterRequest, PaginationResult<UserDto>>, GetAllUsersUC>();
         services.AddScoped<IUseCase<GetByIdRequest, UserDto>, GetUserByIdUC>();
