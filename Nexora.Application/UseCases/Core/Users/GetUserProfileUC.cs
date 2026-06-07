@@ -1,4 +1,5 @@
 using AutoMapper;
+
 using Nexora.Application.DTOs.Core;
 using Nexora.Application.DTOs.System;
 using Nexora.Application.Exceptions;
@@ -24,14 +25,13 @@ public class GetUserProfileUC(IUserRepository userRepository, IUserCompanyReposi
         User? user = await _userRepository.GetByIdAsync((Guid)request.Context.UserId);
         if (user == null || user.Status == Status.Inactive)
             throw new ApiNotFoundException(UserErrors.NotFound);
-        var userCompany = await _userCompanyRepository.GetByUserIdAsync(request.Context.UserId);
-        UserCompany? selectedUserCompany = userCompany.FirstOrDefault(uc => uc.CompanyId == request.Context.CompanyId);
+        var userCompanies = await _userCompanyRepository.GetByUserIdAsync(request.Context.UserId);
+        UserCompany? selectedUserCompany = userCompanies.FirstOrDefault(uc => uc.CompanyId == request.Context.CompanyId);
         if (selectedUserCompany == null || selectedUserCompany.Status == Status.Inactive)
             throw new ApiNotFoundException(UserCompanyErrors.NotFound);
-        await _userCompanyRepository.UpdateAsync(selectedUserCompany);
-        UserDto userDto = _mapper.Map<UserDto>(user);
         UserCompanyDto? userCompanyDto = _mapper.Map<UserCompanyDto>(selectedUserCompany);
+        List<CompanyDto> companiesDto = _mapper.Map<List<CompanyDto>>(userCompanies.Select(uc => uc.Company));
 
-        return new UserProfileDto() { UserCompany = userCompanyDto };
+        return new UserProfileDto() { UserCompany = userCompanyDto, Companies = companiesDto };
     }
 }
