@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Nexora.Domain.Entities.Culinary;
 using Nexora.Domain.ValueObjects;
 using Nexora.Domain.ValueObjects.Culinary;
@@ -45,7 +46,19 @@ public class CategoryMapping : EntityMapping<Category>
             .HasForeignKey(x => x.ParentId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(x => new { x.CompanyId, x.Slug }).IsUnique().HasFilter("\"deleted_at\" IS NULL");
+        builder.HasIndex(x => new
+        {
+            x.CompanyId,
+            x.Slug
+        }).IsUnique().HasFilter("\"parent_id\" IS NULL AND \"deleted_at\" IS NULL");
+
+        builder.HasIndex(x => new
+        {
+            x.CompanyId,
+            x.ParentId,
+            x.Slug
+        }).IsUnique().HasFilter("\"parent_id\" IS NOT NULL AND \"deleted_at\" IS NULL");
+
         builder.HasIndex(x => new { x.CompanyId, x.ParentId });
         builder.HasIndex(x => new { x.CompanyId, x.Status });
         builder.HasIndex(x => new { x.CompanyId, x.DisplayOrder });
