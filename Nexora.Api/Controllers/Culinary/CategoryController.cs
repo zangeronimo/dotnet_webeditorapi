@@ -19,6 +19,7 @@ namespace Nexora.Api.Controllers.Culinary;
 public class CategoryController : ControllerBase
 {
     private readonly IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> _getAllCategoriesUC;
+    private readonly IUseCase<GetAllParentsRequest, IEnumerable<CategoryDto>> _getAllParentsUC;
     private readonly IUseCase<GetByIdRequest, CategoryDto> _getCategoryByIdUC;
     private readonly IUseCase<CreateCategoryRequest, CategoryDto> _createCategoryUC;
     private readonly IUseCase<UpdateCategoryRequest, CategoryDto> _updateCategoryUC;
@@ -27,6 +28,7 @@ public class CategoryController : ControllerBase
 
     public CategoryController(
         IUseCase<GetAllCategoriesFilterRequest, PaginationResult<CategoryDto>> getAllCategoriesUC,
+        IUseCase<GetAllParentsRequest, IEnumerable<CategoryDto>> getAllParentsUC,
         IUseCase<GetByIdRequest, CategoryDto> getCategoryByIdUC,
         IUseCase<CreateCategoryRequest, CategoryDto> createCategoryUC,
         IUseCase<UpdateCategoryRequest, CategoryDto> updateCategoryUC,
@@ -34,6 +36,7 @@ public class CategoryController : ControllerBase
         IUseCase<CategoryFeaturedImageRequest, CategoryDto> categoryFeaturedImageUC)
     {
         _getAllCategoriesUC = getAllCategoriesUC;
+        _getAllParentsUC = getAllParentsUC;
         _getCategoryByIdUC = getCategoryByIdUC;
         _createCategoryUC = createCategoryUC;
         _updateCategoryUC = updateCategoryUC;
@@ -53,6 +56,19 @@ public class CategoryController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new GetAllCategoriesFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.Name, model.Status, model.Parent, context);
         var result = await _getAllCategoriesUC.ExecuteAsync(request);
+
+        return Ok(result);
+    }
+
+    [HasPermission("culinary.category.view")]
+    [HttpGet("parents")]
+    public async Task<IActionResult> GetAllParents()
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new GetAllParentsRequest(context);
+        var result = await _getAllParentsUC.ExecuteAsync(request);
 
         return Ok(result);
     }

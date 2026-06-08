@@ -17,5 +17,6 @@ public interface ICategoryRepository : IRepository<Category>
         Guid companyId);
 
     Task<Category?> GetBySlugAsync(Slug slug, Guid companyId);
-    Task<IEnumerable<Category>> GetAllByParentId(Guid parentId, Guid companyId);
+    Task<IEnumerable<Category>> GetAllByParentIdAsync(Guid parentId, Guid companyId);
+    Task<IEnumerable<Category>> GetAllParentsAsync(Guid companyId);
 }

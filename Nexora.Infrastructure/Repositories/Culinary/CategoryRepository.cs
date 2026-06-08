@@ -83,9 +83,14 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             .FirstOrDefaultAsync(c => c.Slug == slug && c.CompanyId == companyId);
     }
 
-    public async Task<IEnumerable<Category>> GetAllByParentId(Guid parentId, Guid companyId)
+    public async Task<IEnumerable<Category>> GetAllByParentIdAsync(Guid parentId, Guid companyId)
     {
         return await _context.Categories.Where(c => c.ParentId == parentId && c.CompanyId == companyId).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Category>> GetAllParentsAsync(Guid companyId)
+    {
+        return await _context.Categories.OrderBy(c => c.Name).Where(c => c.ParentId == null && c.CompanyId == companyId).ToListAsync();
     }
 }
 
