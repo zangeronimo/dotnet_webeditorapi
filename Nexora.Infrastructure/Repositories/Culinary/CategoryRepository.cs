@@ -15,7 +15,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
 {
     private readonly CulinaryDbContext _context = context;
 
-    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid companyId)
+    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid? parent, Guid companyId)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -31,6 +31,8 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
         {
             query = query.Where(c => c.Status == status);
         }
+
+        query = query.Where(c => c.ParentId == parent);
 
         // total before pagination
         var total = await query.CountAsync();

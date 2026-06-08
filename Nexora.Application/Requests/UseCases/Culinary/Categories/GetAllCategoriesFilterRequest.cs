@@ -9,4 +9,5 @@ public sealed record GetAllCategoriesFilterRequest(
     bool Desc,
     string? Name,
     Status? Status,
+    Guid? Parent,
     RequestContext Context) : ApplicationRequest(Context);

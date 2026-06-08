@@ -51,7 +51,7 @@ public class CategoryController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var context = new RequestContext(userId, companyId);
-        var request = new GetAllCategoriesFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.Name, model.Status, context);
+        var request = new GetAllCategoriesFilterRequest(model.Page, model.PageSize, model.OrderBy, model.Desc, model.Name, model.Status, model.Parent, context);
         var result = await _getAllCategoriesUC.ExecuteAsync(request);
 
         return Ok(result);

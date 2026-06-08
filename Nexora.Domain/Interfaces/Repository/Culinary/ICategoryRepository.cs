@@ -13,6 +13,7 @@ public interface ICategoryRepository : IRepository<Category>
         bool desc,
         string? name,
         Status? status,
+        Guid? parent,
         Guid companyId);
 
     Task<Category?> GetBySlugAsync(Slug slug, Guid companyId);
