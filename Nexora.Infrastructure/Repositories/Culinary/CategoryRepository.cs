@@ -49,7 +49,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             [
                 "Name",
                 "Slug",
-                "Active"
+                "Status"
             ]
         );
 
