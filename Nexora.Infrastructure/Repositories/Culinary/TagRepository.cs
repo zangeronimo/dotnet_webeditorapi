@@ -47,7 +47,7 @@ public class TagRepository(CulinaryDbContext context) : ITagRepository
             [
                 "Name",
                 "Slug",
-                "Active"
+                "Status"
             ]
         );
 

@@ -52,7 +52,7 @@ public class RecipeRepository(CulinaryDbContext context) : IRecipeRepository
             [
                 "Name",
                 "Slug",
-                "Active"
+                "Status"
             ]
         );
 
