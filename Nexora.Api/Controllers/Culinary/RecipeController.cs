@@ -80,7 +80,7 @@ public class RecipeController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
-        var recipeContent = new RecipeContent(model.ShortDescription, model.FullDescription, model.Ingredients, model.Steps, model.Notes);
+        var recipeContent = new RecipeContent(model.ShortDescription, model.FullDescription, model.Sections, model.Notes);
         var recipeTiming = new RecipeTiming(model.PrepTime, model.CookTime, model.RestTime);
         var recipeYield = new RecipeYield(model.YieldTotal);
         var RecipeAttributes = new RecipeAttributes(model.difficulty, model.Cuisine);
@@ -113,7 +113,7 @@ public class RecipeController : ControllerBase
         var companyId = (Guid)HttpContext.Items["CompanyId"]!;
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
-        var recipeContent = new RecipeContent(model.ShortDescription, model.FullDescription, model.Ingredients, model.Steps, model.Notes);
+        var recipeContent = new RecipeContent(model.ShortDescription, model.FullDescription, model.Sections, model.Notes);
         var recipeTiming = new RecipeTiming(model.PrepTime, model.CookTime, model.RestTime);
         var recipeYield = new RecipeYield(model.YieldTotal);
         var RecipeAttributes = new RecipeAttributes(model.difficulty, model.Cuisine);

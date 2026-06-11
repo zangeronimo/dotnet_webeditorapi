@@ -1,5 +1,7 @@
 using System.Text.Json;
+
 using Microsoft.Extensions.Options;
+
 using Nexora.Application.Interfaces;
 using Nexora.Domain.Entities.Culinary;
 using Nexora.Infrastructure.Options;
@@ -31,7 +33,7 @@ public sealed class RecipeStructuredDataProvider
 
             name = recipe.Name,
 
-            description = recipe.Content.ShortDescription,
+            description = recipe.Content.FullDescription,
 
             image = string.IsNullOrWhiteSpace(recipe.Media.ImageUrl)
                 ? null
@@ -69,18 +71,19 @@ public sealed class RecipeStructuredDataProvider
                 tags,
                 recipe),
 
-            recipeIngredient = recipe.Content.Ingredients
-                .Select(x => x.Description)
+            recipeIngredient = recipe.Content.Sections
+                .SelectMany(s => s.Ingredients)
+                .Select(i => i.Description)
                 .ToList(),
 
-            recipeInstructions = recipe.Content.Steps
-                .OrderBy(x => x.Order)
-                .Select(x => new
+            recipeInstructions = recipe.Content.Sections
+                .SelectMany(s => s.Steps)
+                .Select(s => new
                 {
                     @type = "HowToStep",
-                    text = x.Instruction
+                    text = s.Instruction
                 })
-                .ToList()
+                .ToList(),
         };
 
         return JsonSerializer.Serialize(

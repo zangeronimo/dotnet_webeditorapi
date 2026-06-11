@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Nexora.Domain.Entities.Culinary;
 using Nexora.Domain.ValueObjects;
 using Nexora.Infrastructure.Persistence.Converters.Culinary;
@@ -23,17 +24,16 @@ public class RecipeMapping : EntityMapping<Recipe>
         {
             content.Property(p => p.ShortDescription).HasColumnName("short_description").HasMaxLength(255);
             content.Property(p => p.FullDescription).HasColumnName("full_description");
-            content.Property(p => p.Ingredients)
-                .HasConversion(RecipeJsonConverters.IngredientsConverter)
-                .HasColumnName("ingredients")
+            content.Property(p => p.Sections)
+                .HasConversion(RecipeJsonConverters.SectionsConverter)
+                .HasColumnName("sections")
                 .HasColumnType("jsonb")
                 .IsRequired();
-            content.Property(p => p.Steps)
-                .HasConversion(RecipeJsonConverters.StepsConverter)
-                .HasColumnName("steps")
+            content.Property(p => p.Notes)
+                .HasConversion(RecipeJsonConverters.NotesConverter)
+                .HasColumnName("notes")
                 .HasColumnType("jsonb")
                 .IsRequired();
-            content.Property(p => p.Notes).HasColumnName("notes");
         });
         builder.OwnsOne(r => r.Attributes, attribute =>
         {
