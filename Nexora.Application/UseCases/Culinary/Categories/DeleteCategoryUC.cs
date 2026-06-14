@@ -20,7 +20,7 @@ public class DeleteCategoryUC(ICategoryRepository categoryRepository, IMapper ma
         Category? category = await _categoryRepository.GetByIdAsync(request.ResourceId, request.Context.CompanyId);
         if (category == null)
             throw new ApiNotFoundException(CategoryErrors.NotFound);
-        var categories = await _categoryRepository.GetAllByParentId(category.Id, category.CompanyId);
+        var categories = await _categoryRepository.GetAllByParentIdAsync(category.Id, category.CompanyId);
         if (categories.Any())
             throw new ApiBadRequestException(CategoryErrors.CantBeDeletedWithChildren);
         category.Delete();

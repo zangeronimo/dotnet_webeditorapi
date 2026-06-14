@@ -13,8 +13,10 @@ public interface ICategoryRepository : IRepository<Category>
         bool desc,
         string? name,
         Status? status,
+        Guid? parent,
         Guid companyId);
-
+    Task<IEnumerable<Category>> GetByParentIdAsync(Guid parentId, Guid companyId);
     Task<Category?> GetBySlugAsync(Slug slug, Guid companyId);
-    Task<IEnumerable<Category>> GetAllByParentId(Guid parentId, Guid companyId);
+    Task<IEnumerable<Category>> GetAllByParentIdAsync(Guid parentId, Guid companyId);
+    Task<IEnumerable<Category>> GetAllParentsAsync(Guid companyId);
 }

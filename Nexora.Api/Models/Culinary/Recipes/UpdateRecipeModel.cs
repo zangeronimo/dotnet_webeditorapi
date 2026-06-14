@@ -21,13 +21,10 @@ public class UpdateRecipeModel
     [MaxLength(500, ErrorMessage = "O FullDescription deve ter no máximo 500 caracteres.")]
     public string FullDescription { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "O campo Ingredients é obrigatório.")]
-    public List<RecipeIngredient> Ingredients { get; set; } = [];
+    [Required(ErrorMessage = "O campo Sections é obrigatório.")]
+    public List<RecipeSection> Sections { get; set; } = [];
 
-    [Required(ErrorMessage = "O campo Steps é obrigatório.")]
-    public List<RecipeHowToStep> Steps { get; set; } = [];
-
-    public string? Notes { get; set; }
+    public List<string> Notes { get; set; } = [];
     public int PrepTime { get; set; }
     public int CookTime { get; set; }
     public int RestTime { get; set; }

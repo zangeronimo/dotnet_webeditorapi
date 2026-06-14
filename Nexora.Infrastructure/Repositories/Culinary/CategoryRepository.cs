@@ -15,7 +15,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
 {
     private readonly CulinaryDbContext _context = context;
 
-    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid companyId)
+    public async Task<(IEnumerable<Category> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid? parent, Guid companyId)
     {
         var query = _context.Categories
             .AsNoTracking()
@@ -32,6 +32,8 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             query = query.Where(c => c.Status == status);
         }
 
+        query = query.Where(c => c.ParentId == parent);
+
         // total before pagination
         var total = await query.CountAsync();
 
@@ -47,7 +49,7 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             [
                 "Name",
                 "Slug",
-                "Active"
+                "Status"
             ]
         );
 
@@ -58,6 +60,11 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             .ToListAsync();
 
         return (items, total);
+    }
+
+    public async Task<IEnumerable<Category>> GetByParentIdAsync(Guid parentId, Guid companyId)
+    {
+        return await _context.Categories.OrderBy(c => c.Name).Where(c => c.ParentId == parentId && c.CompanyId == companyId).ToListAsync();
     }
 
     public async Task<Category?> GetByIdAsync(Guid id, Guid companyId)
@@ -81,9 +88,14 @@ public class CategoryRepository(CulinaryDbContext context) : ICategoryRepository
             .FirstOrDefaultAsync(c => c.Slug == slug && c.CompanyId == companyId);
     }
 
-    public async Task<IEnumerable<Category>> GetAllByParentId(Guid parentId, Guid companyId)
+    public async Task<IEnumerable<Category>> GetAllByParentIdAsync(Guid parentId, Guid companyId)
     {
         return await _context.Categories.Where(c => c.ParentId == parentId && c.CompanyId == companyId).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Category>> GetAllParentsAsync(Guid companyId)
+    {
+        return await _context.Categories.OrderBy(c => c.Name).Where(c => c.ParentId == null && c.CompanyId == companyId).ToListAsync();
     }
 }
 

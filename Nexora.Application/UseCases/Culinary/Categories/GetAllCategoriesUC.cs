@@ -17,7 +17,7 @@ public class GetAllCategoriesUC(ICategoryRepository categoryRepository, IMapper 
 
     public async Task<PaginationResult<CategoryDto>> ExecuteAsync(GetAllCategoriesFilterRequest request)
     {
-        (IEnumerable<Category> categories, int total) = await _categoryRepository.GetAllAsync(request.Page, request.PageSize, request.OrderBy, request.Desc, request.Name, request.Status, request.Context.CompanyId);
+        (IEnumerable<Category> categories, int total) = await _categoryRepository.GetAllAsync(request.Page, request.PageSize, request.OrderBy, request.Desc, request.Name, request.Status, request.Parent, request.Context.CompanyId);
 
         return new PaginationResult<CategoryDto>
         {

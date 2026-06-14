@@ -10,9 +10,8 @@ public class RecipeDto
     public string Name { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;
     public string FullDescription { get; set; } = string.Empty;
-    public IReadOnlyCollection<RecipeIngredient> Ingredients { get; set; } = [];
-    public IReadOnlyCollection<RecipeHowToStep> Steps { get; set; } = [];
-    public string? Notes { get; set; }
+    public IReadOnlyCollection<RecipeSection> Sections { get; set; } = [];
+    public IReadOnlyCollection<string> Notes { get; set; } = [];
     public int PrepTime { get; set; }
     public int CookTime { get; set; }
     public int RestTime { get; set; }
