@@ -33,6 +33,8 @@ public class LegacyRecipeMapping : IEntityTypeConfiguration<LegacyRecipe>
         builder.Property(x => x.Preparation)
             .HasColumnName("preparation");
 
+        builder.Property(x => x.Imported).HasColumnName("imported").HasColumnType("number");
+
         builder.Property(c => c.Active).HasColumnName("active").HasConversion<int>().IsRequired();
 
         builder.Property(c => c.CategoryId).HasColumnName("recipe_categories_id");

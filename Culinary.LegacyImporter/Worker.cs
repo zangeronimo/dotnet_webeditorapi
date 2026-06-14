@@ -55,12 +55,14 @@ public sealed class Worker : BackgroundService
         // await current.SaveChangesAsync();
 
         // IMPORT LEGACY RECIPES
-        // var legacyRecipe = await legacy.Recipes.Include(r => r.Images).Where(c => c.Active == Status.Active && c.CompanyId == LegacyCompanyId).ToListAsync();
+        // var legacyRecipe = await legacy.Recipes.Include(r => r.Images).Where(c => c.Active == Nexora.Domain.Enums.Status.Active && c.Imported == 0 && c.CompanyId == LegacyCompanyId).ToListAsync();
+
         // var recipes = legacyRecipe.Select(legacyRecipe =>
         // {
         //     var ingredients = new RecipeIngredient(legacyRecipe.Ingredients);
         //     var steps = new RecipeHowToStep(0, legacyRecipe.Preparation);
-        //     var recipeContent = new RecipeContent(string.Empty, string.Empty, [ingredients], [steps], string.Empty);
+        //     var section = new RecipeSection("", [ingredients], [steps]);
+        //     var recipeContent = new RecipeContent(string.Empty, string.Empty, [section], []);
         //     var imageUrl = legacyRecipe.Images.OrderBy(x => x.Id).FirstOrDefault()?.Url;
         //     var recipeMedia = new RecipeMedia(imageUrl ?? string.Empty);
         //     var recipeTiming = new RecipeTiming(0, 0, 0);
@@ -74,7 +76,7 @@ public sealed class Worker : BackgroundService
         //                     BaseUrl = "https://webeditor-node.tudolinux.com.br"
         //                 }));
 
-        //     var recipe = new Recipe(legacyRecipe.Id, legacyRecipe.Slug, legacyRecipe.Name, recipeContent, recipeTiming, recipeYield, recipeAttributes, recipeSeo, legacyRecipe.CategoryId, legacyRecipe.CompanyId);
+        //     var recipe = new Recipe(legacyRecipe.Id, legacyRecipe.Slug, legacyRecipe.Name, recipeContent, recipeTiming, recipeYield, recipeAttributes, recipeSeo, legacyRecipe.CategoryId, CurrentCompanyId);
         //     recipe.SetMedia(recipeMedia);
         //     return recipe;
         // });
@@ -82,16 +84,39 @@ public sealed class Worker : BackgroundService
         // await current.Recipes.AddRangeAsync(recipes);
         // await current.SaveChangesAsync();
 
-        // IMPORT LEGACY Ratings
-        // var legacyRating = await legacy.RecipeRatings.Where(c => c.Active == Status.Active && c.CompanyId == LegacyCompanyId && c.DeletedAt == null).ToListAsync();
-        // var ratings = legacyRating.Select(legacyRating =>
+        // IMPORT CULINARY RECIPES
+        // var culinaryRecipes = await legacy.CulinaryRecipes.Where(c =>
+        //     c.DeletedAt == null &&
+        //     c.CompanyId == LegacyCompanyId).ToListAsync();
+
+        // var recipes = culinaryRecipes.Select(culinaryRecipes =>
         // {
-        //     var score = new RecipeScore(legacyRating.Rate);
-        //     var rating = new RecipeRating(score, legacyRating.Name, legacyRating.Comment, legacyRating.Active, legacyRating.RecipeId, CurrentCompanyId);
-        //     return rating;
+        //     var ingredients = new RecipeIngredient(culinaryRecipes.Ingredients);
+        //     var steps = new RecipeHowToStep(0, culinaryRecipes.Preparation);
+        //     var section = new RecipeSection("", [ingredients], [steps]);
+        //     var recipeContent = new RecipeContent(
+        //         culinaryRecipes.ShortDescription,
+        //         culinaryRecipes.FullDescription,
+        //         [section], [culinaryRecipes.Notes]);
+        //     var recipeMedia = new RecipeMedia(culinaryRecipes.ImageUrl ?? string.Empty);
+        //     var recipeTiming = new RecipeTiming(culinaryRecipes.PrepTime, culinaryRecipes.CookTime, culinaryRecipes.RestTime);
+        //     var recipeYield = new RecipeYield(culinaryRecipes.YieldTotal);
+        //     var difficulty = culinaryRecipes.Difficulty == "Fácil" ? CulinaryRecipeDifficulty.Easy : culinaryRecipes.Difficulty == "Média" ? CulinaryRecipeDifficulty.Medium : CulinaryRecipeDifficulty.Hard;
+        //     var recipeAttributes = new RecipeAttributes(difficulty, culinaryRecipes.Cuisine);
+        //     var recipeSeo = new RecipeSeo(culinaryRecipes.MetaTitle?.Substring(0, Math.Min(70, culinaryRecipes.MetaTitle.Length)), culinaryRecipes.MetaDescription, $"https://culinaria.maisreceitas.com.br/recipe/{culinaryRecipes.Slug.Value}");
+        //     var structuredDataProvider = new RecipeStructuredDataProvider(
+        //             Options.Create(
+        //                 new ApiOptions
+        //                 {
+        //                     BaseUrl = "https://webeditor-node.tudolinux.com.br"
+        //                 }));
+
+        //     var recipe = new Recipe(culinaryRecipes.Id, Slug.Restore(culinaryRecipes.Slug.Value), culinaryRecipes.Name, recipeContent, recipeTiming, recipeYield, recipeAttributes, recipeSeo, culinaryRecipes.CategoryId, CurrentCompanyId);
+        //     recipe.SetMedia(recipeMedia);
+        //     return recipe;
         // });
 
-        // await current.RecipeRatings.AddRangeAsync(ratings);
+        // await current.Recipes.AddRangeAsync(recipes);
         // await current.SaveChangesAsync();
 
         Environment.Exit(0);

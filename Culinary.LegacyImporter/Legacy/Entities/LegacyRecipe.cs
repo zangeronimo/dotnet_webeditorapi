@@ -14,5 +14,6 @@ public class LegacyRecipe
     public Status Active { get; set; }
     public Guid CompanyId { get; set; }
     public ICollection<LegacyRecipeImage> Images { get; set; } = [];
+    public int Imported { get; set; }
 }
 
