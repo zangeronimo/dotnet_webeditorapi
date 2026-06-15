@@ -26,6 +26,8 @@ public class Recipe : Entity
     public Guid CategoryId { get; private set; }
     public Guid CompanyId { get; private set; }
 
+    public Category? Category { get; private set; }
+
     public Recipe(
         Slug slug,
         string name,

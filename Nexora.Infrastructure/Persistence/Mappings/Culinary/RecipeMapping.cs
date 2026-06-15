@@ -69,7 +69,7 @@ public class RecipeMapping : EntityMapping<Recipe>
         builder.Property(r => r.PublishedAt).HasColumnName("published_at");
         builder.Property<List<Guid>>("_tagIds").HasColumnName("tag_ids").HasColumnType("uuid[]");
 
-        builder.HasOne<Category>()
+        builder.HasOne<Category>(r => r.Category)
             .WithMany()
             .HasForeignKey(r => r.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);

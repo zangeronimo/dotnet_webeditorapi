@@ -28,4 +28,6 @@ public class RecipeDto
     public int TotalRatings { get; set; }
     public DateTimeOffset? PublishedAt { get; set; }
     public Guid CategoryId { get; set; }
+
+    public CategoryDto? Category { get; set; }
 }

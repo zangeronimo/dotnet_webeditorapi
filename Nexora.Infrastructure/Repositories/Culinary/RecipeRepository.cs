@@ -67,7 +67,7 @@ public class RecipeRepository(CulinaryDbContext context) : IRecipeRepository
 
     public async Task<Recipe?> GetByIdAsync(Guid id, Guid companyId)
     {
-        return await _context.Recipes.FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
+        return await _context.Recipes.Include(r => r.Category).FirstOrDefaultAsync(c => c.Id == id && c.CompanyId == companyId);
     }
 
     public async Task AddAsync(Recipe entity)
