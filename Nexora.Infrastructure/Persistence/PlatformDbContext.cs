@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using Nexora.Domain.Entities.Core;
 using Nexora.Domain.Entities.System;
 using Nexora.Infrastructure.Persistence.Mappings.Core;
@@ -15,6 +16,7 @@ public class PlatformDbContext : DbContext
     public DbSet<Role> Roles { get; set; }
     public DbSet<Permission> Permissions { get; set; }
     public DbSet<UserCompanyModuleRole> UserCompanyModuleRoles { get; set; }
+    public DbSet<ApiClient> ApiClients { get; set; }
 
     public PlatformDbContext(DbContextOptions<PlatformDbContext> options) : base(options) { }
 
@@ -29,5 +31,6 @@ public class PlatformDbContext : DbContext
         modelBuilder.ApplyConfiguration(new RoleMapping());
         modelBuilder.ApplyConfiguration(new RolePermissionMapping());
         modelBuilder.ApplyConfiguration(new UserCompanyModuleRoleMapping());
+        modelBuilder.ApplyConfiguration(new ApiClientMapping());
     }
 }
