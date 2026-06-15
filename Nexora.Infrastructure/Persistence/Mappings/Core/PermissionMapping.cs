@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using Nexora.Domain.Entities.Core;
 
 namespace Nexora.Infrastructure.Persistence.Mappings.Core;
@@ -24,5 +25,9 @@ public class PermissionMapping : EntityMapping<Permission>
         builder.HasMany(m => m.RolePermissions)
             .WithOne(cm => cm.Permission)
             .HasForeignKey(cm => cm.PermissionId);
+
+        builder.HasIndex(x => x.Code)
+            .IsUnique()
+            .HasFilter("\"deleted_at\" IS NULL");
     }
 }
