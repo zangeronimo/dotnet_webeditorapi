@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 using Nexora.Domain.Entities.Core;
 using Nexora.Domain.Enums;
 using Nexora.Domain.Interfaces.Repository.Core;
@@ -57,6 +58,13 @@ public class CompanyRepository(PlatformDbContext context) : ICompanyRepository
                 .ThenInclude(cm => cm.Module)
                     .ThenInclude(cm => cm.Permissions)
             .FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<Company?> GetByIdWithApiClientsAsync(Guid companyId)
+    {
+        return await _context.Companies.AsNoTracking()
+            .Include(c => c.ApiClients)
+            .FirstOrDefaultAsync(c => c.Id == companyId);
     }
 
     private async Task<Company?> GetByIdInternalAsync(Guid id, bool asNoTracking = false)

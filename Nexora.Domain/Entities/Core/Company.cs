@@ -10,6 +10,8 @@ public class Company : Entity
     public ICollection<UserCompany> Users { get; set; } = new List<UserCompany>();
     private readonly List<CompanyModule> _companyModules = [];
     public IReadOnlyCollection<CompanyModule> CompanyModules => _companyModules;
+    private readonly List<ApiClient> _apiClients = [];
+    public IReadOnlyCollection<ApiClient> ApiClients => _apiClients;
 
     public Company(string name, Status status) : base()
     {
@@ -36,6 +38,31 @@ public class Company : Entity
             {
                 var companyModule = new CompanyModule() { ModuleId = module.Id, CompanyId = Id, Company = this, Module = module };
                 _companyModules.Add(companyModule);
+            }
+        }
+    }
+
+    public void SetApiClients(IEnumerable<ApiClient> apiClients)
+    {
+        var newApiClientIds = apiClients.Select(x => x.Id).ToHashSet();
+
+        foreach (var apiClient in _apiClients)
+        {
+            if (!newApiClientIds.Contains(apiClient.Id))
+            {
+                apiClient.Delete();
+                continue;
+            }
+
+            var updatedApiClient = apiClients.First(x => x.Id == apiClient.Id);
+            apiClient.Update(updatedApiClient.Name, updatedApiClient.Status);
+        }
+
+        foreach (var apiClient in apiClients)
+        {
+            if (_apiClients.All(x => x.Id != apiClient.Id))
+            {
+                _apiClients.Add(apiClient);
             }
         }
     }

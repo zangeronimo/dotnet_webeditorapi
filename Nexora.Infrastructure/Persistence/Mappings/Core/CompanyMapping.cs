@@ -19,6 +19,11 @@ public class CompanyMapping : EntityMapping<Company>
             .FindNavigation(nameof(Company.CompanyModules))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
 
+        builder.HasMany(c => c.ApiClients)
+           .WithOne()
+           .HasForeignKey(a => a.CompanyId)
+           .OnDelete(DeleteBehavior.Cascade);
+
         builder.HasIndex(x => x.Name)
             .IsUnique()
             .HasFilter("\"deleted_at\" IS NULL");

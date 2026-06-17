@@ -1,4 +1,5 @@
 using AutoMapper;
+
 using Nexora.Application.DTOs.Core;
 using Nexora.Application.DTOs.System;
 using Nexora.Domain.Entities.Core;
@@ -16,6 +17,10 @@ public class CoreProfile : Profile
             .ForMember(dest => dest.Modules,
                 opt => opt.MapFrom(src => src.CompanyModules
                     .Select(cm => cm.Module)));
+        CreateMap<ApiClient, ApiClientDto>();
+        CreateMap<Company, CompanyApiClientDto>()
+            .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src))
+            .ForMember(dest => dest.ApiClients, opt => opt.MapFrom(src => src.ApiClients));
         CreateMap<User, UserDto>();
         CreateMap<UserCompany, UserCompanyDto>();
         CreateMap<Role, RoleDto>()

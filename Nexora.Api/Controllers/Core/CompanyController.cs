@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using Nexora.Api.Authorization;
 using Nexora.Api.Models.Core.Companies;
 using Nexora.Application.DTOs;
@@ -18,6 +19,7 @@ namespace Nexora.Api.Controllers.Core;
 public class CompanyController(
     IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> getAllCompaniesUC,
     IUseCase<GetAllCompanyModulesRequest, CompanyDto> getAllCompanyModulesUC,
+    IUseCase<GetAllCompanyApiClientsRequest, CompanyApiClientDto> getAllCompanyApiClientsUC,
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
     IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
@@ -27,6 +29,7 @@ public class CompanyController(
 {
     private readonly IUseCase<GetAllCompaniesFilterRequest, PaginationResult<CompanyDto>> _getAllCompaniesUC = getAllCompaniesUC;
     private readonly IUseCase<GetAllCompanyModulesRequest, CompanyDto> _getAllCompanyModulesUC = getAllCompanyModulesUC;
+    private readonly IUseCase<GetAllCompanyApiClientsRequest, CompanyApiClientDto> _getAllCompanyApiClientsUC = getAllCompanyApiClientsUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
@@ -59,6 +62,19 @@ public class CompanyController(
         var context = new RequestContext(userId, companyId);
         var request = new GetAllCompanyModulesRequest(context);
         var company = await _getAllCompanyModulesUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HasPermission("core.company.update")]
+    [HttpGet("{id}/api-clients")]
+    public async Task<IActionResult> GetAllCompanyApiClients([FromRoute] Guid id)
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new GetAllCompanyApiClientsRequest(id, context);
+        var company = await _getAllCompanyApiClientsUC.ExecuteAsync(request);
 
         return Ok(company);
     }

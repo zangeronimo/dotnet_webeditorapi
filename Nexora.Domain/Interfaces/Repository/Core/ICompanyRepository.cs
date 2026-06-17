@@ -18,4 +18,5 @@ public interface ICompanyRepository
     Task<Company?> GetByNameAsync(string name);
     Task AddAsync(Company entity);
     Task UpdateAsync(Company entity);
+    Task<Company?> GetByIdWithApiClientsAsync(Guid companyId);
 }
