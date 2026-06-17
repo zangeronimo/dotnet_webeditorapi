@@ -7,10 +7,10 @@ public class ApiClient : Entity
     public string Name { get; private set; } = null!;
     public Status Status { get; private set; }
     public Guid CompanyId { get; private set; }
-    public string ClientId { get; private set; }
-    public string EncryptedSecret { get; private set; }
+    public string? ClientId { get; private set; } = null!;
+    public string? EncryptedSecret { get; private set; } = null!;
 
-    public ApiClient(string name, Status status, Guid companyId, string clientId, string encryptedSecret) : base()
+    public ApiClient(string name, Status status, Guid companyId, string? clientId, string? encryptedSecret) : base()
     {
         Name = name;
         Status = status;

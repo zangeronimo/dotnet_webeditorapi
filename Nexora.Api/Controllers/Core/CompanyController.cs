@@ -22,6 +22,7 @@ public class CompanyController(
     IUseCase<GetAllCompanyApiClientsRequest, CompanyApiClientDto> getAllCompanyApiClientsUC,
     IUseCase<GetByIdRequest, CompanyDto> getCompanyByIdUC,
     IUseCase<CreateCompanyRequest, CompanyDto> createCompanyUC,
+    IUseCase<CompanyApiClientsRequest, CompanyApiClientDto> companyApiClientsUC,
     IUseCase<UpdateModulesRequest, CompanyDto> updateModulesUC,
     IUseCase<UpdateCompanyRequest, CompanyDto> updateCompanyUC,
     IUseCase<DeleteRequest, CompanyDto> deleteCompanyUC,
@@ -32,6 +33,7 @@ public class CompanyController(
     private readonly IUseCase<GetAllCompanyApiClientsRequest, CompanyApiClientDto> _getAllCompanyApiClientsUC = getAllCompanyApiClientsUC;
     private readonly IUseCase<GetByIdRequest, CompanyDto> _getCompanyByIdUC = getCompanyByIdUC;
     private readonly IUseCase<CreateCompanyRequest, CompanyDto> _createCompanyUC = createCompanyUC;
+    private readonly IUseCase<CompanyApiClientsRequest, CompanyApiClientDto> _companyApiClientsUC = companyApiClientsUC;
     private readonly IUseCase<UpdateModulesRequest, CompanyDto> _updateModulesUC = updateModulesUC;
     private readonly IUseCase<UpdateCompanyRequest, CompanyDto> _updateCompanyUC = updateCompanyUC;
     private readonly IUseCase<DeleteRequest, CompanyDto> _deleteCompanyUC = deleteCompanyUC;
@@ -104,6 +106,22 @@ public class CompanyController(
         var context = new RequestContext(userId, companyId);
         var request = new CreateCompanyRequest(model.Name, model.Status, context);
         var company = await _createCompanyUC.ExecuteAsync(request);
+
+        return Ok(company);
+    }
+
+    [HasPermission("core.company.update")]
+    [HttpPut("{id}/api-clients")]
+    public async Task<IActionResult> CompanyApiClients([FromBody] CompanyApiClientsModel model, [FromRoute] Guid id)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new CompanyApiClientsRequest(id, model.ApiClientsDto, context);
+        var company = await _companyApiClientsUC.ExecuteAsync(request);
 
         return Ok(company);
     }

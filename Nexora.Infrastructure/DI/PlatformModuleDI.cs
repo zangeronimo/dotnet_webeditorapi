@@ -48,6 +48,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<CreateUserCompanyRequest, UserCompanyDto>, CreateUserCompanyUC>();
         services.AddScoped<IUseCase<UpdateUserCompanyRequest, UserCompanyDto>, UpdateUserCompanyUC>();
         services.AddScoped<IUseCase<UpdateUserCompanyModulesRequest, UserCompanyDto>, UpdateUserCompanyModulesUC>();
+        services.AddScoped<IUseCase<CompanyApiClientsRequest, CompanyApiClientDto>, CompanyApiClientsUC>();
         services.AddScoped<IUseCase<UpdateUserCompanyAvatarRequest, UserCompanyDto>, UpdateUserCompanyAvatarUC>();
         services.AddScoped<IUseCase<DeleteRequest, UserCompanyDto>, DeleteUserCompanyUC>();
 

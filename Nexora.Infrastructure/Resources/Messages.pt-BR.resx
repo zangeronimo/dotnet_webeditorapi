@@ -42,6 +42,9 @@
   <data name="company.some_module_was_not_exists" xml:space="preserve">
     <value>Algum módulo não existe</value>
   </data>
+  <data name="company.some_api_client_was_not_exists" xml:space="preserve">
+    <value>Algum apiClient não existe</value>
+  </data>
 
   <data name="role.not_found" xml:space="preserve">
     <value>Papel não encontrado</value>

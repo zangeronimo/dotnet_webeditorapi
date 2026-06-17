@@ -60,11 +60,24 @@ public class CompanyRepository(PlatformDbContext context) : ICompanyRepository
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task<Company?> GetByIdWithApiClientsAsync(Guid companyId)
+    private async Task<Company?> GetByIdWithApiClientsInternalsync(Guid companyId, bool asNoTracking = false)
     {
-        return await _context.Companies.AsNoTracking()
+        IQueryable<Company> query = _context.Companies;
+        if (asNoTracking)
+            query = query.AsNoTracking();
+        return await query
             .Include(c => c.ApiClients)
             .FirstOrDefaultAsync(c => c.Id == companyId);
+    }
+
+    public async Task<Company?> GetByIdWithApiClientsAsync(Guid companyId)
+    {
+        return await GetByIdWithApiClientsInternalsync(companyId, false);
+    }
+
+    public async Task<Company?> GetByIdWithApiClientsReadOnlyAsync(Guid companyId)
+    {
+        return await GetByIdWithApiClientsInternalsync(companyId, true);
     }
 
     private async Task<Company?> GetByIdInternalAsync(Guid id, bool asNoTracking = false)
