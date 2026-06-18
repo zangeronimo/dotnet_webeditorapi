@@ -5,5 +5,5 @@ namespace Nexora.Application.DTOs.Core;
 public class ApiClientDto : BaseDto
 {
     public string Name { get; set; } = string.Empty;
-    public Status Status { get; set; }
+    public CulinaryRecipeDifficulty Status { get; set; }
 }
