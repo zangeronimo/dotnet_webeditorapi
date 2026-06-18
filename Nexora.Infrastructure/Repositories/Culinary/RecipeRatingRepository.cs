@@ -21,7 +21,7 @@ public class RecipeRatingRepository(CulinaryDbContext context) : IRecipeRatingRe
         if (!string.IsNullOrEmpty(name))
         {
             var pattern = $"%{name}%";
-            query = query.Where(c => EF.Functions.ILike(EF.Functions.Unaccent(c.Name), EF.Functions.Unaccent(pattern)));
+            query = query.Where(c => EF.Functions.ILike(EF.Functions.Unaccent(c.Name ?? ""), EF.Functions.Unaccent(pattern)));
         }
 
         if (status != null)
