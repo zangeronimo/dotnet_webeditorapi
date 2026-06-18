@@ -8,12 +8,14 @@ using Nexora.Application.Requests.UseCases;
 using Nexora.Application.Requests.UseCases.Core.Companies;
 using Nexora.Application.Requests.UseCases.Core.Modules;
 using Nexora.Application.Requests.UseCases.Core.Users;
+using Nexora.Application.Requests.UseCases.System.ApiClients;
 using Nexora.Application.Requests.UseCases.System.Roles;
 using Nexora.Application.Requests.UseCases.System.UserCompanies;
 using Nexora.Application.UseCases.Core;
 using Nexora.Application.UseCases.Core.Companies;
 using Nexora.Application.UseCases.Core.Modules;
 using Nexora.Application.UseCases.Core.Users;
+using Nexora.Application.UseCases.System.ApiClients;
 using Nexora.Application.UseCases.System.Roles;
 using Nexora.Application.UseCases.System.UserCompanies;
 using Nexora.Domain.Interfaces.Repository.Core;
@@ -74,6 +76,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<UpdatePermissionsRequest, RoleDto>, UpdatePermissionsUC>();
         services.AddScoped<IUseCase<DeleteRequest, RoleDto>, DeleteRoleUC>();
 
+        services.AddScoped<IUseCase<GetAllApiClientsRequest, IEnumerable<ApiClientDto>>, GetAllApiClientsUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();
@@ -82,6 +85,7 @@ public static class PlatformModuleDI
         services.AddScoped<IModuleRepository, ModuleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IApiClientRepository, ApiClientRepository>();
 
         return services;
     }
