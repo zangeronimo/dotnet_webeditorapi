@@ -1,17 +1,19 @@
 using System.Globalization;
 using System.Text;
+
 using DotNetEnv;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+
 using Nexora.Api.Authorization;
 using Nexora.Api.Filters;
 using Nexora.Api.Middlewares;
 using Nexora.Domain.Config;
 using Nexora.Infrastructure.DI;
 using Nexora.Infrastructure.Options;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Load correct .env
@@ -49,6 +51,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 
 builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
+builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection("SEC"));
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 
 // Connect to the database

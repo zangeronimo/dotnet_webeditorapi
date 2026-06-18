@@ -77,6 +77,7 @@ public static class PlatformModuleDI
         services.AddScoped<IUseCase<DeleteRequest, RoleDto>, DeleteRoleUC>();
 
         services.AddScoped<IUseCase<GetAllApiClientsRequest, IEnumerable<ApiClientDto>>, GetAllApiClientsUC>();
+        services.AddScoped<IUseCase<GenerateApiClientRequest, GenerateApiClientSecretDto>, GenerateApiClientUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

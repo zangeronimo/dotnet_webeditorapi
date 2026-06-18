@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+
 using Nexora.Application.Interfaces;
 using Nexora.Domain.Interfaces.Provider;
 using Nexora.Infrastructure.Provider;
@@ -13,6 +14,8 @@ public static class ProviderDI
         services.AddSingleton<IPasswordProvider, Argon2PasswordProvider>();
         services.AddSingleton<ITokenProvider, JwtProvider>();
         services.AddSingleton<IStorageProvider, DiskStorageProvider>();
+        services.AddSingleton<ISecretGenerator, SecretGenerator>();
+        services.AddSingleton<IEncryptionProvider, AesEncryptionProvider>();
 
         return services;
     }

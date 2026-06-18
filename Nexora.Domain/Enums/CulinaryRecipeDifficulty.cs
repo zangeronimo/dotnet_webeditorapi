@@ -2,7 +2,7 @@ namespace Nexora.Domain.Enums;
 
 public enum CulinaryRecipeDifficulty : byte
 {
-    Inactive = 0,
-    Active = 1,
-    Revoked = 2
+    Easy = 1,
+    Medium = 2,
+    Hard = 3
 }

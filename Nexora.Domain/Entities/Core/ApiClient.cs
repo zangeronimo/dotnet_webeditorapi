@@ -5,12 +5,12 @@ namespace Nexora.Domain.Entities.Core;
 public class ApiClient : Entity
 {
     public string Name { get; private set; } = null!;
-    public CulinaryRecipeDifficulty Status { get; private set; }
+    public ApiClientStatus Status { get; private set; }
     public Guid CompanyId { get; private set; }
-    public string? ClientId { get; private set; } = null!;
+    public string ClientId { get; private set; } = null!;
     public string? EncryptedSecret { get; private set; } = null!;
 
-    public ApiClient(string name, CulinaryRecipeDifficulty status, Guid companyId, string? clientId, string? encryptedSecret) : base()
+    public ApiClient(string name, ApiClientStatus status, Guid companyId, string? clientId, string? encryptedSecret) : base()
     {
         Name = name;
         Status = status;
@@ -21,10 +21,15 @@ public class ApiClient : Entity
 
     protected ApiClient() : base() { }
 
-    public void Update(string newName, CulinaryRecipeDifficulty newStatus)
+    public void Update(string newName, ApiClientStatus newStatus)
     {
         Name = newName;
         Status = newStatus;
         Touch();
+    }
+
+    public void SetEncryptedSecret(string encriptedSecret)
+    {
+        EncryptedSecret = encriptedSecret;
     }
 }
