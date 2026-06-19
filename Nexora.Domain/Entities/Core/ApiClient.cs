@@ -1,4 +1,6 @@
 using Nexora.Domain.Enums;
+using Nexora.Domain.Errors.System;
+using Nexora.Domain.Exceptions;
 
 namespace Nexora.Domain.Entities.Core;
 
@@ -31,5 +33,25 @@ public class ApiClient : Entity
     public void SetEncryptedSecret(string encriptedSecret)
     {
         EncryptedSecret = encriptedSecret;
+        Touch();
+    }
+
+    public void SetActive()
+    {
+        if (Status == ApiClientStatus.Revoked)
+        {
+            throw new DomainException(ApiClientErrors.Revoked);
+        }
+        Status = ApiClientStatus.Active;
+        Touch();
+    }
+
+    public void SetInactive()
+    {
+        if (Status == ApiClientStatus.Revoked)
+        {
+            throw new DomainException(ApiClientErrors.Revoked);
+        }
+        Status = ApiClientStatus.Inactive;
     }
 }

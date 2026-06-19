@@ -15,10 +15,14 @@ namespace Nexora.Api.Controllers.System;
 [Route("api/system/api-clients")]
 public class ApiClientController(
     IUseCase<GetAllApiClientsRequest, IEnumerable<ApiClientDto>> getAllApiClientsUC,
-    IUseCase<GenerateApiClientRequest, GenerateApiClientSecretDto> generateApiClientUC) : ControllerBase
+    IUseCase<GenerateApiClientRequest, GenerateApiClientSecretDto> generateApiClientUC,
+    IUseCase<ActivateApiClientRequest, ApiClientDto> activateApiClientUC,
+    IUseCase<InactivateApiClientRequest, ApiClientDto> inactivateApiClientUC) : ControllerBase
 {
     private readonly IUseCase<GetAllApiClientsRequest, IEnumerable<ApiClientDto>> _getAllApiClientsUC = getAllApiClientsUC;
     private readonly IUseCase<GenerateApiClientRequest, GenerateApiClientSecretDto> _generateApiClientUC = generateApiClientUC;
+    private readonly IUseCase<ActivateApiClientRequest, ApiClientDto> _activateApiClientUC = activateApiClientUC;
+    private readonly IUseCase<InactivateApiClientRequest, ApiClientDto> _inactivateApiClientUC = inactivateApiClientUC;
 
     [HasPermission("system.apiclient.view")]
     [HttpGet]
@@ -45,6 +49,32 @@ public class ApiClientController(
         var context = new RequestContext(userId, companyId);
         var request = new GenerateApiClientRequest(model.Id, context);
         var role = await _generateApiClientUC.ExecuteAsync(request);
+
+        return Ok(role);
+    }
+
+    [HasPermission("system.apiclient.update")]
+    [HttpPatch("{id}/activate")]
+    public async Task<IActionResult> Activate([FromRoute] Guid id)
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new ActivateApiClientRequest(id, context);
+        var role = await _activateApiClientUC.ExecuteAsync(request);
+
+        return Ok(role);
+    }
+
+    [HasPermission("system.apiclient.update")]
+    [HttpPatch("{id}/inactivate")]
+    public async Task<IActionResult> Inactivate([FromRoute] Guid id)
+    {
+        var userId = (Guid)HttpContext.Items["UserId"]!;
+        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
+        var context = new RequestContext(userId, companyId);
+        var request = new InactivateApiClientRequest(id, context);
+        var role = await _inactivateApiClientUC.ExecuteAsync(request);
 
         return Ok(role);
     }

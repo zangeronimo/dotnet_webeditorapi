@@ -78,6 +78,8 @@ public static class PlatformModuleDI
 
         services.AddScoped<IUseCase<GetAllApiClientsRequest, IEnumerable<ApiClientDto>>, GetAllApiClientsUC>();
         services.AddScoped<IUseCase<GenerateApiClientRequest, GenerateApiClientSecretDto>, GenerateApiClientUC>();
+        services.AddScoped<IUseCase<ActivateApiClientRequest, ApiClientDto>, ActivateApiClientUC>();
+        services.AddScoped<IUseCase<InactivateApiClientRequest, ApiClientDto>, InactivateApiClientUC>();
 
         // Repositories
         services.AddScoped<ICompanyRepository, CompanyRepository>();

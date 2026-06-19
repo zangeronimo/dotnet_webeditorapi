@@ -99,13 +99,20 @@
     <value>Não é permitido deletar a própria conta</value>
   </data>
 
-  <data name="recip_not_found" xml:space="preserve">
+  <data name="apiclient.not_found" xml:space="preserve">
+    <value>ApiClient não existe</value>
+  </data>
+  <data name="apiclient.revoked" xml:space="preserve">
+    <value>ApiClient revogada</value>
+  </data>
+
+  <data name="recipe_not_found" xml:space="preserve">
     <value>Recipe não encontrada</value>
   </data>
-  <data name="recip_already_exists" xml:space="preserve">
+  <data name="recipe_already_exists" xml:space="preserve">
     <value>Recipe já existe</value>
   </data>
-  <data name="recipe_invalid_structure_data" xml:space="preserve">
+  <data name="recipe_invalid_structured_data" xml:space="preserve">
     <value>Structure data inválido</value>
   </data>
   <data name="recipe_invalid_tag_ids" xml:space="preserve">
