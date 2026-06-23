@@ -447,7 +447,7 @@ namespace Nexora.Infrastructure.Migrations
                                 .HasDatabaseName("IX_core_users_email")
                                 .HasFilter("\"deleted_at\" IS NULL");
 
-                            b1.ToTable("core_users");
+                            b1.ToTable("core_users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -465,7 +465,7 @@ namespace Nexora.Infrastructure.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("core_users");
+                            b1.ToTable("core_users", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
