@@ -39,10 +39,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy("ProdCors", policy =>
     {
         policy.WithOrigins(
-                "https://nexora-api.tudolinux.com.br"
+                "https://nexora.tudolinux.com.br"
             )
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
