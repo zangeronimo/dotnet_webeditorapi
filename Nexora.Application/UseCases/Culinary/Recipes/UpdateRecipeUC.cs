@@ -11,9 +11,10 @@ using Nexora.Domain.ValueObjects;
 
 namespace Nexora.Application.UseCases.Culinary.Recipes;
 
-public class UpdateRecipeUC(IRecipeRepository recipeRepository, IMapper mapper) : IUseCase<UpdateRecipeRequest, RecipeDto>
+public class UpdateRecipeUC(IRecipeRepository recipeRepository, IRecipeStructuredDataProvider structuredData, IMapper mapper) : IUseCase<UpdateRecipeRequest, RecipeDto>
 {
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
+    private readonly IRecipeStructuredDataProvider _structuredData = structuredData;
     private readonly IMapper _mapper = mapper;
     public async Task<RecipeDto> ExecuteAsync(UpdateRecipeRequest request)
     {
@@ -35,6 +36,8 @@ public class UpdateRecipeUC(IRecipeRepository recipeRepository, IMapper mapper) 
             request.Status,
             request.CategoryId);
         updateRecipe.SetTags(request.TagIds);
+        var structuredData = _structuredData.Generate(updateRecipe, updateRecipe.Category, []);
+        updateRecipe.SetStructuredData(structuredData);
         await _recipeRepository.UpdateAsync(updateRecipe);
         Recipe? updatedRecipe = await _recipeRepository.GetByIdAsync(updateRecipe.Id, request.Context.CompanyId);
         return _mapper.Map<RecipeDto>(updatedRecipe);

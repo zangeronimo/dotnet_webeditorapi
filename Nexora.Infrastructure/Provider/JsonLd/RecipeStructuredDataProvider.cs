@@ -24,74 +24,72 @@ public sealed class RecipeStructuredDataProvider
         Category category,
         IReadOnlyCollection<Tag> tags)
     {
-        var baseUrl = _options.BaseUrl.TrimEnd('/');
+        var baseUrl = _options.BaseUrl?.TrimEnd('/');
 
-        var structuredData = new
+        var dto = new RecipeStructuredDataDto
         {
-            @context = "https://schema.org",
-            @type = "Recipe",
+            Name = recipe.Name,
 
-            name = recipe.Name,
+            Description = recipe.Content.FullDescription,
 
-            description = recipe.Content.FullDescription,
-
-            image = string.IsNullOrWhiteSpace(recipe.Media.ImageUrl)
+            Image = string.IsNullOrWhiteSpace(recipe.Media.ImageUrl)
                 ? null
-                : new[]
-                {
-                    $"{baseUrl}{recipe.Media.ImageUrl}"
-                },
+                : new[] { NormalizeUrl(recipe.Media.ImageUrl, baseUrl) },
 
-            author = new
+            Author = new AuthorDto
             {
-                @type = "Organization",
-                name = "Nexora Culinary"
+                Name = "Nexora Culinary"
             },
 
-            datePublished = recipe.PublishedAt?.ToString("yyyy-MM-dd"),
+            DatePublished = recipe.PublishedAt?.ToString("yyyy-MM-dd"),
 
-            prepTime = ToIso8601Duration(
-                recipe.Timing.PrepTime),
+            PrepTime = ToIso8601Duration(recipe.Timing.PrepTime),
 
-            cookTime = ToIso8601Duration(
-                recipe.Timing.CookTime),
+            CookTime = ToIso8601Duration(recipe.Timing.CookTime),
 
-            totalTime = ToIso8601Duration(
+            TotalTime = ToIso8601Duration(
                 recipe.Timing.PrepTime +
                 recipe.Timing.CookTime +
                 recipe.Timing.RestTime),
 
-            recipeYield = recipe.Yield.YieldTotal,
+            RecipeYield = recipe.Yield.YieldTotal,
 
-            recipeCategory = category.Name.Value,
-            recipeCuisine = recipe.Attributes.Cuisine,
+            RecipeCategory = category.Parent?.Name?.Value ?? category.Name.Value,
 
-            keywords = BuildKeywords(
-                category,
-                tags,
-                recipe),
+            RecipeCuisine = recipe.Attributes.Cuisine,
 
-            recipeIngredient = recipe.Content.Sections
+            Keywords = BuildKeywords(category, tags, recipe),
+
+            RecipeIngredient = recipe.Content.Sections
                 .SelectMany(s => s.Ingredients)
                 .Select(i => i.Description)
                 .ToList(),
 
-            recipeInstructions = recipe.Content.Sections
+            RecipeInstructions = recipe.Content.Sections
                 .SelectMany(s => s.Steps)
-                .Select(s => new
+                .Select(s => new HowToStepDto
                 {
-                    @type = "HowToStep",
-                    text = s.Instruction
+                    Text = s.Instruction
                 })
-                .ToList(),
+                .ToList()
         };
 
-        return JsonSerializer.Serialize(
-            structuredData,
-            new JsonSerializerOptions
-            {
-                WriteIndented = false
-            });
+        return JsonSerializer.Serialize(dto, new JsonSerializerOptions
+        {
+            WriteIndented = false,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+        });
+    }
+
+    private static string NormalizeUrl(string url, string baseUrl)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+            return null;
+
+        if (url.StartsWith("http"))
+            return url;
+
+        return $"{baseUrl}{url}";
     }
 
     private static string? ToIso8601Duration(int minutes)
@@ -116,14 +114,15 @@ public sealed class RecipeStructuredDataProvider
         IReadOnlyCollection<Tag> tags,
         Recipe recipe)
     {
-        var keywords = new List<string>();
-
-        keywords.Add(category.Name.Value);
+        var keywords = new List<string>
+        {
+            category.Name.Value,
+            recipe.Attributes.Difficulty.ToString(),
+            recipe.Name
+        };
 
         if (!string.IsNullOrWhiteSpace(recipe.Attributes.Cuisine))
             keywords.Add(recipe.Attributes.Cuisine);
-
-        keywords.Add(recipe.Attributes.Difficulty.ToString());
 
         keywords.AddRange(
             tags
@@ -132,7 +131,6 @@ public sealed class RecipeStructuredDataProvider
 
         return string.Join(
             ", ",
-            keywords
-                .Distinct(StringComparer.OrdinalIgnoreCase));
+            keywords.Distinct(StringComparer.OrdinalIgnoreCase));
     }
 }
