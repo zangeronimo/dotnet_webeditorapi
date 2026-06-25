@@ -34,7 +34,6 @@ public class CategoryMapping : EntityMapping<Category>
             seo.WithOwner();
             seo.Property(s => s.MetaTitle).HasColumnName("meta_title").HasMaxLength(70);
             seo.Property(s => s.MetaDescription).HasColumnName("meta_description").HasMaxLength(170);
-            seo.Property(s => s.CanonicalUrl).HasColumnName("canonical_url").HasMaxLength(500);
         });
         builder.Property(x => x.FeaturedImageUrl).HasColumnName("featured_image_url").HasMaxLength(500);
         builder.Property(c => c.Status).HasColumnName("status").HasConversion<int>().IsRequired();

@@ -1,15 +1,7 @@
 namespace Nexora.Domain.ValueObjects.Culinary;
 
-public record CategorySeo
+public class CategorySeo(string? metaTitle, string? metaDescription)
 {
-    public string? MetaTitle { get; }
-    public string? MetaDescription { get; }
-    public string? CanonicalUrl { get; }
-
-    public CategorySeo(string? metaTitle, string? metaDescription, string? canonicalUrl)
-    {
-        MetaTitle = metaTitle;
-        MetaDescription = metaDescription;
-        CanonicalUrl = canonicalUrl;
-    }
+    public string? MetaTitle { get; } = metaTitle;
+    public string? MetaDescription { get; } = metaDescription;
 }

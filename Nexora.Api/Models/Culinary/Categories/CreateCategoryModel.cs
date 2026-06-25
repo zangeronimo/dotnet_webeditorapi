@@ -27,7 +27,4 @@ public class CreateCategoryModel
 
     [MaxLength(170, ErrorMessage = "A MetaDescription deve ter no máximo 170 caracteres.")]
     public string? MetaDescription { get; set; }
-
-    [MaxLength(500, ErrorMessage = "A CanonicalUrl deve ter no máximo 500 caracteres.")]
-    public string? CanonicalUrl { get; set; }
 }

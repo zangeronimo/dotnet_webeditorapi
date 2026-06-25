@@ -47,9 +47,6 @@ public class UpdateRecipeModel
     [MaxLength(170, ErrorMessage = "A MetaDescription deve ter no máximo 170 caracteres.")]
     public string MetaDescription { get; set; } = string.Empty;
 
-    [MaxLength(500, ErrorMessage = "A CanonicalUrl deve ter no máximo 500 caracteres.")]
-    public string? CanonicalUrl { get; set; }
-
     [Required(ErrorMessage = "O campo Status é obrigatório.")]
     [Range(0, 1, ErrorMessage = "O Status deve ser entre 0 e 1")]
     public Status Status { get; set; }

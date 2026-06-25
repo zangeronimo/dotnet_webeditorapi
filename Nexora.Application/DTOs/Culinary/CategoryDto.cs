@@ -2,7 +2,7 @@ using Nexora.Domain.Enums;
 
 namespace Nexora.Application.DTOs.Culinary;
 
-public class CategoryDto
+public class CategoryDto : Entity
 {
     public Guid Id { get; set; }
     public string Slug { get; set; } = string.Empty;
@@ -13,6 +13,5 @@ public class CategoryDto
     public Status Status { get; set; }
     public string? MetaTitle { get; set; }
     public string? MetaDescription { get; set; }
-    public string? CanonicalUrl { get; set; }
     public string? FeaturedImageUrl { get; set; }
 }

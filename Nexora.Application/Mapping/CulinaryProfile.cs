@@ -12,8 +12,7 @@ public class CulinaryProfile : Profile
         CreateMap<Category, CategoryDto>()
             .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value))
             .ForMember(dest => dest.MetaTitle, opt => opt.MapFrom(src => src.Seo.MetaTitle))
-            .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
-            .ForMember(dest => dest.CanonicalUrl, opt => opt.MapFrom(src => src.Seo.CanonicalUrl));
+            .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription));
 
         CreateMap<Tag, TagDto>()
             .ForMember(dest => dest.Slug, opt => opt.MapFrom(src => src.Slug.Value));
@@ -32,8 +31,7 @@ public class CulinaryProfile : Profile
             .ForMember(dest => dest.Cuisine, opt => opt.MapFrom(src => src.Attributes.Cuisine))
             .ForMember(dest => dest.ImageUrl, opt => opt.MapFrom(src => src.Media.ImageUrl))
             .ForMember(dest => dest.MetaTitle, opt => opt.MapFrom(src => src.Seo.MetaTitle))
-            .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription))
-            .ForMember(dest => dest.CanonicalUrl, opt => opt.MapFrom(src => src.Seo.CanonicalUrl));
+            .ForMember(dest => dest.MetaDescription, opt => opt.MapFrom(src => src.Seo.MetaDescription));
 
         CreateMap<RecipeRating, RecipeRatingDto>()
             .ForMember(dest => dest.Score, opt => opt.MapFrom(src => src.Score.Value));

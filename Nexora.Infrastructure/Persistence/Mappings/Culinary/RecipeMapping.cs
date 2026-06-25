@@ -54,7 +54,6 @@ public class RecipeMapping : EntityMapping<Recipe>
         {
             seo.Property(s => s.MetaTitle).HasColumnName("meta_title").HasMaxLength(70);
             seo.Property(s => s.MetaDescription).HasColumnName("meta_description").HasMaxLength(170);
-            seo.Property(s => s.CanonicalUrl).HasColumnName("canonical_url").HasMaxLength(500);
         });
         builder.OwnsOne(r => r.Media, media =>
         {

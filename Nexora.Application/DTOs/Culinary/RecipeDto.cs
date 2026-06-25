@@ -3,7 +3,7 @@ using Nexora.Domain.ValueObjects.Culinary;
 
 namespace Nexora.Application.DTOs.Culinary;
 
-public class RecipeDto
+public class RecipeDto : Entity
 {
     public Guid Id { get; set; }
     public string Slug { get; set; } = string.Empty;
@@ -21,7 +21,6 @@ public class RecipeDto
     public string? ImageUrl { get; set; }
     public string MetaTitle { get; set; } = string.Empty;
     public string MetaDescription { get; set; } = string.Empty;
-    public string? CanonicalUrl { get; set; }
     public IReadOnlyCollection<Guid> TagIds { get; set; } = [];
     public Status Status { get; set; }
     public decimal AverageRating { get; set; }

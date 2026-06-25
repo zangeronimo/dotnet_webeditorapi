@@ -114,7 +114,7 @@ public class CategoryController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
         var categoryName = new CategoryName(model.Name);
-        var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
+        var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription);
         var request = new CreateCategoryRequest(categoryName, model.Description, model.ParentId, model.DisplayOrder, model.Status, categorySeo, context);
         var category = await _createCategoryUC.ExecuteAsync(request);
 
@@ -134,7 +134,7 @@ public class CategoryController : ControllerBase
         var userId = (Guid)HttpContext.Items["UserId"]!;
         var context = new RequestContext(userId, companyId);
         var categoryName = new CategoryName(model.Name);
-        var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
+        var categorySeo = new CategorySeo(model.MetaTitle, model.MetaDescription);
         var request = new UpdateCategoryRequest(id, categoryName, model.Description, model.ParentId, model.DisplayOrder, model.Status, categorySeo, context);
         var category = await _updateCategoryUC.ExecuteAsync(request);
 

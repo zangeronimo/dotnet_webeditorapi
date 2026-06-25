@@ -84,7 +84,7 @@ public class RecipeController : ControllerBase
         var recipeTiming = new RecipeTiming(model.PrepTime, model.CookTime, model.RestTime);
         var recipeYield = new RecipeYield(model.YieldTotal);
         var RecipeAttributes = new RecipeAttributes(model.difficulty, model.Cuisine);
-        var recipeSeo = new RecipeSeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
+        var recipeSeo = new RecipeSeo(model.MetaTitle, model.MetaDescription);
         var request = new CreateRecipeRequest(
             model.Name,
             recipeContent,
@@ -117,7 +117,7 @@ public class RecipeController : ControllerBase
         var recipeTiming = new RecipeTiming(model.PrepTime, model.CookTime, model.RestTime);
         var recipeYield = new RecipeYield(model.YieldTotal);
         var RecipeAttributes = new RecipeAttributes(model.difficulty, model.Cuisine);
-        var recipeSeo = new RecipeSeo(model.MetaTitle, model.MetaDescription, model.CanonicalUrl);
+        var recipeSeo = new RecipeSeo(model.MetaTitle, model.MetaDescription);
         var request = new UpdateRecipeRequest(
             model.Id,
             model.Name,
