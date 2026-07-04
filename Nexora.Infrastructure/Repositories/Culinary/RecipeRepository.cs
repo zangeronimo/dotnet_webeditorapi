@@ -47,11 +47,13 @@ public class RecipeRepository(CulinaryDbContext context) : IRecipeRepository
             customMap: new Dictionary<string, Expression<Func<Recipe, object?>>>
             {
                 ["Slug"] = x => x.Slug,
+                ["HasImage"] = x => x.Media.ImageUrl == null || x.Media.ImageUrl == "",
             },
             allowedFields:
             [
                 "Name",
                 "Slug",
+                "HasImage",
                 "Status"
             ]
         );
