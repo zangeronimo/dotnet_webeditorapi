@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+using Nexora.Api.Authorization;
 using Nexora.Api.Models.AI;
 using Nexora.Application.Interfaces;
 using Nexora.Application.Requests;
@@ -19,6 +20,7 @@ public class AiController : ControllerBase
         _generateContentUC = generateContentUC;
     }
 
+    [HasPermission("ai.generate.api")]
     [HttpPost]
     public async Task<IActionResult> GenerateContent([FromBody] GenerateContentModel model)
     {
