@@ -10,6 +10,7 @@ public static class DependencyInjection
         services.AddProviders();
         services.AddPlatformModule();
         services.AddCulinaryModule();
+        services.AddAiModule();
 
         return services;
     }

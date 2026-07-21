@@ -54,6 +54,7 @@ builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("API"));
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<SecurityOptions>(builder.Configuration.GetSection("SEC"));
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
+builder.Services.Configure<AiOptions>(builder.Configuration.GetSection("AI"));
 
 // Connect to the database
 builder.Services.AddInfrastructure();
