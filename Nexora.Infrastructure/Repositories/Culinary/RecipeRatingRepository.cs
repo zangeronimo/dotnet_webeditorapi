@@ -12,7 +12,7 @@ public class RecipeRatingRepository(CulinaryDbContext context) : IRecipeRatingRe
 {
     private readonly CulinaryDbContext _context = context;
 
-    public async Task<(IEnumerable<RecipeRating> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, Status? status, Guid companyId)
+    public async Task<(IEnumerable<RecipeRating> Items, int Total)> GetAllAsync(int page, int pageSize, string? orderBy, bool desc, string? name, CulinaryRecipeRatingStatus? status, Guid companyId)
     {
         var query = _context.RecipeRatings
             .AsNoTracking()

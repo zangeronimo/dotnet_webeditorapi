@@ -8,7 +8,7 @@ public sealed record UpdateRecipeRatingRequest(
     RecipeScore Score,
     string? Name,
     string? Comment,
-    Status Status,
+    CulinaryRecipeRatingStatus Status,
     Guid RecipeId,
     RequestContext Context
 ) : ApplicationRequest(Context);

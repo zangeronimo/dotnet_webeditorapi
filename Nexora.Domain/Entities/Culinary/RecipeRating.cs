@@ -8,7 +8,7 @@ public class RecipeRating : Entity
     public RecipeScore Score { get; private set; }
     public string? Name { get; private set; }
     public string? Comment { get; private set; }
-    public Status Status { get; private set; }
+    public CulinaryRecipeRatingStatus Status { get; private set; }
     public DateTimeOffset? PublishedAt { get; private set; }
     public Guid RecipeId { get; private set; }
     public Guid CompanyId { get; private set; }
@@ -17,7 +17,7 @@ public class RecipeRating : Entity
      RecipeScore score,
      string? name,
      string? comment,
-     Status status,
+     CulinaryRecipeRatingStatus status,
      Guid recipeId,
      Guid companyId) : base()
     {
@@ -37,7 +37,7 @@ public class RecipeRating : Entity
         RecipeScore newScore,
         string? newName,
         string? newComment,
-        Status newStatus)
+        CulinaryRecipeRatingStatus newStatus)
     {
         Score = newScore;
         Name = newName;
@@ -51,7 +51,7 @@ public class RecipeRating : Entity
     private void PublishIfNeeded()
     {
         if (PublishedAt is null &&
-            Status == Status.Active)
+            Status == CulinaryRecipeRatingStatus.Active)
         {
             PublishedAt = DateTimeOffset.UtcNow;
         }

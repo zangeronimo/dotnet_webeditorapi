@@ -7,5 +7,5 @@ public class GetAllRecipeRatingsFilterModel : PaginationModel
     public string OrderBy { get; init; } = "Id";
     public bool Desc { get; init; } = false;
     public string? Name { get; init; }
-    public Status? Status { get; init; }
+    public CulinaryRecipeRatingStatus? Status { get; init; }
 }

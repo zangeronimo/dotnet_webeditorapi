@@ -11,6 +11,6 @@ public interface IRecipeRatingRepository : IRepository<RecipeRating>
         string? orderBy,
         bool desc,
         string? name,
-        Status? status,
+        CulinaryRecipeRatingStatus? status,
         Guid companyId);
 }

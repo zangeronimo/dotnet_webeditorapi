@@ -18,7 +18,7 @@ public class CreateRecipeRatingModel
 
     [Required(ErrorMessage = "O campo Status é obrigatório.")]
     [Range(0, 1, ErrorMessage = "O Status deve ser entre 0 e 1")]
-    public Status Status { get; set; }
+    public CulinaryRecipeRatingStatus Status { get; set; }
 
 
     [Required(ErrorMessage = "O campo RecipeId é obrigatório.")]

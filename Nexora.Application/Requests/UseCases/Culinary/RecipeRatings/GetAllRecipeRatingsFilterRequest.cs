@@ -9,5 +9,5 @@ public sealed record GetAllRecipeRatingsFilterRequest(
     string OrderBy,
     bool Desc,
     string? Name,
-    Status? Status,
+    CulinaryRecipeRatingStatus? Status,
     RequestContext Context) : ApplicationRequest(Context);
