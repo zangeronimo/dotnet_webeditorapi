@@ -5,4 +5,5 @@ public enum CulinaryRecipeRatingStatus : byte
     Inactive = 0,
     Active = 1,
     Pending = 2,
+    Spam = 3,
 }
