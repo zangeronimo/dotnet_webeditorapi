@@ -22,6 +22,9 @@ public sealed class RecipeStructuredDataDto
     [JsonPropertyName("author")]
     public AuthorDto Author { get; set; }
 
+    [JsonPropertyName("aggregateRating")]
+    public AggregateRating? AggregateRating { get; set; }
+
     [JsonPropertyName("datePublished")]
     public string? DatePublished { get; set; }
 
@@ -51,6 +54,24 @@ public sealed class RecipeStructuredDataDto
 
     [JsonPropertyName("recipeInstructions")]
     public List<HowToStepDto> RecipeInstructions { get; set; }
+}
+
+public sealed class AggregateRating
+{
+    [JsonPropertyName("@type")]
+    public string Type { get; set; } = "AggregateRating";
+
+    [JsonPropertyName("ratingValue")]
+    public decimal RatingValue { get; set; }
+
+    [JsonPropertyName("ratingCount")]
+    public int RatingCount { get; set; }
+
+    [JsonPropertyName("bestRating")]
+    public int BestRating { get; set; } = 5;
+
+    [JsonPropertyName("worstRating")]
+    public int WorstRating { get; set; } = 1;
 }
 
 public sealed class AuthorDto

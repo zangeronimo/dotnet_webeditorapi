@@ -74,6 +74,13 @@ public sealed class RecipeStructuredDataProvider
                 .ToList()
         };
 
+        if (recipe.AverageRating > 0 && recipe.TotalRatings > 0)
+            dto.AggregateRating = new AggregateRating()
+            {
+                RatingValue = recipe.AverageRating,
+                RatingCount = recipe.TotalRatings,
+            };
+
         return JsonSerializer.Serialize(dto, new JsonSerializerOptions
         {
             WriteIndented = false,

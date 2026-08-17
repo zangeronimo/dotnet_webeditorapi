@@ -12,10 +12,11 @@ using Nexora.Domain.Interfaces.Repository.Culinary;
 
 namespace Nexora.Application.UseCases.Culinary.RecipeRatings;
 
-public class UpdateRecipeRatingUC(IRecipeRatingRepository recipeRatingRepository, IRecipeRepository recipeRepository, IMapper mapper) : IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto>
+public class UpdateRecipeRatingUC(IRecipeRatingRepository recipeRatingRepository, IRecipeRepository recipeRepository, IRecipeStructuredDataProvider structuredData, IMapper mapper) : IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto>
 {
     private readonly IRecipeRatingRepository _recipeRatingRepository = recipeRatingRepository;
     private readonly IRecipeRepository _recipeRepository = recipeRepository;
+    private readonly IRecipeStructuredDataProvider _structuredData = structuredData;
     private readonly IMapper _mapper = mapper;
     public async Task<RecipeRatingDto> ExecuteAsync(UpdateRecipeRatingRequest request)
     {
@@ -28,6 +29,8 @@ public class UpdateRecipeRatingUC(IRecipeRatingRepository recipeRatingRepository
             if (updateRecipe == null)
                 throw new ApiBadRequestException(RecipeErrors.NotFound);
             updateRecipe.AddRating(request.Score.Value);
+            var structuredData = _structuredData.Generate(updateRecipe, updateRecipe.Category, []);
+            updateRecipe.SetStructuredData(structuredData);
             await _recipeRepository.UpdateAsync(updateRecipe);
         }
         updateRecipeRating.Update(request.Score, request.Name, request.Comment, request.Status);
