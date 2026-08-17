@@ -20,20 +20,17 @@ public class RecipeRatingController : ControllerBase
 {
     private readonly IUseCase<GetAllRecipeRatingsFilterRequest, PaginationResult<RecipeRatingDto>> _getAllRecipeRatingsUC;
     private readonly IUseCase<GetByIdRequest, RecipeRatingDto> _getRecipeRatingByIdUC;
-    private readonly IUseCase<CreateRecipeRatingRequest, RecipeRatingDto> _createRecipeRatingUC;
     private readonly IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto> _updateRecipeRatingUC;
     private readonly IUseCase<DeleteRequest, RecipeRatingDto> _deleteRecipeRatingUC;
 
     public RecipeRatingController(
         IUseCase<GetAllRecipeRatingsFilterRequest, PaginationResult<RecipeRatingDto>> getAllRecipeRatingsUC,
         IUseCase<GetByIdRequest, RecipeRatingDto> getRecipeRatingByIdUC,
-        IUseCase<CreateRecipeRatingRequest, RecipeRatingDto> createRecipeRatingUC,
         IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto> updateRecipeRatingUC,
         IUseCase<DeleteRequest, RecipeRatingDto> deleteRecipeRatingUC)
     {
         _getAllRecipeRatingsUC = getAllRecipeRatingsUC;
         _getRecipeRatingByIdUC = getRecipeRatingByIdUC;
-        _createRecipeRatingUC = createRecipeRatingUC;
         _updateRecipeRatingUC = updateRecipeRatingUC;
         _deleteRecipeRatingUC = deleteRecipeRatingUC;
     }
@@ -63,23 +60,6 @@ public class RecipeRatingController : ControllerBase
         var context = new RequestContext(userId, companyId);
         var request = new GetByIdRequest(id, context);
         var reciperating = await _getRecipeRatingByIdUC.ExecuteAsync(request);
-
-        return Ok(reciperating);
-    }
-
-    [HasPermission("culinary.reciperating.create")]
-    [HttpPost]
-    public async Task<IActionResult> CreateRecipeRating([FromBody] CreateRecipeRatingModel model)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var companyId = (Guid)HttpContext.Items["CompanyId"]!;
-        var userId = (Guid)HttpContext.Items["UserId"]!;
-        var context = new RequestContext(userId, companyId);
-        var recipeScore = new RecipeScore(model.Score);
-        var request = new CreateRecipeRatingRequest(recipeScore, model.Name, model.Comment, model.Status, model.RecipeId, context);
-        var reciperating = await _createRecipeRatingUC.ExecuteAsync(request);
 
         return Ok(reciperating);
     }

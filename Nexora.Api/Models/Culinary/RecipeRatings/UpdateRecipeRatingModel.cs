@@ -20,7 +20,7 @@ public class UpdateRecipeRatingModel
     public string? Comment { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo Status é obrigatório.")]
-    [Range(0, 1, ErrorMessage = "O Status deve ser entre 0 e 1")]
+    [Range(0, 3, ErrorMessage = "O Status deve ser entre 0 e 3")]
     public CulinaryRecipeRatingStatus Status { get; set; }
 
     [Required(ErrorMessage = "O campo RecipeId é obrigatório.")]

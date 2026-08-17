@@ -45,7 +45,6 @@ public static class CulinaryModuleDI
 
         services.AddScoped<IUseCase<GetAllRecipeRatingsFilterRequest, PaginationResult<RecipeRatingDto>>, GetAllRecipeRatingsUC>();
         services.AddScoped<IUseCase<GetByIdRequest, RecipeRatingDto>, GetRecipeRatingByIdUC>();
-        services.AddScoped<IUseCase<CreateRecipeRatingRequest, RecipeRatingDto>, CreateRecipeRatingUC>();
         services.AddScoped<IUseCase<UpdateRecipeRatingRequest, RecipeRatingDto>, UpdateRecipeRatingUC>();
         services.AddScoped<IUseCase<DeleteRequest, RecipeRatingDto>, DeleteRecipeRatingUC>();
 

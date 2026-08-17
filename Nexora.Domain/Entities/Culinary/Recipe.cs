@@ -80,16 +80,16 @@ public class Recipe : Entity
         Touch();
     }
 
-    public void UpdateRatingSummary(decimal averageRating, int totalRatings)
+    public void AddRating(decimal score)
     {
-        if (averageRating < 0 || averageRating > 10)
+        if (score is not (2 or 4 or 6 or 8 or 10))
+            throw new DomainException(RecipeErrors.InvalidScore);
+        var total = TotalRatings + 1;
+        var newAverage = ((AverageRating * TotalRatings) + (score / 2)) / total;
+        if (newAverage < 2 || newAverage > 10)
             throw new DomainException(RecipeErrors.InvalidAverageRating);
-
-        if (totalRatings < 0)
-            throw new DomainException(RecipeErrors.InvalidTotalRatings);
-
-        AverageRating = Math.Round(averageRating, 1);
-        TotalRatings = totalRatings;
+        AverageRating = newAverage;
+        TotalRatings = total;
 
         Touch();
     }
