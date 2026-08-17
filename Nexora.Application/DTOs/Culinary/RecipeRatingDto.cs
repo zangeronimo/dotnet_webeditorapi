@@ -2,9 +2,8 @@ using Nexora.Domain.Enums;
 
 namespace Nexora.Application.DTOs.Culinary;
 
-public class RecipeRatingDto
+public class RecipeRatingDto : BaseDto
 {
-    public Guid Id { get; set; }
     public int Score { get; set; }
     public string? Name { get; set; } = string.Empty;
     public string? Comment { get; set; }

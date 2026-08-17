@@ -3,9 +3,8 @@ using Nexora.Domain.ValueObjects.Culinary;
 
 namespace Nexora.Application.DTOs.Culinary;
 
-public class RecipeDto : Entity
+public class RecipeDto : BaseDto
 {
-    public Guid Id { get; set; }
     public string Slug { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string ShortDescription { get; set; } = string.Empty;

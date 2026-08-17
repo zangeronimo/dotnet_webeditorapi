@@ -2,9 +2,8 @@ using Nexora.Domain.Enums;
 
 namespace Nexora.Application.DTOs.Culinary;
 
-public class CategoryDto : Entity
+public class CategoryDto : BaseDto
 {
-    public Guid Id { get; set; }
     public string Slug { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
